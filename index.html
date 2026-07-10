@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神祕領域 - 全方位命理與心理測驗中心</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --warning: #f59e0b;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e1b4b, #311042);
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 2px solid #3b0764;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #a5b4fc, #fbcfe8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* 分類區塊 */
+        .category-section {
+            margin-bottom: 3.5rem;
+        }
+
+        .category-title {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-left: 5px solid var(--primary);
+            padding-left: 1rem;
+            color: #e2e8f0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.2);
+        }
+
+        .card h3 {
+            margin-bottom: 0.8rem;
+            color: #f1f5f9;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* 測驗視窗 */
+        .quiz-container {
+            display: none;
+            background-color: #1e293b;
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 700px;
+            margin: 2rem auto;
+            border: 1px solid #475569;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #334155;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.4s ease;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            font-weight: bold;
+            color: #f8fafc;
+            line-height: 1.4;
+        }
+
+        .options-list button {
+            display: block;
+            width: 100%;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            background-color: #0f172a;
+            border: 1px solid #475569;
+            color: var(--light);
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .options-list button:hover {
+            background-color: #334155;
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        /* 運算中 Loading 畫面 */
+        #loading-view {
+            display: none;
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: #1e293b;
+            border-radius: 16px;
+            max-width: 600px;
+            margin: 2rem auto;
+            border: 1px solid #475569;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #334155;
+            border-top: 5px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 報告與付費引導 */
+        .report-container {
+            display: none;
+            background-color: #1e293b;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        /* 免費結果區塊 */
+        .free-result {
+            background-color: #0f172a;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 5px solid #10b981;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .free-result h3 {
+            color: #10b981;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 0.5rem;
+        }
+
+        .free-result p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            text-align: justify;
+        }
+
+        .cliffhanger {
+            background-color: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            color: #fda4af;
+            font-weight: bold;
+            margin-top: 1.5rem;
+        }
+
+        /* FOMO 倒數計時 */
+        .fomo-banner {
+            background: linear-gradient(90deg, #7c2d12, #991b1b, #7c2d12);
+            border: 1px solid #ef4444;
+            padding: 1.2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .timer {
+            color: #fff;
+            font-size: 1.4rem;
+            background: #000;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            margin-left: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        /* 付費解鎖牆 */
+        .paywall {
+            background: linear-gradient(180deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,1) 100%);
+            border: 2px dashed var(--secondary);
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            position: relative;
+        }
+
+        .paywall h4 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            color: #fbcfe8;
+        }
+
+        .blur-list {
+            filter: blur(5px);
+            user-select: none;
+            opacity: 0.4;
+            margin-bottom: 2rem;
+            text-align: left;
+            padding: 0 2rem;
+            list-style: none;
+        }
+
+        .blur-list li {
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .price-tag {
+            font-size: 2.5rem;
+            font-weight: black;
+            color: #f43f5e;
+            margin: 1.5rem 0;
+            text-shadow: 0 2px 10px rgba(244, 63, 94, 0.3);
+        }
+
+        .price-tag span {
+            font-size: 1.2rem;
+            color: #64748b;
+            text-decoration: line-through;
+            margin-right: 1rem;
+            font-weight: normal;
+        }
+
+        .pay-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
+            transition: all 0.3s;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .pay-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(236, 72, 153, 0.6);
+        }
+
+        /* 深度報告 VIP 區塊 (史詩級擴充) */
+        .premium-result {
+            display: none;
+            background: #0f172a;
+            border: 2px solid #a5b4fc;
+            padding: 3rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .premium-badge {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 900;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
+            letter-spacing: 1px;
+        }
+
+        .vip-section-title {
+            color: #c084fc;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 0.8rem;
+            margin: 3rem 0 1.5rem 0;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .vip-text {
+            color: #e2e8f0;
+            line-height: 1.9;
+            text-align: justify;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .vip-highlight {
+            color: #f43f5e;
+            font-weight: bold;
+            background-color: rgba(244, 63, 94, 0.1);
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        /* 圖表分析區塊 */
+        .chart-box {
+            background-color: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .chart-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .chart-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .chart-label {
+            width: 100px;
+            font-size: 1rem;
+            color: #cbd5e1;
+            font-weight: bold;
+        }
+
+        .chart-bar-bg {
+            flex-grow: 1;
+            height: 16px;
+            background-color: #0f172a;
+            border-radius: 8px;
+            margin: 0 1.5rem;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .chart-bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
+        .chart-value {
+            width: 50px;
+            text-align: right;
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #f8fafc;
+        }
+
+        /* 專屬行動清單 */
+        .action-list {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 6px solid var(--warning);
+        }
+
+        .action-list ul {
+            list-style: none;
+        }
+
+        .action-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.2rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+
+        .action-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--warning);
+            font-size: 1.2rem;
+        }
+
+        .back-btn {
+            background-color: transparent;
+            color: #94a3b8;
+            border: 1px solid #475569;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        
+        .back-btn:hover {
+            background-color: #334155;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>✨ 神祕領域 ✨</h1>
+        <p>探索現代科學與東西方神祕學的交界，解鎖你的命運之鑰</p>
+    </header>
+
+    <div class="container">
+        
+        <div id="home-view">
+            <div class="category-section">
+                <div class="category-title">🧠 現代心理與天賦科學</div>
+                <div class="grid">
+                    <div class="card" onclick="startQuiz('mbti')">
+                        <h3>MBTI 16型深度人格破解</h3>
+                        <p>5道精選情境題，測出你隱藏的決策模式、人際防禦機制與未來的職場爆發點。</p>
+                    </div>
+                    <div class="card" onclick="startQuiz('gps')">
+                        <h3>天賦順流 GPS (財富定位)</h3>
+                        <p>停止無效努力！透過潛意識直覺，找出你天生阻力最小、賺錢最快的財富順流頻率。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <div class="category-title">🌌 東西方神祕學與定數</div>
+                <div class="grid">
+                    <div class="card" onclick="startQuiz('numerology')">
+                        <h3>生命靈數：靈魂契約解析</h3>
+                        <p>你這輩子是來體驗什麼的？精確解析你的主命數特質與 2026 下半年流年大運。</p>
+                    </div>
+                    <div class="card" onclick="startQuiz('hd')">
+                        <h3>人類圖：能量中心與宿命</h3>
+                        <p>你是生產者還是投射者？解密你的能量中心空白處，找出總是讓你內耗的吸血鬼。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-view" class="quiz-container">
+            <button class="back-btn" onclick="goBack()">← 重新選擇測驗</button>
+            <div class="progress-bar">
+                <div id="progress" class="progress-fill"></div>
+            </div>
+            <div id="question" class="question-text">正在載入題目...</div>
+            <div id="options" class="options-list"></div>
+        </div>
+
+        <div id="loading-view">
+            <div class="spinner"></div>
+            <h2 style="color: #a5b4fc; margin-bottom: 1rem;">星盤與性格矩陣運算中...</h2>
+            <p style="color: #94a3b8;" id="loading-text">正在交叉比對您的潛意識選項與流年數據...</p>
+        </div>
+
+        <div id="report-view" class="report-container">
+            <button class="back-btn" onclick="goBack()">← 返回首頁</button>
+            <h2 id="report-title" style="margin-bottom: 2rem; font-size: 2rem; text-align: center; border-bottom: 1px solid #334155; padding-bottom: 1rem;"></h2>
+            
+            <div class="free-result">
+                <h3>🟢 階段一解鎖：您的現狀與天賦特質</h3>
+                <div id="free-content">
+                    </div>
+            </div>
+
+            <div class="fomo-banner">
+                🚨 系統提示：您的【萬字終極命盤與解方報告】已生成！<br>
+                限時 10 分鐘解鎖優惠，倒數結束後將恢復原價並銷毀報告。
+                <span class="timer" id="countdown">10:00</span>
+            </div>
+
+            <div id="paywall-zone" class="paywall">
+                <h4>🔒 解鎖完整報告：看見別人看不見的自己</h4>
+                <ul class="blur-list">
+                    <li>▶ 四大潛意識能量矩陣深度圖表分析</li>
+                    <li>▶ 你的致命財富盲點與「吸血鬼」人際關係</li>
+                    <li>▶ 2026 下半年流年大運與 3 個月內的重大轉機</li>
+                    <li>▶ 量身打造的 90 天開運與落地執行清單</li>
+                </ul>
+                <div class="price-tag"><span>NT$ 899</span> NT$ 99</div>
+                <button class="pay-btn" onclick="simulatePayment()">💳 立即解鎖萬字報告（模擬付費）</button>
+                <p style="margin-top: 1rem; color: #64748b; font-size: 0.9rem;">付款後將立刻於本頁面自動展開完整報告</p>
+            </div>
+
+            <div id="premium-zone" class="premium-result">
+                <div style="text-align: center;">
+                    <span class="premium-badge">👑 終極 VIP 深度解析報告已解鎖</span>
+                    <h2 id="vip-main-title" style="color: #fbcfe8; font-size: 2.2rem; margin-bottom: 1rem; font-weight: 900;"></h2>
+                    <p style="color: #94a3b8;">以下報告為系統為您量身打造，請截圖或妥善保存。</p>
+                </div>
+
+                <h3 class="vip-section-title">📊 第一維度：潛意識能量矩陣分析</h3>
+                <p class="vip-text">根據您的底層邏輯與五道情境選擇，我們為您運算出了當前的四維度能量分佈。這決定了您在面對財富與決策時的抗壓性與爆發力，了解自己的原廠設定，是順流的第一步：</p>
+                
+                <div class="chart-box" id="chart-container">
+                    </div>
+                <p class="vip-text" id="vip-chart-desc"></p>
+
+                <h3 class="vip-section-title">⚠️ 第二維度：致命盲點與隱形破財危機</h3>
+                <p class="vip-text" id="vip-blindspot"></p>
+
+                <h3 class="vip-section-title">💞 第三維度：人際磁場與靈魂伴侶契合度</h3>
+                <p class="vip-text" id="vip-relationship"></p>
+
+                <h3 class="vip-section-title">🚀 第四維度：未來 90 天流年轉機預測</h3>
+                <p class="vip-text" id="vip-future"></p>
+
+                <h3 class="vip-section-title">🗝️ 專屬開運與行動落地指南</h3>
+                <p class="vip-text">光知道運勢不夠，您需要具體的行動來顯化財富。請在接下來的一個月內，嚴格執行以下三件事：</p>
+                <div class="action-list">
+                    <ul id="vip-action">
+                        </ul>
+                </div>
+                
+                <div style="text-align: center; margin-top: 4rem; color: #64748b; font-size: 1rem; border-top: 1px solid #334155; padding-top: 2rem;">
+                    <p>— 萬字報告解碼完畢，願您在順流中找到真正的豐盛 —</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // 擴充至 5 題，並大幅增加免費與 VIP 報告的字數與深度
+        const quizData = {
+            mbti: {
+                title: "MBTI 16型人格深度破解",
+                questions: [
+                    { q: "1. 經過一整週高壓的工作後，週末你最想怎麼度過？", a: ["和幾位好友去熱鬧的餐廳大吃一頓，吐吐苦水", "關掉手機，一個人在家看劇或安靜地做自己的事"] },
+                    { q: "2. 當老闆突然指派一個你完全沒碰過的新專案，你的第一反應是？", a: ["立刻上網找資料，並列出第一步到最後一步的執行計畫", "先答應下來，心想反正邊做邊學，總會找到靈感解決"] },
+                    { q: "3. 朋友遇到嚴重的感情挫折打電話向你哭訴，你會優先怎麼做？", a: ["幫他分析問題出在哪裡，並給出具體的解決步驟", "先安撫他的情緒，陪著他一起罵對方，讓他發洩"] },
+                    { q: "4. 在看一部懸疑電影時，你通常關注什麼？", a: ["每個角色的具體行為、證據和時間線是否合理", "故事背後隱藏的寓意、人性的黑暗面或導演想表達的概念"] },
+                    { q: "5. 面對極度混亂、時間緊迫的突發危機，你通常的表現是？", a: ["腎上腺素飆升，立刻指揮大家分工合作控制場面", "感到極度焦慮與抗拒，需要先給自己幾分鐘冷靜才能思考"] }
+                ],
+                free: `
+                    <p>【光芒耀眼卻內心孤獨的智囊】根據您的選項路徑，您天生具備極高的環境敏感度與洞察力。在人群中，您常常能夠一眼看穿別人沒有說出口的潛台詞。您的思維邏輯比一般人深層，這讓您在職場或團體中，總是不自覺地扮演起「解決問題的智囊」角色。</p>
+                    <p>身邊的人覺得您很可靠、辦事能力強。但只有您自己知道，您的內心其實非常需要獨處的空間來「充電」。您討厭膚淺的社交，更渴望靈魂層面的深度交流。您經常在夜深人靜時，反覆思考自己人生的意義與未來的方向，甚至會對現狀感到莫名的焦慮。</p>
+                    <div class="cliffhanger">⚠️ 系統警告：我們偵測到您的性格模型中，存在著一個嚴重的「內耗黑洞」。這個盲點正在無形中吞噬您的財富運氣與正緣桃花。如果您繼續忽視它，下半年您可能會面臨一場人際或財務上的巨大危機...</div>
+                `,
+                vip: {
+                    mainTitle: "高階稀有人格：深海洞察者的覺醒之路",
+                    scores: [
+                        { label: "直覺洞察", value: 92, color: "#a855f7" },
+                        { label: "邏輯防禦", value: 78, color: "#3b82f6" },
+                        { label: "人際共情", value: 85, color: "#ec4899" },
+                        { label: "執行落地", value: 42, color: "#10b981" }
+                    ],
+                    chartDesc: "從矩陣中可以明顯看出，您的「直覺洞察」與「人際共情」分數極高，這代表您擁有極強的同理心與預測未來趨勢的能力。然而，您的「執行落地」僅有 42%，這是您目前人生卡關的最大元兇。",
+                    blindspot: "您最大的致命傷是<span class='vip-highlight'>「過度準備與完美主義」</span>。在財富積累的過程中，您常常因為害怕失敗，或者覺得「自己還沒準備好」，而遲遲不敢採取行動。您腦海裡擁有價值百萬的商業點子或創作靈感，但最終卻因為過度分析（Analysis Paralysis）而眼睜睜看著別人把您的點子做出來並賺大錢。此外，您太容易對別人產生共情，導致您在談判薪水或報價時總是心軟，這就是您一直無法突破收入天花板的隱形破財點。",
+                    relationship: "在感情中，您是一個極度缺乏安全感卻又喜歡裝堅強的人。您很容易吸引到「需要被拯救」的吸血鬼型伴侶，因為您天生具有療癒他人的特質。但這會大幅消耗您的心力。<span class='vip-highlight'>您的靈魂伴侶特徵：</span>必須是一個情緒穩定、具備強大執行力（如土象星座特質或鋼鐵型天賦）的人。他們不會跟您講大道理，而是會用實際行動（如幫您整理房間、處理繁瑣帳務）來給您滿滿的安全感。",
+                    future: "星象軌跡顯示，在接下來的 90 天內，您將迎來一次十年一遇的「事業破局點」。在大約第 4 週到第 6 週之間，會有一位過去認識的舊識（可能帶有跨界資源）主動聯繫您，提出一個看似有挑戰性的合作邀約。請注意：<span class='vip-highlight'>這絕對是您的發財信號！</span>請拋棄您那套「我要先準備好才能答應」的舊有模式，先點頭答應，再在過程中邊做邊學，這將為您下半年帶來極為豐厚的意外之財。",
+                    action: `
+                        <li><strong>執行「70分法則」：</strong>未來三個月，任何計畫只要想到 70% 就立刻去執行，剩下 30% 邊做邊修正，嚴禁拖延。</li>
+                        <li><strong>斷捨離吸血鬼關係：</strong>立刻封鎖或遠離那些只會對您抱怨、卻從不改變的朋友，保護您的能量場不被抽乾。</li>
+                        <li><strong>幸運開運物：</strong>配戴黑曜石或深藍色的手月水晶，能有效阻擋外界負能量干擾；在錢包內放置一張寫有目標金額的黃色小卡，加速顯化。</li>
+                    `
+                }
+            },
+            gps: {
+                title: "天賦順流 GPS 財富測驗",
+                questions: [
+                    { q: "1. 想像你現在有一筆 100 萬的創業資金，你會優先怎麼分配？", a: ["投入研發全新的顛覆性產品，或砸在行銷上讓全世界看到", "建立完善的後台管理系統，聘請專業會計和營運人員把控風險"] },
+                    { q: "2. 在一個團隊合作的專案中，你最討厭遇到哪種隊友？", a: ["做事死板、只會照著 SOP 走，完全沒有彈性和創意的人", "整天天馬行空提點子，但從來不負責把事情做完的人"] },
+                    { q: "3. 你認為自己目前在賺錢這條路上，最缺乏的是什麼？", a: ["一個可以讓我盡情發揮、不受拘束的舞台或好點子", "一個穩定、可預測，且每個月都能帶來固定現金流的系統"] },
+                    { q: "4. 參加一場商業交流會，你會怎麼度過？", a: ["主動到處換名片，熱情地和不同領域的人聊天尋找合作機會", "坐在角落觀察，只和主動來找我、且話題明確的人進行深度交流"] },
+                    { q: "5. 面對極度繁瑣的報表與數據分析，你的真實感受是？", a: ["看到密密麻麻的數字就頭痛，寧願花錢請別人來處理", "覺得看數據很有安全感，能從中找出優化和省錢的蛛絲馬跡"] }
+                ],
+                free: `
+                    <p>【爆發力十足的開創型引擎】從您的選項中，我們看到了極度活躍的「發電機與火焰」混合能量。您的思維敏捷，對賺錢和開創新局充滿熱情。您不怕辛苦、只怕沒有舞台。當您找到自己真正熱愛的事物時，您能展現出常人難以企及的感染力與行動力。</p>
+                    <p>您對沉悶、一成不變的環境極度反感，創新與變動是您的生命底色。身邊的人常常驚訝於您腦袋裡源源不絕的點子。然而，您有時候會覺得很無力，為什麼自己明明付出了 200% 的努力，得到的財富回報卻只有 50%？</p>
+                    <div class="cliffhanger">⚠️ 系統警告：我們比對了您的財富能量軌跡，發現您目前正處於「逆流狀態」！您一直在用阻力最大、最消耗能量的方式賺錢。若不盡快調整您的天賦定位，下半年您將面臨嚴重的窮忙危機與職業倦怠...</div>
+                `,
+                vip: {
+                    mainTitle: "天賦密碼：開啟阻力最小的致富通道",
+                    scores: [
+                        { label: "創意發想", value: 95, color: "#f43f5e" },
+                        { label: "社交槓桿", value: 85, color: "#f59e0b" },
+                        { label: "流程控管", value: 25, color: "#64748b" },
+                        { label: "風險精算", value: 35, color: "#3b82f6" }
+                    ],
+                    chartDesc: "您的能量圖表呈現極端的「右傾偏誤」。您擁有頂級的「創意發想」與「社交槓桿」能力，但「流程控管」僅有 25%。這意味著您是一個極佳的開源者，卻是一個糟糕透頂的節流者。",
+                    blindspot: "您的致命盲點在於<span class='vip-highlight'>「過度插手自己不擅長的細節」</span>。您可能常常親自下去弄排版、做報表、對帳單，這對您的天賦來說是一種嚴重的降維打擊！您把寶貴的黃金時間浪費在低產值的事情上，導致您沒有時間去發揮您真正值錢的技能——創造與連結。這就是為什麼您總是覺得時間不夠用，且收入無法呈現指數型增長的原因。",
+                    relationship: "在商業與人際合作上，您絕對不能找跟您一樣「只會想點子」的人合夥，那將會是一場災難。<span class='vip-highlight'>您最需要防範的小人：</span>是那些總是對您的點子潑冷水、用僵化制度限制您發揮的「傳統官僚型」主管或客戶。您需要尋找的是具備「節奏」或「鋼鐵」能量的合夥人——他們話不多，但能穩穩地幫您把流程建立起來，並在背後幫您踩煞車與算利潤。",
+                    future: "未來的第三個月份，將是您事業版圖跨界的爆發期。市場上會出現一股新的流量紅利或新興平台。您<span class='vip-highlight'>不需要自己苦哈哈地從零創造新產品</span>，而是要去當那個「把好產品推廣出去的推手」或「跨界資源的整合者」。只要站對風口，利用您的社交槓桿，下半年的財富累積速度將是過去的三倍以上。",
+                    action: `
+                        <li><strong>全面外包庶務：</strong>明天起，將記帳、排程等繁瑣庶務全部丟給助理或外包，把您 80% 的精力放在發想與人際串聯上。</li>
+                        <li><strong>採取借力使力策略：</strong>下半年請鎖定「分潤模式」、「聯盟行銷」或「IP 授權」，絕對不要把資金重壓在囤貨或實體研發上。</li>
+                        <li><strong>空間風水佈局：</strong>在您的工作區域點燃帶有柑橘或木質調的擴香，並保持桌面淨空，這能讓您的財富靈感更加暢通無阻。</li>
+                    `
+                }
+            }
+        };
+
+        // 複用邏輯供展示
+        quizData.numerology = quizData.mbti;
+        quizData.hd = quizData.gps;
+
+        let currentQuizKey = '';
+        let currentQuestionIndex = 0;
+        let timerInterval;
+
+        // 開始測驗
+        function startQuiz(quizKey) {
+            currentQuizKey = quizKey;
+            currentQuestionIndex = 0;
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('report-view').style.display = 'none';
+            document.getElementById('quiz-view').style.display = 'block';
+            
+            // 重置付費區域
+            document.getElementById('paywall-zone').style.display = 'block';
+            document.getElementById('premium-zone').style.display = 'none';
+            
+            showQuestion();
+        }
+
+        // 顯示題目
+        function showQuestion() {
+            const quiz = quizData[currentQuizKey];
+            const totalQuestions = quiz.questions.length;
+            
+            const progressPercent = (currentQuestionIndex / totalQuestions) * 100;
+            document.getElementById('progress').style.width = `${progressPercent}%`;
+
+            if (currentQuestionIndex >= totalQuestions) {
+                // 題目測完，顯示 Loading 動畫製造儀式感
+                document.getElementById('quiz-view').style.display = 'none';
+                document.getElementById('loading-view').style.display = 'block';
+                
+                // 模擬系統運算 2.5 秒
+                setTimeout(() => {
+                    document.getElementById('loading-view').style.display = 'none';
+                    showReport();
+                }, 2500);
+                return;
+            }
+
+            const currentQuestion = quiz.questions[currentQuestionIndex];
+            document.getElementById('question').innerText = currentQuestion.q;
+            
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            currentQuestion.a.forEach((answer) => {
+                const btn = document.createElement('button');
+                btn.innerText = answer;
+                btn.onclick = () => {
+                    currentQuestionIndex++;
+                    showQuestion();
+                };
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        // 顯示報告（痛點前置與倒數計時）
+        function showReport() {
+            document.getElementById('report-view').style.display = 'block';
+            
+            const quiz = quizData[currentQuizKey];
+            document.getElementById('report-title').innerText = quiz.title;
+            document.getElementById('free-content').innerHTML = quiz.free;
+
+            // 預先填充 VIP 資料
+            document.getElementById('vip-main-title').innerText = quiz.vip.mainTitle;
+            document.getElementById('vip-chart-desc').innerText = quiz.vip.chartDesc;
+            document.getElementById('vip-blindspot').innerHTML = quiz.vip.blindspot;
+            document.getElementById('vip-relationship').innerHTML = quiz.vip.relationship;
+            document.getElementById('vip-future').innerHTML = quiz.vip.future;
+            document.getElementById('vip-action').innerHTML = quiz.vip.action;
+
+            // 繪製 CSS 能量長條圖
+            const chartContainer = document.getElementById('chart-container');
+            chartContainer.innerHTML = '';
+            quiz.vip.scores.forEach(score => {
+                const row = document.createElement('div');
+                row.className = 'chart-row';
+                row.innerHTML = `
+                    <div class="chart-label">${score.label}</div>
+                    <div class="chart-bar-bg">
+                        <div class="chart-bar-fill" style="width: 0%; background-color: ${score.color}; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                    </div>
+                    <div class="chart-value">${score.value}%</div>
+                `;
+                chartContainer.appendChild(row);
+            });
+
+            startTimer(600);
+        }
+
+        // 倒數計時邏輯
+        function startTimer(duration) {
+            clearInterval(timerInterval);
+            let timer = duration, minutes, seconds;
+            const display = document.getElementById('countdown');
+            
+            timerInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = "優惠已失效";
+                    document.getElementById('paywall-zone').querySelector('.price-tag').innerHTML = 'NT$ 899';
+                }
+            }, 1000);
+        }
+
+        // 模擬付費成功，展現大師級報告
+        function simulatePayment() {
+            alert("✅ 模擬金流驗證成功！\n系統已為您解鎖【終極大師級報告】，請盡快閱讀並截圖保存。");
+            
+            document.getElementById('paywall-zone').style.display = 'none';
+            document.getElementById('premium-zone').style.display = 'block';
+            clearInterval(timerInterval); 
+
+            // 延遲觸發圖表動畫，讓視覺效果更震撼
+            setTimeout(() => {
+                const fills = document.querySelectorAll('.chart-bar-fill');
+                const quiz = quizData[currentQuizKey];
+                fills.forEach((fill, index) => {
+                    fill.style.width = quiz.vip.scores[index].value + '%';
+                });
+            }, 300);
+            
+            // 畫面平滑捲動到報告開頭
+            document.getElementById('premium-zone').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 返回首頁
+        function goBack() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-view').style.display = 'none';
+            document.getElementById('loading-view').style.display = 'none';
+            document.getElementById('report-view').style.display = 'none';
+            document.getElementById('home-view').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
