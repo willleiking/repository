@@ -839,7 +839,175 @@ const DEFAULT_GPS_CONTENT = {
         }
     }
 };
+// ================================================================
+//  12 種「主能量＋次能量」專屬文案（含鉤子、故事感、警示）
+// ================================================================
+const COMBO_ANALYSIS = {
+    // ===== 發電機 (主) =====
+    'generator_flame': {
+        role: '魅力領航者',
+        opening: '您的思維敏捷，對創造新事物充滿熱情，且擁有把願景「推銷」給大眾的強大魅力。您不怕從零開始、只怕沒有舞台。當您找到真正熱愛的事物時，能瞬間點燃氣氛並帶領團隊衝鋒陷陣。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「承諾斷層」。您經常覺得，自己的熱情來得快去得也快，容易在專案或感情中留下許多未完待續的遺憾。',
+        field: '新創品牌、公關行銷、社群自媒體',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「閃亮物件症候群（三分鐘熱度）迴路」。這個隱藏的慣性，正悄悄干擾您對「長期關係與專案」的堅持。您可能在「追求新鮮感」與「穩定經營」之間拉扯，導致能量被嚴重分散。若未能在近期內識別並調整，未來三個月內，您很可能因為衝動投資或識人不清而大失血。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「熱情與點子」賺錢，而不是用「信任與落地」賺錢。若不盡快將您的天賦從「煽動」調整為「收成」，下半年您將面臨嚴重的窮忙危機與情感內耗。',
+        // --- 付費區深度文案 ---
+        blindspot: '你最大的破財危機在於「挖坑不填與過度承諾」。你極度容易三分鐘熱度，導致爛尾專案一堆；在感情上，你常因為追求新鮮感而忽略了穩定關係的經營。未來三個月，請小心那些打著「一起賺快錢」名義接近你的人，你容易因為衝動投資而大失血。',
+        businessPartner: '你最需要的是「鋼鐵型天才」——他們能幫你把熱情轉化為可衡量的指標，把願景變成可執行的財務模型。',
+        relationship: '你會被「節奏型天才」吸引——他們能幫你把「太多的事情」整理成「對的事情」的順序。你的伴侶不需要跟你一樣熱情，但需要能承接你的熱情、並幫你找到落地的節奏。',
+        turning: '在未來的第 20-35 天，你會遇到一個「需要你同時使用創意與同理心」的關鍵時刻。不要急著給答案，先聽、再想、再說。',
+        action: '【第 1-10 天】每天寫下 1 個「別人說過的感受」——練習記住細節，而不只是記住點子。\n【第 11-20 天】把一個計畫的「數字」和「故事」分開寫——練習看見兩者。\n【第 21-40 天】找一位鋼鐵型的人，請他對你的計畫提出三個「最殘酷的問題」。'
+    },
+    'generator_rhythm': {
+        role: '敏銳造夢者',
+        opening: '您擁有天馬行空的創意，同時又具備極佳的「市場嗅覺」。您很清楚什麼時候該丟出新點子，什麼時候該順應局勢。當您找到真正熱愛的事物時，能將抽象概念轉化為具體的時程。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「時機焦慮」。您經常覺得，腦袋裡的計畫很完美，但總是在等待那個「最對的時間點」，導致行動永遠慢半拍。',
+        field: '專案孵化、趨勢預測、產品策劃',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「過度等待迴路」。這個隱藏的慣性，正悄悄干擾您的執行力。您可能在「完美企劃」與「顧及所有人感受」之間拉扯，導致遲遲不敢將心血結晶推出市場。若未能在近期內識別並調整，未來三個月內，您的創意很可能會被別人整碗端走。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「等待時機」賺錢，而不是用「搶佔先機」賺錢。若不盡快將您的天賦從「觀望」調整為「上線測試」，下半年您將面臨嚴重的機會流失與職業倦怠。',
+        blindspot: '你的致命傷是「想太多而錯失風口」。你明明看到了商機，卻總是因為想兼顧所有人的感受、或是等待一個「完美的時機」而遲遲不敢出手。在感情裡，你常陷入無意義的單戀或內耗。破除焦慮的解方：下個月請強迫自己執行「先上線再優化」的策略，否則你的點子又會被別人整碗端走。',
+        businessPartner: '你最需要的是「火焰型天才」——他們能幫你把產品賣出去，讓你的好點子不再只是孤芳自賞。',
+        relationship: '你會被「鋼鐵型天才」吸引——他們能幫你把模糊的願景變成清晰的步驟，讓你的焦慮感大幅下降。',
+        turning: '未來 30 天內，市場會出現一個「你早就預測到」的變化。請立刻行動，不要再等了。',
+        action: '【第 1-10 天】寫下三個「早就想做但一直沒做的事」，選一個最小的立刻執行。\n【第 11-20 天】找一位朋友，把你的計畫用 5 分鐘講完，看對方的反應。\n【第 21-40 天】設定一個「上線倒數計時」，時間到了就發布，不准回頭修改。'
+    },
+    'generator_steel': {
+        role: '冷靜發明家',
+        opening: '您的靈魂深處是一座精密的實驗室。您討厭沒有邏輯的廢話，擅長用系統化的思維來架構未來的藍圖。當您找到真正熱愛的事物時，能看見別人忽視的底層規律，創造出極具深度的作品。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「溝通斷層」。您經常覺得，自己的想法曲高和寡，身邊很少有人能真正聽懂您的邏輯，在感情上也常被誤解為沒有溫度。',
+        field: '科技研發、底層架構設計、專業顧問',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「知識傲慢迴路」。這個隱藏的慣性，正悄悄干擾您對「市場需求」的判斷力。您可能在「追求極致完美」與「鄙視通俗市場」之間拉扯，導致產品極佳卻無人問津。若未能在近期內調整，未來三個月內，您很可能因為過度孤立而錯失變現的黃金期。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「複雜技術」賺錢，而不是用「解決人性痛點」賺錢。若不盡快尋找懂得包裝您才華的夥伴，下半年您將面臨嚴重的才華浪費與窮忙危機。',
+        blindspot: '你面臨的財富死局是「曲高和寡，產品極佳卻無人問津」。你極度缺乏將價值包裝變現的能力，甚至帶有一點知識份子的傲慢，覺得「好東西自然有人懂」。情感上，你常被伴侶抱怨像個沒有溫度的機器人。未來 90 天，請務必尋找一位「火焰」特質的合夥人幫你賣東西，否則你只會繼續窮忙。',
+        businessPartner: '你最需要的是「火焰型天才」——他們能把你的技術「翻譯」成市場聽得懂的語言，讓你的才華不再被埋沒。',
+        relationship: '你會被「火焰型天才」吸引——他們能融化你的冰冷，讓你感受到「被理解」而不是「被挑戰」。',
+        turning: '下個月你會遇到一個「需要你把複雜的事情說給外行人聽」的機會。這是你的考驗，也是你的轉機。',
+        action: '【第 1-10 天】把你最專業的一個知識，用「小學生聽得懂的話」寫下來。\n【第 11-20 天】主動約一位「非技術背景」的朋友喝咖啡，請他對你的計畫提出三個「笨問題」。\n【第 21-40 天】找一位火焰型的朋友，請他幫你把一個產品重新「包裝」一次。'
+    },
 
+    // ===== 火焰 (主) =====
+    'flame_generator': {
+        role: '靈感煽動者',
+        opening: '您的潛意識磁場就是一座耀眼的舞台！您極度擅長與人連結，且總能用最生動的話語來激勵他人。您討厭死板的規則，能在與人交流的碰撞中產生無數新火花，是天生的社群領袖。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「邊界失控」。您經常覺得，自己為了照顧氣氛和人情，答應了太多不該答應的事，導致財務與生活陷入一團混亂。',
+        field: '業務談判、社群運營、個人品牌',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「人情勒索迴路」。這個隱藏的慣性，正悄悄干擾您對「利益與合約」的判斷力。您可能在「當個好人」與「捍衛自身權益」之間拉扯，甚至在感情中愛上不該愛的人。若未能在近期內識別並調整，未來三個月內，您很可能因為識人不清或缺乏白紙黑字而背負無謂的損失。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「人情直覺」賺錢，而不是用「商業合約」賺錢。若不盡快將您的帳務與合約交給專業人士把關，下半年您將面臨嚴重的破財危機與人際背叛。',
+        blindspot: '你的致命盲點是「財務極度混亂與識人不清」。你很容易因為當下的氣氛或人情壓力而亂花錢、亂答應合作，甚至被有心人士當成免費的宣傳工具。感情中，你容易愛上不該愛的人而深陷其中。未來的開運指南：停止依靠直覺簽約！任何合約與帳務，請務必交給專業人士把關。',
+        businessPartner: '你最需要的是「鋼鐵型天才」——他們能幫你建立財務系統、把關合約，讓你不再因為「人情」而吃虧。',
+        relationship: '你會被「節奏型天才」吸引——他們能幫你踩煞車，讓你不再因為一時衝動而做出讓自己後悔的決定。',
+        turning: '未來 45 天內，會有一個「讓你心動的合作機會」出現。請先冷靜 24 小時，不要當場答應。',
+        action: '【第 1-10 天】把所有「口頭約定」全部寫下來，變成文字記錄。\n【第 11-20 天】找一位鋼鐵型的朋友，請他幫你看一次你最近的合約或帳單。\n【第 21-40 天】練習說「我回去想想再回覆你」——給自己留出思考的空間。'
+    },
+    'flame_rhythm': {
+        role: '溫暖連結者',
+        opening: '您是所有人眼中的「團隊黏著劑」。您不僅熱情，更懂得察言觀色，能敏銳捕捉到身邊每個人的情緒變化。您能毫不費力地把不同圈子的人牽在一起，是極具溫度的協調大師。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「自我犧牲」。您經常覺得，自己為了成就別人、維持和諧，把自己的需求無限期延後，在感情中甚至常淪為一再退讓的「救世主」。',
+        field: '客戶關係管理、公關媒合、人力資源',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「討好型內耗迴路」。這個隱藏的慣性，正悄悄干擾您對「自我價值」的定價能力。您可能在「提供免費幫忙」與「要求合理回報」之間拉扯，導致您付出了極大的心力卻沒有得到對應的財富。若未能在近期內調整，未來三個月內，您將被身邊的情緒吸血鬼徹底抽乾。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「免費服務」換取認同，而不是用「專業價值」賺錢。若不盡快學會「無情地標價」並拒絕白嫖，下半年您將面臨嚴重的勞碌命危機與情感枯竭。',
+        blindspot: '你最大的心靈內耗來自於「嚴重的討好型人格」。你常常為了維持表面的和諧，而不敢為自己爭取應得的利潤，甚至在感情中淪為一再退讓的「救世主」。你不是沒賺錢的機會，而是你不敢收費！未來三個月，請學會「無情地標價」，拒絕所有免費的諮詢與幫忙，你的財富才會迎來指數級增長。',
+        businessPartner: '你最需要的是「鋼鐵型天才」——他們能幫你建立「收費的勇氣」與「拒絕的底氣」。',
+        relationship: '你會被「鋼鐵型天才」吸引——他們能幫你看清楚「誰是真心、誰是索取」，不再被情緒綁架。',
+        turning: '未來 30 天，你會收到一個「需要你開口談錢」的邀請。請鼓起勇氣說出你的價格。',
+        action: '【第 1-10 天】列出你最近三次「免費幫忙」的事，計算它們的市場價值。\n【第 11-20 天】練習對一個「白嫖請求」說「這次需要收費喔」。\n【第 21-40 天】把你的服務或專業寫成一份「價目表」——即使暫時不公開，也要先寫出來。'
+    },
+    'flame_steel': {
+        role: '精算公關',
+        opening: '表面上您八面玲瓏，能迅速在社交場合與人打成一片；但您的底層邏輯卻非常冰冷且精準。您會在腦海中快速計算每一段關係的價值與風險，是極具戰略眼光的交際大師。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「信任斷層」。您經常覺得，身邊圍繞著很多人，但沒有一個人能讓您完全放下防備，導致您在關鍵時刻總是顯得過於算計。',
+        field: '商業談判、跨界戰略整合、高階銷售',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「防禦性算計迴路」。這個隱藏的慣性，正悄悄干擾您建立「真誠關係」的能力。您可能在即將成交或感情快要確認時，因為一點小數據不對勁就推翻一切。若未能在近期內識別並調整，未來三個月內，您很可能因為過度保護自己而錯失真正願意帶您飛的貴人。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「零風險算計」賺錢，而不是用「長期信任」賺錢。若不學會適時地「吃點小虧」來換取更大的格局，下半年您將面臨嚴重的資源斷裂與孤獨危機。',
+        blindspot: '你的破財與孤獨危機在於「算計太深而失去真心」。你因為過度保護自己，常常在快要成交或感情快要確認時，因為一點小數據不對勁就推翻一切。這會讓你錯失真正願意帶你飛的貴人。放下過度的防備心，下半年試著讓自己「吃點小虧」，反而會為你帶來不可思議的巨額回報。',
+        businessPartner: '你最需要的是「發電機型天才」——他們能幫你看到「算計之外的機會」，讓你不再因為過度防衛而錯失良機。',
+        relationship: '你會被「發電機型天才」吸引——他們能打破你的算計框架，讓你重新相信「不完美的關係」也有價值。',
+        turning: '下個月你會遇到一個「需要你先給出信任」的時刻。試著先踏出一步，看看會發生什麼。',
+        action: '【第 1-10 天】找出一個你因為「不信任」而放棄的機會，重新評估它。\n【第 11-20 天】在一個低風險的關係中，練習「先給出信任」。\n【第 21-40 天】計算過去一年因「過度防衛」而錯失的機會價值。'
+    },
+
+    // ===== 節奏 (主) =====
+    'rhythm_generator': {
+        role: '靈活操盤手',
+        opening: '您的潛意識對「市場的風吹草動」有著不可思議的感知力。您不需要自己從零發明新東西，但總能精準抓出現有事物的痛點，並加入一點微創新，順勢推波助瀾，是極佳的危機處理專家。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「失控恐懼」。您經常覺得，只要事情沒有完全按照您的劇本走，內心就會陷入極大的焦慮與精神內耗。',
+        field: '專案管理、市場交易、趨勢操盤',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「舒適圈固化迴路」。這個隱藏的慣性，正悄悄干擾您「跨界突破」的勇氣。您可能為了維持眼前的穩定，而死守在一個已經沒有發展性的職位或關係中。若未能在近期內識別並調整，未來三個月內，當市場出現大變動時，您將完全失去應變的先機。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「維持現狀」賺錢，而不是用「突破重圍」賺錢。若不盡快強迫自己跳出舒適圈，停止等待「萬無一失」，下半年您將面臨嚴重的降維打擊與窮忙危機。',
+        blindspot: '你的焦慮根源是「極度害怕失控」。只要事情沒有按照你的劇本走，你就會陷入嚴重的精神內耗。在財富上，你常為了維持穩定而死守在一個沒有發展性的職位上。未來三個月，市場將出現一波大變動，請強迫自己跳出舒適圈，不要再等「萬無一失」，現在就是你最好的進場時機。',
+        businessPartner: '你最需要的是「發電機型天才」——他們能幫你打破框架，讓你看見「維穩」之外的更多可能性。',
+        relationship: '你會被「發電機型天才」吸引——他們能帶你體驗「失控的美好」，讓你學會享受不確定性。',
+        turning: '未來 45 天內，你現在所在的行業會出現一個「結構性變化」。請主動迎接它，不要逃避。',
+        action: '【第 1-10 天】寫出你目前「最害怕失去」的三件事，然後問自己：沒有它們，我真的會死嗎？\n【第 11-20 天】主動參加一場「你從來不會參加」的活動或課程。\n【第 21-40 天】設定一個「如果...就...」的應變計畫，然後開始行動。'
+    },
+    'rhythm_flame': {
+        role: '忠誠守護者',
+        opening: '您是那種只要認定了團隊或伴侶，就會全力以赴支持對方的稀缺人才。您擅長用穩定的節奏照顧每一個細節，追求的不是個人的鎂光燈，而是大家共好的長遠發展。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「苦勞盲點」。您經常覺得，自己默默付出了所有，卻總是淪為被理所當然對待的配角，在感情中極易深陷有毒的關係死撐不走。',
+        field: '營運主管、客戶服務、後勤支援',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「阿信受害者迴路」。這個隱藏的慣性，正悄悄干擾您「爭取自身權益」的行動力。您總以為「只要我默默做事，總有一天會被看見」，導致您在職場上不斷被壓榨。若未能在近期內識別並調整，未來三個月內，您的善良將成為別人收割您財富的利器。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「無底線的忠誠」換取薪水，而不是用「不可取代的槓桿」賺錢。若不大膽向老闆要求加薪，或果斷斬斷消耗您的感情，下半年您將面臨嚴重的身心俱疲與財富停滯。',
+        blindspot: '你的致命傷是「深陷苦勞盲點與有毒關係」。你總是以為「只要我默默做事，總有一天會被看見」，錯！這只會讓你在職場上不斷被壓榨；在感情裡，你極容易在一段早已腐敗的關係裡死撐著不走。下半年的心靈療癒關鍵：請大膽向老闆要求加薪，或果斷斬斷消耗你的關係，你的正財運才會徹底打開。',
+        businessPartner: '你最需要的是「發電機型天才」——他們能幫你看見「忠誠之外」的自我價值，讓你不再只是配角。',
+        relationship: '你會被「發電機型天才」吸引——他們能點燃你「為自己活」的勇氣，讓你不再只是別人的影子。',
+        turning: '未來 30 天，你會遇到一個「需要你為自己站出來」的時刻。請不要退縮，那是你翻身的機會。',
+        action: '【第 1-10 天】列出你最近三次「被理所當然對待」的經驗。\n【第 11-20 天】練習對一個「過度索取」的人說「我沒辦法」。\n【第 21-40 天】寫下你的「底線清單」——哪些事是你絕對不會再讓步的。'
+    },
+    'rhythm_steel': {
+        role: '穩健優化師',
+        opening: '混亂是您的敵人，秩序是您的信仰。您擅長把一切雜亂無章的流程標準化、系統化。您做事不靠運氣，只相信時間與紀律帶來的複利效應，是讓企業長久穩定運作的核心基石。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「改變恐懼」。您經常覺得，面對瞬息萬變的新科技或新模式感到排斥，甚至對未知的領域抱持著防備與嗤之以鼻的態度。',
+        field: '財務控管、供應鏈管理、行政系統',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「極度避險迴路」。這個隱藏的慣性，正悄悄干擾您對「時代趨勢」的適應力。您可能死守著微薄的固定收益，拒絕任何帶有不確定性的新商業模式。若未能在近期內識別並調整，未來三個月內，當您的產業迎來洗牌時，您的收入將面臨斷崖式的縮水。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「死守舊規」賺錢，而不是用「擁抱新知」賺錢。若不立刻投資自己去學習一項全新的數位技能，下半年您將面臨嚴重的時代淘汰與財富縮水危機。',
+        blindspot: '你即將面臨的財富危機是「抗拒改變而被時代淘汰」。你太厭惡風險了，導致你死守著微薄的固定收益，對新科技或新商業模式嗤之以鼻。未來 90 天內，你的產業將迎來洗牌，如果你繼續用舊方法做事，收入將會大幅縮水。請立刻投資自己去學習一項全新的數位技能。',
+        businessPartner: '你最需要的是「發電機型天才」——他們能幫你看見「系統之外」的創新機會，讓你不會因為固守舊制而被淘汰。',
+        relationship: '你會被「發電機型天才」吸引——他們能帶你走出「規則的牢籠」，讓你體驗「意料之外」的驚喜。',
+        turning: '未來 60 天內，你會被「強迫接觸」一項新技術。請不要抗拒，那是你的救命繩索。',
+        action: '【第 1-10 天】列出你最近三年「拒絕學習」的三項新事物。\n【第 11-20 天】選一個最簡單的新工具，強迫自己每天用 10 分鐘。\n【第 21-40 天】找一位年輕人請教他「現在大家都在用什麼新東西」。'
+    },
+
+    // ===== 鋼鐵 (主) =====
+    'steel_generator': {
+        role: '數據架構師',
+        opening: '您的大腦就像一台超級電腦，不受情緒干擾，擅長從龐雜的數據中提煉出黃金。配合發電機的微小能量，您能用冰冷的邏輯構建出改變未來的系統或演算法，是深藏不露的幕後推手。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「共情斷層」。您經常覺得，身邊的人都不夠聰明，導致您設計出來的產品或溝通模式「邏輯滿分，但根本不符合人性需求」。',
+        field: '演算法開發、數據分析、系統工程',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「智商優越感迴路」。這個隱藏的慣性，正悄悄干擾您對「真實市場」的洞察。您可能在感情中習慣用講道理來解決情緒，把伴侶越推越遠；在商業上則忽視了消費者的非理性決策。若未能在近期內識別並調整，未來三個月內，您的完美系統將面臨無人買單的窘境。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「冰冷邏輯」賺錢，而不是用「解決人性痛點」賺錢。若不放下傲慢，去傾聽通俗市場的真實心聲，下半年您將面臨嚴重的商業挫敗與情感孤立。',
+        blindspot: '你的死穴是「極度缺乏人情味與共情能力」。你常常覺得別人都很蠢，導致你設計出來的產品或商業模式「邏輯滿分，但根本不符合人性需求」。感情上，你習慣用講道理來解決情緒，把伴侶越推越遠。下半年的搞錢秘訣：放下你的傲慢，去聽聽「笨蛋消費者」的真實心聲，那裡藏著你的財富密碼。',
+        businessPartner: '你最需要的是「火焰型天才」——他們能幫你把「冰冷的邏輯」翻譯成「有溫度的語言」，讓市場願意買單。',
+        relationship: '你會被「火焰型天才」吸引——他們能融化你的防衛，讓你看見「邏輯之外」的世界也有它的道理。',
+        turning: '未來 30 天，你會遇到一個「讓你覺得對方很笨」的客戶或朋友。請耐心聽完他們的話，那裡藏著你的下一個商機。',
+        action: '【第 1-10 天】找一個你覺得「很笨的產品」，試著找出它「受歡迎的原因」。\n【第 11-20 天】練習在對話中「先點頭再開口」——先肯定對方，再提出你的觀點。\n【第 21-40 天】把一個複雜的概念用「圖畫」或「故事」表達出來。'
+    },
+    'steel_flame': {
+        role: '系統管理者',
+        opening: '您擁有強大的組織與管理天賦，不靠畫大餅來領導，而是透過清晰的規則、獎懲機制來驅動團隊。您能在保持客觀分析的同時，兼顧團隊的人員調度，是極具威嚴的將領。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「控制焦慮」。您經常覺得，只要自己不緊盯進度，事情就會搞砸，導致您凡事都要微觀管理（Micromanagement），把自己累得半死。',
+        field: '企業營運長、高階主管、品質管理',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「不信任感迴路」。這個隱藏的慣性，正悄悄干擾您建立「高能團隊」的可能。您常因為過度插手細節，逼走真正有才華的夥伴；在感情中，您甚至常把另一半當成員工在管。若未能在近期內識別並調整，未來三個月內，您將被排山倒海的瑣事徹底壓垮。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「過度監督」賺錢，而不是用「信任授權」賺錢。若不盡快學會「只看結果不看過程」的放權藝術，下半年您將面臨嚴重的過勞危機與團隊流失。',
+        blindspot: '你的隱形危機是「控制慾過強導致的微觀管理（Micromanagement）」。你因為無法信任他人，凡事都要插手檢查，這不僅讓你累得半死，更會逼走真正有才華的夥伴。感情中，你常把另一半當成員工在管。想要財富翻倍？下個月請學會「放權」，只看結果不看過程，你會發現世界依然運轉得很好。',
+        businessPartner: '你最需要的是「發電機型天才」——他們能幫你看見「控制之外的驚喜」，讓你的團隊不再只是聽命行事。',
+        relationship: '你會被「發電機型天才」吸引——他們能打破你的控制慾，讓你看見「放手」之後的自由。',
+        turning: '未來 45 天，你會有機會「放權」一個重要任務。請忍住不插手，看看會發生什麼。',
+        action: '【第 1-10 天】列出你目前「盯得最緊」的三件事，問自己：不盯會怎樣？\n【第 11-20 天】選一件小事，完全交給別人做，不追問、不檢查。\n【第 21-40 天】記錄「放手後」的結果，比對「你自己做」的差異。'
+    },
+    'steel_rhythm': {
+        role: '精密精算師',
+        opening: '您是世界上最難被詐騙的一群人。您的潛意識自帶強大的防禦機制，絕不盲從潮流。做任何決策前，都會仔細核對歷史數據並感知市場節奏。您善於風險控管，是天生的財務守門員。',
+        feeling: '然而，這份天賦也伴隨著一種深刻的「決策癱瘓」。您經常覺得，資訊永遠收集得不夠完美，導致您錯過了無數次能讓您階級躍升的黃金進場點。',
+        field: '投資分析、精算師、資產管理',
+        scanWarning: '我們偵測到您的能量場中，存在一個正在加速擴大的「分析癱瘓（Analysis Paralysis）迴路」。這個隱藏的慣性，正悄悄干擾您的「行動爆發力」。您總是要等到收集完 100% 的數據才敢下判斷，但真實的商場與愛情往往只需要 60% 的資訊加上 40% 的勇氣。若未能在近期內識別並調整，未來三個月內，您將再次眼睜睜看著別人拿走您的財富。',
+        systemWarning: '比對了您的天賦能量軌跡，發現您目前正處於「逆流狀態」！您一直在用「無盡的觀望」來防守財富，而不是用「計算過的試錯」來倍增財富。若不容許自己踏出帶有小風險的第一步，下半年您將面臨嚴重的財富停滯與機會喪失。',
+        blindspot: '你最大的財富焦慮來源於「分析癱瘓（Analysis Paralysis）」。你總是要等到收集完 100% 的數據才敢下判斷，但真實的商場與愛情往往只需要 60% 的資訊加上 40% 的勇氣。你錯過了無數次能讓你階級躍升的機會。未來的開運指南：停止無止盡的觀望！下個月請容許自己犯一個「小錯」，踏出試錯的第一步，你的財富流動才會真正開始。',
+        businessPartner: '你最需要的是「火焰型天才」——他們能幫你打破「分析癱瘓」，讓你看見「行動」比「完美」更重要。',
+        relationship: '你會被「火焰型天才」吸引——他們能帶你體驗「不完美的行動」，讓你學會享受「未知」的樂趣。',
+        turning: '未來 30 天，你會收到一個「資訊不足但直覺有感覺」的機會。請用 60% 的資訊就做決定。',
+        action: '【第 1-10 天】回想過去三次「因為猶豫而錯過的機會」，計算它們的潛在價值。\n【第 11-20 天】練習在資訊收集到 60% 時就做一個「低風險」的決定。\n【第 21-40 天】為自己設定一個「決策計時器」——超過時間就必須做出選擇。'
+    }
+};
         // ================================================================
         //  1. 題庫
         // ================================================================
@@ -1120,126 +1288,91 @@ const DEFAULT_GPS_CONTENT = {
         // ================================================================
         //  6. 免費版內容（雙警示）
         // ================================================================
-        function buildFreeContent() {
-            const gps = state.gpsScores || { generator: 65, rhythm: 45, steel: 55, flame: 70 };
+function buildFreeContent() {
+    const gps = state.gpsScores || { generator: 65, rhythm: 45, steel: 55, flame: 70 };
 
-            let sorted = Object.keys(gps).sort((a, b) => gps[b] - gps[a]);
-            let primary = sorted[0];
-            let secondary = sorted[1] || 'rhythm';
-            let primaryScore = gps[primary];
-            let secondaryScore = gps[secondary];
+    // 排序找出主能量和次能量
+    let sorted = Object.keys(gps).sort((a, b) => gps[b] - gps[a]);
+    let primary = sorted[0];
+    let secondary = sorted[1] || 'rhythm';
+    let primaryScore = gps[primary];
+    let secondaryScore = gps[secondary];
 
-            const primaryName = ENERGY_NAMES[primary] || '發電機型天才';
-            const secondaryName = ENERGY_NAMES[secondary] || '節奏型天才';
+    const primaryName = ENERGY_NAMES[primary] || '發電機型天才';
+    const secondaryName = ENERGY_NAMES[secondary] || '節奏型天才';
 
-            const data = gpsContent && gpsContent[primary] ? gpsContent[primary] : null;
-            const topLabel = data ? data.label : primaryName;
+    // 從 COMBO_ANALYSIS 取得該組合的文案
+    const comboKey = primary + '_' + secondary;
+    const comboData = COMBO_ANALYSIS[comboKey] || COMBO_ANALYSIS[primary + '_rhythm'] || COMBO_ANALYSIS.generator_rhythm;
 
-            const roleTitleMap = {
-                generator: '爆發力十足的開創型引擎',
-                flame: '感染力強大的群眾點火者',
-                rhythm: '穩定中的共鳴者：和諧與適應的化身',
-                steel: '邏輯中的架構師：系統與精準的守護者'
-            };
-            const roleTitle = roleTitleMap[primary] || '獨特天賦的實踐者';
+    // 從 DEFAULT_GPS_CONTENT 取得標籤
+    const data = gpsContent && gpsContent[primary] ? gpsContent[primary] : null;
+    const topLabel = data ? data.label : primaryName;
 
-            const totalQuestions = GPS_QUESTIONS.length;
+    const totalQuestions = GPS_QUESTIONS.length;
 
-            const openingMap = {
-                generator: '您的思維敏捷，對創造新事物充滿熱情。您不怕從零開始、只怕沒有舞台。當您找到真正熱愛的事物時，能展現出驚人的突破力與創新力。',
-                flame: '您的感染力極強，能輕易點燃身邊人的熱情。您不怕與人交流、只怕沒有聽眾。當您站在人群中時，能展現出令人無法忽視的影響力與魅力。',
-                rhythm: '您擁有極為敏銳的「模式識別」能力——在別人還在消化第一層訊息時，您的大腦已經自動完成了三層推演。這讓您在面對複雜問題時，總是能比周遭的人更早看見「接下來會發生什麼」。',
-                steel: '您的大腦天生擅長「把複雜變簡單、把混亂變有序」。您對細節的執著與對系統的堅持，讓您在組織中成為不可或缺的「地基」。'
-            };
-            const opening = openingMap[primary] || '您的天賦組合展現出獨特的能量輪廓。';
+    // 主能量描述
+    const primaryDescMap = {
+        generator: '發想新點子、創造全新價值',
+        flame: '影響他人、傳播理念',
+        rhythm: '精準執行、優化細節',
+        steel: '建立系統、邏輯分析'
+    };
+    const primaryDesc = primaryDescMap[primary] || '發揮天賦';
 
-            const feelingMap = {
-                generator: '然而，這份天賦也伴隨著一種深刻的「執行斷層」。您經常覺得，身邊很少有人能真正跟上您的思考速度，更別說把您的點子付諸實現。',
-                flame: '然而，這份天賦也伴隨著一種深刻的「孤獨感」。您經常覺得，身邊很少有人能真正理解您對連結的渴望——他們把您的熱情當作「愛聊天」，卻沒看見您背後對「深度關係」的執著。',
-                rhythm: '然而，這份天賦也伴隨著一種深刻的孤獨感。您經常覺得，身邊很少有人能真正跟上您的思考速度。您對膚淺的話題不耐煩，對沒有邏輯的決策感到痛苦。您會在深夜反覆思索：「我現在走的路，真的是我想要的嗎？」',
-                steel: '然而，這份天賦也伴隨著一種深刻的「溝通斷層」。您經常覺得，身邊很少有人能真正理解您對「邏輯」和「系統」的執著。您對模糊不清的指令不耐煩，對缺乏結構的溝通感到痛苦。'
-            };
-            const feeling = feelingMap[primary] || '您的天賦背後，也有著不為人知的內在張力。';
+    // 次要能量描述
+    const secondaryAdviceMap = {
+        generator: '在創新發想上需要刻意練習',
+        flame: '在影響傳播上需要累積經驗',
+        rhythm: '在細節執行上需要更多耐心',
+        steel: '在邏輯系統上需要加強訓練'
+    };
+    const secondaryAdvice = secondaryAdviceMap[secondary] || '需要持續精進';
 
-            const secondaryAdviceMap = {
-                generator: '在創新發想上需要刻意練習',
-                flame: '在影響傳播上需要累積經驗',
-                rhythm: '在細節執行上需要更多耐心',
-                steel: '在邏輯系統上需要加強訓練'
-            };
-            const secondaryAdvice = secondaryAdviceMap[secondary] || '需要持續精進';
+    const fieldMap = {
+        generator: '新創產業、產品開發、內容創作',
+        flame: '業務拓展、品牌行銷、公共關係',
+        rhythm: '品質管理、數據分析、營運流程',
+        steel: '策略顧問、系統架構、風險管理'
+    };
+    const field = comboData.field || fieldMap[primary] || '多元領域';
 
-            const fieldMap = {
-                generator: '新創產業、產品開發、內容創作',
-                flame: '業務拓展、品牌行銷、公共關係',
-                rhythm: '品質管理、數據分析、營運流程',
-                steel: '策略顧問、系統架構、風險管理'
-            };
-            const field = fieldMap[primary] || '多元領域';
+    return `
+        <div class="stage-title">📋 階段一：您的現狀與天賦特質</div>
+        <div class="role-title">${comboData.role || '獨特天賦的實踐者'}</div>
 
-            const primaryDescMap = {
-                generator: '發想新點子、創造全新價值',
-                flame: '影響他人、傳播理念',
-                rhythm: '精準執行、優化細節',
-                steel: '建立系統、邏輯分析'
-            };
-            const primaryDesc = primaryDescMap[primary] || '發揮天賦';
+        <p class="desc-text">
+            根據您對 <span class="highlight">${totalQuestions}</span> 道情境的選擇，系統捕捉到您思維中一組非常特殊的運作模式——您的天賦原型屬於 <span class="highlight">【${comboData.role || topLabel}】</span>。
+        </p>
+        <p class="desc-text">${comboData.opening || '您的天賦組合展現出獨特的能量輪廓。'}</p>
+        <p class="desc-text">${comboData.feeling || '您的天賦背後，也有著不為人知的內在張力。'}</p>
 
-            const scanWarningMap = {
-                generator: '我們偵測到您的能量場中，存在一個正在加速擴大的<span class="highlight">「點子過載迴路」</span>。這個隱藏的慣性，正悄悄干擾您對<span class="highlight">「完成」</span>的判斷力。您可能在「發想新點子」與「執行既有項目」之間拉扯，導致能量被分散。若未能在近期內識別並調整，未來三個月內，您很可能因為<span class="highlight">「想太多而做太少」</span>而錯失重要的市場機會。',
-                flame: '我們偵測到您的能量場中，存在一個正在加速擴大的<span class="highlight">「情緒依附迴路」</span>。這個隱藏的慣性，正悄悄干擾您對<span class="highlight">「價值」</span>的判斷力。您可能在「取悅他人」與「堅持自我」之間拉扯，導致能量被分散。若未能在近期內識別並調整，未來三個月內，您很可能因為<span class="highlight">「過度在乎他人眼光」</span>而做出不符合自身利益的選擇。',
-                rhythm: '我們偵測到您的能量場中，存在一個正在加速擴大的<span class="highlight">「內耗迴路」</span>。這個隱藏的慣性，正悄悄干擾您對<span class="highlight">「機會」</span>的判斷力。您可能在「配合他人」與「堅持自我」之間拉扯，導致能量被分散。若未能在近期內識別並調整，未來三個月內，您很可能因為<span class="highlight">「過度分析」</span>而錯失重要的轉折機遇。',
-                steel: '我們偵測到您的能量場中，存在一個正在加速擴大的<span class="highlight">「分析癱瘓迴路」</span>。這個隱藏的慣性，正悄悄干擾您對<span class="highlight">「行動」</span>的判斷力。您可能在「追求完美」與「及時行動」之間拉扯，導致能量被分散。若未能在近期內識別並調整，未來三個月內，您很可能因為<span class="highlight">「過度準備」</span>而錯失市場先機。'
-            };
-            const scanWarning = scanWarningMap[primary] || '我們偵測到您的能量場中存在一個正在擴大的慣性迴路。';
+        <p class="desc-text" style="margin-top:1.2rem;">
+            ⚡ <strong>您的主導能量：<span class="highlight">${topLabel}</span>（<span class="highlight">${primaryScore}%</span>）</strong>
+        </p>
+        <p class="desc-text">
+            您的次要能量是 <span class="highlight">${secondaryName}（${secondaryScore}%）</span>，這意味著您 ${secondaryAdvice}。當您能夠平衡這兩種能量時，您的整體表現將產生「1+1 > 2」的綜效。
+        </p>
+        <p class="desc-text">
+            目前的能量組合顯示，您在 <span class="highlight-gold">${field}</span> 相關領域最容易獲得成就感與財富回報。
+        </p>
 
-            const systemWarningMap = {
-                generator: '比對了您的天賦能量軌跡，發現您目前正處於 <span class="highlight">「逆流狀態」</span>！您一直在用 <span class="highlight">「點子」</span> 賺錢，而不是用 <span class="highlight">「完成」</span> 賺錢。若不盡快將您的天賦從「發想」調整為「落地」，下半年您將面臨嚴重的 <span class="highlight">窮忙危機</span> 與 <span class="highlight">職業倦怠</span>。',
-                flame: '比對了您的天賦能量軌跡，發現您目前正處於 <span class="highlight">「逆流狀態」</span>！您一直在用 <span class="highlight">「人脈」</span> 賺錢，而不是用 <span class="highlight">「系統」</span> 賺錢。若不盡快將您的天賦從「關係」調整為「結構」，下半年您將面臨嚴重的 <span class="highlight">窮忙危機</span> 與 <span class="highlight">職業倦怠</span>。',
-                rhythm: '比對了您的天賦能量軌跡，發現您目前正處於 <span class="highlight">「逆流狀態」</span>！您一直在用 <span class="highlight">「努力」</span> 賺錢，而不是用 <span class="highlight">「槓桿」</span> 賺錢。若不盡快將您的天賦從「執行」調整為「放大」，下半年您將面臨嚴重的 <span class="highlight">窮忙危機</span> 與 <span class="highlight">職業倦怠</span>。',
-                steel: '比對了您的天賦能量軌跡，發現您目前正處於 <span class="highlight">「逆流狀態」</span>！您一直在用 <span class="highlight">「專業」</span> 賺錢，而不是用 <span class="highlight">「影響力」</span> 賺錢。若不盡快將您的天賦從「內部系統」調整為「外部影響」，下半年您將面臨嚴重的 <span class="highlight">窮忙危機</span> 與 <span class="highlight">職業倦怠</span>。'
-            };
-            const systemWarning = systemWarningMap[primary] || '比對了您的天賦能量軌跡，發現您目前正處於逆流狀態。';
+        <div class="cliffhanger">
+            <span class="cliffhanger-title">🧠 系統潛意識掃描警示：</span>
+            ${comboData.scanWarning || '我們偵測到您的能量場中存在一個正在擴大的慣性迴路。'}
+        </div>
 
-            return `
-                <div class="stage-title">📋 階段一：您的現狀與天賦特質</div>
-                <div class="role-title">${roleTitle}</div>
+        <div class="cliffhanger" style="margin-top:0.8rem;background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2);color:#fcd34d;">
+            <span class="cliffhanger-title" style="color:#fbbf24;">⚠️ 系統警告：</span>
+            ${comboData.systemWarning || '比對了您的天賦能量軌跡，發現您目前正處於逆流狀態。'}
+        </div>
 
-                <p class="desc-text">
-                    根據您對 <span class="highlight">${totalQuestions}</span> 道情境的選擇，系統捕捉到您思維中一組非常特殊的運作模式——您的天賦原型屬於 <span class="highlight">【${topLabel}】</span>。
-                </p>
-                <p class="desc-text">${opening}</p>
-                <p class="desc-text">${feeling}</p>
-
-                <p class="desc-text" style="margin-top:1.2rem;">
-                    ⚡ <strong>您的主導能量：<span class="highlight">${topLabel}</span>（<span class="highlight">${primaryScore}%</span>）</strong>
-                </p>
-                <p class="desc-text">
-                    透過 ${totalQuestions} 道情境題的精確定位，系統為您繪製出專屬的「天賦能量分佈圖」。<span class="highlight">${topLabel}</span> 是您最突出的天賦領域，代表您在 <span class="highlight-blue">${primaryDesc}</span> 方面具有天生的優勢。
-                </p>
-                <p class="desc-text">
-                    您的次要能量是 <span class="highlight">${secondaryName}（${secondaryScore}%）</span>，這意味著您 ${secondaryAdvice}。當您能夠平衡這兩種能量時，您的整體表現將產生「1+1 > 2」的綜效。
-                </p>
-                <p class="desc-text">
-                    目前的能量組合顯示，您在 <span class="highlight-gold">${field}</span> 相關領域最容易獲得成就感與財富回報。
-                </p>
-
-                <div class="cliffhanger">
-                    <span class="cliffhanger-title">🧠 系統潛意識掃描警示：</span>
-                    ${scanWarning}
-                </div>
-
-                <div class="cliffhanger" style="margin-top:0.8rem;background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2);color:#fcd34d;">
-                    <span class="cliffhanger-title" style="color:#fbbf24;">⚠️ 系統警告：</span>
-                    ${systemWarning}
-                </div>
-
-                <div class="cliffhanger" style="margin-top:0.8rem;background:rgba(99,102,241,0.08);border-color:rgba(99,102,241,0.25);color:#a5b4fc;">
-                    🔓 <strong>完整報告將為您解鎖：</strong><br />
-                    【潛意識能量矩陣深度圖表】｜<span class="highlight-red">${topLabel}</span> 的順流路徑與變現策略｜<span class="highlight-red">致命盲點</span>與<span class="highlight-red">隱形破財危機</span>解析｜事業夥伴與靈魂伴侶建議｜<span class="highlight-red">未來 90 天</span>流年轉機與行動落地指南
-                </div>
-            `;
-        }
+        <div class="cliffhanger" style="margin-top:0.8rem;background:rgba(99,102,241,0.08);border-color:rgba(99,102,241,0.25);color:#a5b4fc;">
+            🔓 <strong>完整報告將為您解鎖：</strong><br />
+            【潛意識能量矩陣深度圖表】｜<span class="highlight-red">${comboData.role || topLabel}</span> 的順流路徑與變現策略｜<span class="highlight-red">致命盲點</span>與<span class="highlight-red">隱形破財危機</span>解析｜事業夥伴與靈魂伴侶建議｜<span class="highlight-red">未來 90 天</span>流年轉機與行動落地指南
+        </div>
+    `;
+}
 
         // ================================================================
         //  7. VIP 內容建構
@@ -1280,101 +1413,107 @@ const DEFAULT_GPS_CONTENT = {
         // ================================================================
         //  8. GPS VIP 建構器
         // ================================================================
-        function buildGPSVIP(gps, data, primaryKey) {
-            const sorted = Object.keys(gps).sort((a, b) => gps[b] - gps[a]);
-            const primary = sorted[0];
-            const secondary = sorted[1] || 'generator';
-            const primaryName = data.label || ENERGY_NAMES[primary] || '發電機型天才';
-            const secondaryName = ENERGY_NAMES[secondary] || '節奏型天才';
+		function buildGPSVIP(gps, data, primaryKey) {
+			const sorted = Object.keys(gps).sort((a, b) => gps[b] - gps[a]);
+			const primary = sorted[0];
+			const secondary = sorted[1] || 'generator';
+			const primaryName = data.label || ENERGY_NAMES[primary] || '發電機型天才';
+			const secondaryName = ENERGY_NAMES[secondary] || '節奏型天才';
 
-            const matrix = data.matrix || { '創造力': 70, '執行力': 60, '影響力': 50, '邏輯力': 40, '專注力': 50 };
-            const matrixColors = {
-                '創造力': '#f43f5e', '執行力': '#3b82f6', '影響力': '#f59e0b', '邏輯力': '#8b5cf6', '專注力': '#10b981'
-            };
-            const chartHtml = `
-                <div class="chart-box">
-                    ${Object.keys(matrix).map(label => {
-                        const val = matrix[label];
-                        const color = matrixColors[label] || '#6366f1';
-                        return `<div class="chart-row">
-                            <div class="chart-label">${label}</div>
-                            <div class="chart-bar-bg">
-                                <div class="chart-bar-fill" style="width:${val}%;background-color:${color};"></div>
-                            </div>
-                            <div class="chart-value">${val}%</div>
-                        </div>`;
-                    }).join('')}
-                </div>
-            `;
+			// 取得該組合的付費區深度文案
+			const comboKey = primary + '_' + secondary;
+			const comboData = COMBO_ANALYSIS[comboKey] || COMBO_ANALYSIS[primary + '_rhythm'] || COMBO_ANALYSIS.generator_rhythm;
 
-            const strengthsHtml = data.strengths || '（請在 JSON 中補上優勢描述）';
+			const matrix = data.matrix || { '創造力': 70, '執行力': 60, '影響力': 50, '邏輯力': 40, '專注力': 50 };
+			const matrixColors = {
+				'創造力': '#f43f5e', '執行力': '#3b82f6', '影響力': '#f59e0b', '邏輯力': '#8b5cf6', '專注力': '#10b981'
+			};
+			const chartHtml = `
+				<div class="chart-box">
+					${Object.keys(matrix).map(label => {
+						const val = matrix[label];
+						const color = matrixColors[label] || '#6366f1';
+						return `<div class="chart-row">
+							<div class="chart-label">${label}</div>
+							<div class="chart-bar-bg">
+								<div class="chart-bar-fill" style="width:${val}%;background-color:${color};"></div>
+							</div>
+							<div class="chart-value">${val}%</div>
+						</div>`;
+					}).join('')}
+				</div>
+			`;
 
-            return `
-                <h3 class="vip-section-title">📊 潛意識能量矩陣分析</h3>
-                ${chartHtml}
-                <div class="vip-text">
-                    <p><span class="vip-highlight">🔥 主導能量：${primaryName}（${gps[primary]}%）</span></p>
-                    <p><span style="color:var(--text-muted);">⚡ 次要能量：${secondaryName}（<span class="vip-highlight">${gps[secondary]}%</span>）</span></p>
-                    <p>您的能量組合為「${primaryName} + ${secondaryName}」，這表示您具備 ${primaryName} 的核心天賦，同時擁有 ${secondaryName} 的輔助能力。</p>
-                    <p style="margin-top:0.8rem;"><strong>核心問句：</strong> ${data.core_question || '—'}</p>
-                    <p><strong>核心天賦：</strong> ${data.core_talent || '—'}</p>
-                </div>
+			const strengthsHtml = data.strengths || '（請在 JSON 中補上優勢描述）';
 
-                <h3 class="vip-section-title">✅ 你的天生優勢</h3>
-                <div class="vip-text">
-                    <p>${strengthsHtml}</p>
-                </div>
+			return `
+				<h3 class="vip-section-title">📊 潛意識能量矩陣分析</h3>
+				${chartHtml}
+				<div class="vip-text">
+					<p><span class="vip-highlight">🔥 主導能量：${primaryName}（${gps[primary]}%）</span></p>
+					<p><span style="color:var(--text-muted);">⚡ 次要能量：${secondaryName}（<span class="vip-highlight">${gps[secondary]}%</span>）</span></p>
+					<p>您的能量組合為「${primaryName} + ${secondaryName}」，這表示您具備 ${primaryName} 的核心天賦，同時擁有 ${secondaryName} 的輔助能力。</p>
+					<p style="margin-top:0.8rem;"><strong>核心問句：</strong> ${data.core_question || '—'}</p>
+					<p><strong>核心天賦：</strong> ${data.core_talent || '—'}</p>
+					<p><strong>專屬角色：</strong> <span class="vip-highlight">${comboData.role || '獨特實踐者'}</span></p>
+				</div>
 
-                <h3 class="vip-section-title">⚠️ 需要留意的弱點</h3>
-                <div class="vip-text">
-                    <p>${data.weaknesses || '（請在 JSON 中補上弱點描述）'}</p>
-                    ${data.weakness_fixer ? `<div class="vip-sub-section">🤝 誰能補足你：</div><p>${data.weakness_fixer}</p>` : ''}
-                </div>
+				<h3 class="vip-section-title">✅ 你的天生優勢</h3>
+				<div class="vip-text">
+					<p>${strengthsHtml}</p>
+				</div>
 
-                <h3 class="vip-section-title">👤 代表人物</h3>
-                <div class="vip-text">
-                    <p>${data.representatives || '（請在 JSON 中補上代表人物）'}</p>
-                </div>
+				<h3 class="vip-section-title">⚠️ 需要留意的弱點</h3>
+				<div class="vip-text">
+					<p>${data.weaknesses || '（請在 JSON 中補上弱點描述）'}</p>
+					${data.weakness_fixer ? `<div class="vip-sub-section">🤝 誰能補足你：</div><p>${data.weakness_fixer}</p>` : ''}
+				</div>
 
-                <h3 class="vip-section-title">⚠️ 致命盲點與隱形破財危機</h3>
-                <div class="vip-text">
-                    <p>${data.blindspot || '（請在 JSON 中補上盲點描述）'}</p>
-                    ${data.business_partner ? `<div class="vip-sub-section">💼 事業上互補的對象：</div><p>${data.business_partner}</p>` : ''}
-                    ${data.blindspot_solution ? `<div class="vip-sub-section">🔑 破解方法：</div><p>${data.blindspot_solution}</p>` : ''}
-                </div>
+				<h3 class="vip-section-title">👤 代表人物</h3>
+				<div class="vip-text">
+					<p>${data.representatives || '（請在 JSON 中補上代表人物）'}</p>
+				</div>
 
-                <h3 class="vip-section-title">💞 人際磁場與靈魂伴侶契合度</h3>
-                <div class="vip-text">
-                    <p>${data.relationship || '（請在 JSON 中補上關係描述）'}</p>
-                    ${data.relationship_advice ? `<div class="vip-sub-section">💌 相處建議：</div><p>${data.relationship_advice}</p>` : ''}
-                </div>
+				<!-- ===== 付費區深度文案（來自 12 種組合） ===== -->
+				<h3 class="vip-section-title">⚠️ 致命盲點與隱形破財危機</h3>
+				<div class="vip-text">
+					<p>${comboData.blindspot || data.blindspot || '（請在 JSON 中補上盲點描述）'}</p>
+					${comboData.businessPartner || data.business_partner ? `<div class="vip-sub-section">💼 事業上互補的對象：</div><p>${comboData.businessPartner || data.business_partner}</p>` : ''}
+					${data.blindspot_solution ? `<div class="vip-sub-section">🔑 破解方法：</div><p>${data.blindspot_solution}</p>` : ''}
+				</div>
 
-                <h3 class="vip-section-title">🚀 未來 90 天流年轉機預測</h3>
-                <div class="vip-text">
-                    <p>${data.turning || '（請在 JSON 中補上轉機預測）'}</p>
-                </div>
+				<h3 class="vip-section-title">💞 人際磁場與靈魂伴侶契合度</h3>
+				<div class="vip-text">
+					<p>${comboData.relationship || data.relationship || '（請在 JSON 中補上關係描述）'}</p>
+					${data.relationship_advice ? `<div class="vip-sub-section">💌 相處建議：</div><p>${data.relationship_advice}</p>` : ''}
+				</div>
 
-                <h3 class="vip-section-title">💼 職涯推薦與適配原因</h3>
-                <div class="vip-text">
-                    ${(data.career_detail && data.career_detail.jobs) ? data.career_detail.jobs.map(job => `
-                        <div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);">
-                            <strong style="color:#f1f5f9;">${job.title}</strong>
-                            <span style="color:var(--text-muted);font-size:0.9rem;"> — ${job.description}</span>
-                            <div style="color:#a5b4fc;font-size:0.9rem;margin-top:0.2rem;">📌 適配原因：${job.reason}</div>
-                        </div>
-                    `).join('') : '<p>（請在 JSON 中補上職涯推薦）</p>'}
-                    ${data.career_detail && data.career_detail.summary_reason ? `<p><strong>總結：</strong>${data.career_detail.summary_reason}</p>` : ''}
-                    ${data.career_detail && data.career_detail.skills ? `<p><strong>需要技能：</strong> ${data.career_detail.skills.split('、').map(s => `<span class="skill-tag">${s}</span>`).join(' ')}</p>` : ''}
-                </div>
+				<h3 class="vip-section-title">🚀 未來 90 天流年轉機預測</h3>
+				<div class="vip-text">
+					<p>${comboData.turning || data.turning || '（請在 JSON 中補上轉機預測）'}</p>
+				</div>
 
-                <h3 class="vip-section-title">🗝️ 專屬開運與行動落地指南</h3>
-                <div class="action-list">
-                    <ul>
-                        ${(data.action || '').split('\n').filter(s => s.trim()).map(item => `<li>${item.trim()}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
+				<h3 class="vip-section-title">🗝️ 專屬開運與行動落地指南</h3>
+				<div class="action-list">
+					<ul>
+						${(comboData.action || data.action || '').split('\n').filter(s => s.trim()).map(item => `<li>${item.trim()}</li>`).join('')}
+					</ul>
+				</div>
+
+				<h3 class="vip-section-title">💼 職涯推薦與適配原因</h3>
+				<div class="vip-text">
+					${(data.career_detail && data.career_detail.jobs) ? data.career_detail.jobs.map(job => `
+						<div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);">
+							<strong style="color:#f1f5f9;">${job.title}</strong>
+							<span style="color:var(--text-muted);font-size:0.9rem;"> — ${job.description}</span>
+							<div style="color:#a5b4fc;font-size:0.9rem;margin-top:0.2rem;">📌 適配原因：${job.reason}</div>
+						</div>
+					`).join('') : '<p>（請在 JSON 中補上職涯推薦）</p>'}
+					${data.career_detail && data.career_detail.summary_reason ? `<p><strong>總結：</strong>${data.career_detail.summary_reason}</p>` : ''}
+					${data.career_detail && data.career_detail.skills ? `<p><strong>需要技能：</strong> ${data.career_detail.skills.split('、').map(s => `<span class="skill-tag">${s}</span>`).join(' ')}</p>` : ''}
+				</div>
+			`;
+		}
 
         // ================================================================
         //  9. 付費與工具
