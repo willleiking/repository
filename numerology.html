@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生命靈數 · 靈魂契約解析</title>
+    <style>
+        /* ===== 全域重置 ===== */
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --card-bg: #1e293b;
+            --border: #334155;
+            --text-muted: #94a3b8;
+            --text-light: #e2e8f0;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        }
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 8px; }
+
+        header {
+            background: linear-gradient(135deg, #1e1b4b, #311042);
+            padding: 2rem 1rem 1.8rem;
+            text-align: center;
+            border-bottom: 2px solid #3b0764;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        header h1 {
+            font-size: 2.6rem;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(to right, #a5b4fc, #fbcfe8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        header p { color: var(--text-muted); font-size: 1.05rem; }
+        header .back-link {
+            display: inline-block;
+            margin-top: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+        header .back-link:hover {
+            background: var(--border);
+            color: #fff;
+        }
+
+        .container { max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+
+        .hook-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .hook-section .hook-emoji { font-size: 3rem; }
+        .hook-section h2 {
+            font-size: 1.3rem;
+            color: #f1f5f9;
+            margin: 0.5rem 0;
+        }
+        .hook-section p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .input-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .input-card label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-light);
+        }
+        .input-card input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #0f172a;
+            color: var(--light);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .input-card input:focus {
+            outline: 2px solid var(--primary);
+            border-color: transparent;
+        }
+        .input-card .submit-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .input-card .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+        }
+
+        .result-card {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-top: 1.5rem;
+        }
+
+        .life-path-circle {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .life-path-number {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #fff;
+            box-shadow: 0 0 40px rgba(236, 72, 153, 0.25);
+            flex-shrink: 0;
+        }
+        .life-path-info { text-align: left; }
+        .life-path-info .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+        .life-path-info .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+        .life-path-info .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .summary {
+            margin: 1.5rem 0;
+            padding: 1rem 1.2rem;
+            background: #0f172a;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        .summary p { color: #cbd5e1; line-height: 1.8; }
+
+        .element-chart {
+            background: #0f172a;
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin: 1.2rem 0;
+        }
+        .element-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+        .element-row:last-child { margin-bottom: 0; }
+        .element-label {
+            width: 60px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+        .element-bar-bg {
+            flex-grow: 1;
+            height: 12px;
+            background: #0f172a;
+            border-radius: 6px;
+            margin: 0 0.8rem;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .element-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            width: 0%;
+            transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .element-value { width: 40px; text-align: right; font-weight: 700; font-size: 0.9rem; color: #f8fafc; }
+
+        .yearly-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin: 1.2rem 0;
+        }
+        .yearly-section .yearly-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+        }
+
+        .cliffhanger {
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            color: #fda4af;
+            font-weight: 500;
+            margin-top: 1rem;
+            line-height: 1.8;
+        }
+        .cliffhanger .title {
+            font-weight: 700;
+            color: #f87171;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .paywall {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 1));
+            border: 2px dashed var(--secondary);
+            border-radius: 14px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .paywall .urgency {
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #fda4af;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        .paywall .urgency span { color: #f87171; font-weight: 700; }
+        .paywall .price-tag {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #f43f5e;
+            margin: 0.3rem 0;
+        }
+        .paywall .price-tag span {
+            font-size: 1rem;
+            color: #64748b;
+            text-decoration: line-through;
+            margin-right: 0.8rem;
+            font-weight: 400;
+        }
+        .paywall .price-daily {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+        .paywall .price-daily strong { color: #fbbf24; font-weight: 700; }
+
+        .preview-block {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        .preview-block .preview-title {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .preview-block .preview-text {
+            color: #fda4af;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin: 0.3rem 0;
+        }
+        .preview-block .preview-more {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .pay-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+            transition: 0.3s;
+            margin-top: 0.3rem;
+        }
+        .pay-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(236, 72, 153, 0.4);
+        }
+        .paywall .guarantee {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        .paywall .guarantee span { color: #34d399; font-weight: 600; }
+
+        /* ===== ✨ VIP 完整內容（付費後顯示） ===== */
+        .vip-content {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--primary);
+        }
+        .vip-content h3 {
+            color: #c084fc;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+        .vip-content .vip-section {
+            background: #0f172a;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--secondary);
+        }
+        .vip-content .vip-section p {
+            color: #cbd5e1;
+            line-height: 1.9;
+        }
+        .vip-content .vip-section .vip-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+        .back-to-top:hover {
+            background: var(--border);
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            .life-path-circle { flex-direction: column; text-align: center; }
+            .life-path-info { text-align: center; }
+            .container { padding: 0 0.8rem; }
+            .result-card { padding: 1.2rem; }
+            .hook-section { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🔢 生命靈數 · 靈魂契約解析</h1>
+        <p>你的出生日期隱藏著你的天賦使命與人生課題</p>
+        <a href="index.html" class="back-link">← 返回入口</a>
+    </header>
+
+    <div class="container">
+
+        <div class="hook-section">
+            <div class="hook-emoji">🤔</div>
+            <h2>你是不是常常覺得⋯⋯</h2>
+            <p>
+                「為什麼我這麼努力，卻總是感覺不對勁？」<br />
+                「為什麼有些人天生就知道自己要什麼，而我總是在摸索？」<br />
+                「我這輩子到底來體驗什麼的？」
+            </p>
+            <p style="margin-top:0.6rem;color:#a5b4fc;font-weight:500;">
+                —— 你的生命靈數，藏著這些問題的答案。
+            </p>
+        </div>
+
+        <div class="input-card">
+            <label for="birthday">📅 你的出生日期</label>
+            <input type="date" id="birthday" value="1995-06-15" />
+            <button class="submit-btn" onclick="calculateLifePath()">✨ 揭開你的靈魂命數</button>
+        </div>
+
+        <div id="result" class="result-card">
+            <!-- 由 JavaScript 動態填入 -->
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  1. 資料庫
+        // ================================================================
+
+        const NUMEROLOGY_DATA = {
+            1: {
+                label: '開創者',
+                emoji: '🌟',
+                traits: '獨立、領導力強，天生具備開疆闢土的氣魄。你來到這個世界是為了學習「成為自己」，而不是跟隨別人。',
+                strength: '果斷、創新、自信、行動力強',
+                weakness: '可能過於自我、缺乏耐心、不擅長團隊合作',
+                career: '企業家、高階主管、自由職業者、藝術總監',
+                love: '你會被 2、3、5 號人吸引，他們能帶給你平衡與溫柔。',
+                turning: '2026 年是你的「行動年」，第 1-3 個月將出現一個改變職涯方向的機會。',
+                action: '【第 1-30 天】每天寫下一個「只屬於你自己」的決定，練習獨立思考。\n【第 31-60 天】主動承擔一個領導角色，即使只是小組組長。\n【第 61-90 天】覆盤你的領導風格，寫下三個可以更好的地方。',
+                element: { 木: 85, 火: 70, 土: 45, 金: 60, 水: 40 },
+                color: '#f43f5e',
+                vip_blindspot: '你的核心陰影是「害怕脆弱」。你習慣用「我很強」來掩蓋「我需要幫助」的事實，這讓你即使累垮了也不願開口求援。真正的領導力不是永遠強悍，而是懂得在對的時候放下盔甲。',
+                vip_wealth: '你的財富密碼是「影響力變現」。你不是靠勞力賺錢的人，你是靠「讓別人願意跟隨你」來累積財富。2026 年請專注打造你的個人品牌，而不是埋頭苦幹。',
+                vip_love: '你的靈魂伴侶必須是「能看穿你的盔甲」的人。他們不會被你的強勢嚇跑，反而會溫柔地問你：「你還好嗎？」——這是你最需要的愛情。'
+            },
+            2: {
+                label: '協調者',
+                emoji: '🤝',
+                traits: '溫和、敏銳，善於溝通與調和，是絕佳的夥伴。你來到這個世界是為了學習「合作」與「平衡」。',
+                strength: '同理心強、善於傾聽、外交能力、細膩',
+                weakness: '容易猶豫不決、過度依賴他人、害怕衝突',
+                career: '公關、人力資源、心理諮商、外交官',
+                love: '你會被 1、6、8 號人吸引，他們能給你安全感和方向。',
+                turning: '2026 年是你的「關係年」，第 4-6 個月將出現一個重要的合作機會。',
+                action: '【第 1-30 天】每天練習說出「我需要...」，練習表達自己的需求。\n【第 31-60 天】主動參與一個團隊專案，練習在合作中發聲。\n【第 61-90 天】回顧你在關係中的模式，找出一個可以調整的習慣。',
+                element: { 木: 45, 火: 35, 土: 70, 金: 55, 水: 85 },
+                color: '#3b82f6',
+                vip_blindspot: '你的核心陰影是「害怕不被需要」。你習慣用「配合別人」來換取安全感，但這讓你逐漸失去自己的聲音。你值得被愛，不是因為你會配合，而是因為你就是你。',
+                vip_wealth: '你的財富密碼是「連結變現」。你的天賦是把不同的人、資源、資訊串聯在一起。2026 年請專注在「幫別人牽線」——財富會自然流向你。',
+                vip_love: '你的靈魂伴侶必須是「能看見你沉默背後的渴望」的人。他們不會因為你的猶豫而不耐煩，反而會給你足夠的空間。'
+            },
+            3: {
+                label: '表達者',
+                emoji: '🎨',
+                traits: '創意、熱情，擁有藝術天賦與感染力。你來到這個世界是為了學習「表達真實的自己」。',
+                strength: '創造力、幽默感、社交能力、樂觀',
+                weakness: '容易分散注意力、膚淺、情緒化',
+                career: '作家、演員、設計師、行銷企劃',
+                love: '你會被 1、5、9 號人吸引，他們能激發你的靈感。',
+                turning: '2026 年是你的「表達年」，第 7-9 個月將有一個展現才華的舞台。',
+                action: '【第 1-30 天】每天寫下一個「創意靈感」，培養表達的習慣。\n【第 31-60 天】將一個點子具體化為作品或企劃，練習完成。\n【第 61-90 天】主動分享你的作品，練習接受掌聲與批評。',
+                element: { 木: 90, 火: 80, 土: 30, 金: 45, 水: 50 },
+                color: '#f59e0b',
+                vip_blindspot: '你的核心陰影是「害怕被忽略」。你習慣用「搞笑」和「表現」來吸引注意力，但這讓你離真實的自己越來越遠。最動人的表達，往往來自於你敢於安靜的時刻。',
+                vip_wealth: '你的財富密碼是「創意變現」。你的靈感就是你的資產，但你需要學會「把點子轉化為產品」——2026 年請練習「減法」，專注在一個點子上做到極致。',
+                vip_love: '你的靈魂伴侶必須是「能欣賞你的光芒、也能承接你的陰影」的人。他們不會因為你情緒化而轉身離開。'
+            },
+            4: {
+                label: '建築者',
+                emoji: '🏗️',
+                traits: '務實、穩定，是組織與執行的中流砥柱。你來到這個世界是為了學習「建立秩序」。',
+                strength: '可靠、勤奮、有條理、專注',
+                weakness: '過於保守、固執、缺乏彈性',
+                career: '工程師、會計師、建築師、專案經理',
+                love: '你會被 2、6、8 號人吸引，他們能帶來溫暖與變化。',
+                turning: '2026 年是你的「建設年」，第 2-4 個月將有機會建立一個長期計畫。',
+                action: '【第 1-30 天】寫下你的「人生藍圖」——三個長期目標。\n【第 31-60 天】將其中一個目標拆解為可執行的步驟。\n【第 61-90 天】開始執行第一步，並記錄進度。',
+                element: { 木: 30, 火: 25, 土: 95, 金: 70, 水: 40 },
+                color: '#10b981',
+                vip_blindspot: '你的核心陰影是「害怕失控」。你習慣用「計畫」來對抗「不確定性」，但人生中最重要的機會往往來自於計畫之外。練習容許 10% 的混亂。',
+                vip_wealth: '你的財富密碼是「系統變現」。你擅長建立流程與制度，2026 年請把你的專業「產品化」——做成課程、模板、顧問服務，讓你的知識能被複製。',
+                vip_love: '你的靈魂伴侶必須是「能帶你冒險」的人。他們不會讓你永遠待在舒適圈，而是會溫柔地拉著你說：「走吧，這次不計畫。」'
+            },
+            5: {
+                label: '自由者',
+                emoji: '🦅',
+                traits: '冒險、多變，熱愛挑戰與新鮮事物。你來到這個世界是為了學習「擁抱變化」。',
+                strength: '適應力強、好奇心、勇氣、靈活',
+                weakness: '缺乏紀律、三分鐘熱度、容易分心',
+                career: '旅遊作家、創業家、導遊、演藝人員',
+                love: '你會被 1、3、7 號人吸引，他們能給你空間與深度。',
+                turning: '2026 年是你的「冒險年」，第 5-7 個月將有一個意外機會出現。',
+                action: '【第 1-30 天】嘗試一件「以前從未做過」的事。\n【第 31-60 天】主動接受一個「不確定」的機會。\n【第 61-90 天】回顧你的冒險，寫下三個學到的教訓。',
+                element: { 木: 60, 火: 90, 土: 25, 金: 40, 水: 55 },
+                color: '#8b5cf6',
+                vip_blindspot: '你的核心陰影是「害怕被困住」。你對「自由」的執著，有時反而讓你無法「扎根」。真正的自由不是永遠在移動，而是能選擇在哪裡停留。',
+                vip_wealth: '你的財富密碼是「趨勢變現」。你對市場的嗅覺極為敏銳，2026 年請相信你的直覺——當你「感覺」到什麼要來了，那就是你的機會。',
+                vip_love: '你的靈魂伴侶必須是「能給你安全感但不束縛你」的人。他們不會要求你停下來，而是會說：「我陪你去下一個地方。」'
+            },
+            6: {
+                label: '守護者',
+                emoji: '🛡️',
+                traits: '責任、關懷，是家庭與社群的核心支柱。你來到這個世界是為了學習「愛與服務」。',
+                strength: '責任感、同理心、治癒力、忠誠',
+                weakness: '過度付出、控制慾、容易內疚',
+                career: '護理師、教師、社工、家庭諮商',
+                love: '你會被 2、4、8 號人吸引，他們能給你穩定的支持。',
+                turning: '2026 年是你的「服務年」，第 6-8 個月將有一個幫助他人的機會。',
+                action: '【第 1-30 天】每天做一件「不期待回報」的善事。\n【第 31-60 天】練習設立「界線」，學會說不。\n【第 61-90 天】回顧你的付出，確認是否照顧好了自己。',
+                element: { 木: 40, 火: 30, 土: 75, 金: 50, 水: 80 },
+                color: '#ec4899',
+                vip_blindspot: '你的核心陰影是「害怕不被需要」。你習慣用「照顧別人」來證明自己的價值，但這讓你陷入「過勞」與「委屈」的循環。你的存在本身就有價值，不需用付出換取愛。',
+                vip_wealth: '你的財富密碼是「關懷變現」。你的同理心是天賦，2026 年請把你的照顧能力「專業化」——可以嘗試教練、顧問、療癒等服務，讓你的溫柔也能養活自己。',
+                vip_love: '你的靈魂伴侶必須是「能照顧你」的人。你已經照顧別人太久了，你需要一個會問「你今天過得好嗎」的人。'
+            },
+            7: {
+                label: '思考者',
+                emoji: '🧠',
+                traits: '內省、智慧，追求真理與深度知識。你來到這個世界是為了學習「理解生命」。',
+                strength: '洞察力、分析能力、直覺、專注',
+                weakness: '孤僻、過於理性、挑剔、容易疏離',
+                career: '研究員、科學家、哲學家、數據分析師',
+                love: '你會被 3、5、9 號人吸引，他們能帶你走出象牙塔。',
+                turning: '2026 年是你的「智慧年」，第 3-5 個月將有重要啟發出現。',
+                action: '【第 1-30 天】每天讀一個主題的深度文章，練習專注。\n【第 31-60 天】將一個想法寫成完整的論述。\n【第 61-90 天】主動分享你的見解，練習與人交流。',
+                element: { 木: 50, 火: 35, 土: 60, 金: 90, 水: 70 },
+                color: '#06b6d4',
+                vip_blindspot: '你的核心陰影是「害怕被看透」。你習慣用「智慧」來保護自己，用「分析」來保持距離。但真正的連結不需要完美的論述，只需要真實的敞開。',
+                vip_wealth: '你的財富密碼是「知識變現」。你的洞察力是稀缺資源，2026 年請把你的思考「輸出」——寫書、開課、諮詢，讓你的智慧能被更多人看見。',
+                vip_love: '你的靈魂伴侶必須是「能讓你放下分析」的人。他們不會要求你證明自己，而是會說：「不用想那麼多，感覺就好。」'
+            },
+            8: {
+                label: '權力者',
+                emoji: '👑',
+                traits: '果斷、野心，具備商業頭腦與影響力。你來到這個世界是為了學習「掌握權力」。',
+                strength: '領導力、決策力、商業直覺、韌性',
+                weakness: '過度追求成功、缺乏同理心、容易過勞',
+                career: '企業家、金融顧問、高階主管、政治家',
+                love: '你會被 2、4、6 號人吸引，他們能帶來平衡與溫暖。',
+                turning: '2026 年是你的「權力年」，第 8-10 個月將有一個升遷或創業機會。',
+                action: '【第 1-30 天】盤點你的資源與能力。\n【第 31-60 天】主動爭取一個更大責任的任務。\n【第 61-90 天】覆盤你的決策，寫下三個成功與三個失敗。',
+                element: { 木: 55, 火: 75, 土: 65, 金: 85, 水: 35 },
+                color: '#f43f5e',
+                vip_blindspot: '你的核心陰影是「害怕失敗」。你對「成功」的執著，讓你無法接受任何不完美的結果。但真正的強者不是從不跌倒，而是跌倒後能笑著站起來。',
+                vip_wealth: '你的財富密碼是「槓桿變現」。你天生知道如何用別人的資源放大自己的影響力，2026 年請專注在「整合」——把對的人、對的資源放在對的位置。',
+                vip_love: '你的靈魂伴侶必須是「能讓你放下盔甲」的人。他們不會被你的成就嚇到，而是會說：「我知道你很累，休息一下吧。」'
+            },
+            9: {
+                label: '奉獻者',
+                emoji: '🌟',
+                traits: '博愛、理想，致力於服務與改變世界。你來到這個世界是為了學習「放下與奉獻」。',
+                strength: '同理心、遠見、包容、理想主義',
+                weakness: '過度理想、容易受傷、忽略自己',
+                career: '非營利組織、社會工作者、藝術家、心靈導師',
+                love: '你會被 3、5、7 號人吸引，他們能帶來靈感與深度。',
+                turning: '2026 年是你的「轉化年」，第 9-11 個月將有一個重要的放手時刻。',
+                action: '【第 1-30 天】每天練習「感恩」，寫下三件感謝的事。\n【第 31-60 天】主動參與一項服務行動。\n【第 61-90 天】回顧你的成長，寫下你對世界的貢獻。',
+                element: { 木: 80, 火: 55, 土: 35, 金: 40, 水: 70 },
+                color: '#8b5cf6',
+                vip_blindspot: '你的核心陰影是「害怕沒有意義」。你對「使命感」的執著，有時反而讓你無法享受當下的平凡。最大的意義，往往藏在最小的日常裡。',
+                vip_wealth: '你的財富密碼是「願景變現」。你能看見更美好的世界，這本身就是一種天賦。2026 年請把你的願景「具體化」——寫成計畫、建立社群、發起行動，讓感動你的人願意支持你。',
+                vip_love: '你的靈魂伴侶必須是「能陪你走進世界、也能陪你回家」的人。他們不會把你的理想當作笑話，而是會說：「我跟你一起。」'
+            }
+        };
+
+        const ZODIAC_MAP = [
+            [1, 20, 2, 18, '水瓶'],
+            [2, 19, 3, 20, '雙魚'],
+            [3, 21, 4, 19, '牡羊'],
+            [4, 20, 5, 20, '金牛'],
+            [5, 21, 6, 21, '雙子'],
+            [6, 22, 7, 22, '巨蟹'],
+            [7, 23, 8, 22, '獅子'],
+            [8, 23, 9, 22, '處女'],
+            [9, 23, 10, 23, '天秤'],
+            [10, 24, 11, 22, '天蠍'],
+            [11, 23, 12, 21, '射手'],
+            [12, 22, 1, 19, '魔羯']
+        ];
+
+        let currentNumber = 0;
+
+        function getZodiac(birthday) {
+            const parts = birthday.split('-');
+            const m = parseInt(parts[1]);
+            const d = parseInt(parts[2]);
+            for (let z of ZODIAC_MAP) {
+                if ((m === z[0] && d >= z[1]) || (m === z[2] && d <= z[3])) return z[4];
+            }
+            return '魔羯';
+        }
+
+        function getLifePathNumber(birthday) {
+            const digits = birthday.replace(/[^0-9]/g, '').split('').map(Number);
+            let sum = digits.reduce((a, b) => a + b, 0);
+            while (sum > 9) { sum = String(sum).split('').map(Number).reduce((a, b) => a + b, 0); }
+            return sum;
+        }
+
+        // ================================================================
+        //  2. 付費功能
+        // ================================================================
+
+        let isPaid = false;
+
+        function simulatePayment() {
+            if (isPaid) {
+                alert('✅ 你已經解鎖完整報告了！');
+                return;
+            }
+            alert('✅ 模擬付費成功！\n系統已為您解鎖完整 VIP 靈數命盤。');
+            isPaid = true;
+            document.getElementById('paywall-area').style.display = 'none';
+            document.getElementById('vip-content-area').style.display = 'block';
+            document.getElementById('vip-content-area').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ================================================================
+        //  3. 計算與渲染
+        // ================================================================
+
+        function calculateLifePath() {
+            const birthday = document.getElementById('birthday').value;
+            if (!birthday) { alert('請選擇出生日期'); return; }
+
+            const number = getLifePathNumber(birthday);
+            currentNumber = number;
+            const zodiac = getZodiac(birthday);
+            const data = NUMEROLOGY_DATA[number] || NUMEROLOGY_DATA[1];
+            const yearlyNumber = (number + 6) % 9 || 9;
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+
+            const elementColors = {
+                '木': '#10b981',
+                '火': '#f43f5e',
+                '土': '#f59e0b',
+                '金': '#8b5cf6',
+                '水': '#3b82f6'
+            };
+
+            const elementHtml = Object.keys(data.element).map(key => {
+                const val = data.element[key];
+                const color = elementColors[key] || '#6366f1';
+                return `<div class="element-row">
+                    <div class="element-label">${key}</div>
+                    <div class="element-bar-bg">
+                        <div class="element-bar-fill" style="width:${val}%;background-color:${color};"></div>
+                    </div>
+                    <div class="element-value">${val}%</div>
+                </div>`;
+            }).join('');
+
+            // 重置付費狀態
+            isPaid = false;
+
+            resultDiv.innerHTML = `
+                <div class="life-path-circle">
+                    <div class="life-path-number">${number}</div>
+                    <div class="life-path-info">
+                        <div class="label">${data.emoji} 你的生命靈數</div>
+                        <div class="title">${data.label}</div>
+                        <div class="subtitle">${zodiac}座 · ${number % 2 === 0 ? '和諧互補' : '動態張力'} 能量</div>
+                    </div>
+                </div>
+
+                <div class="summary">
+                    <p><strong>${data.label}</strong> — ${data.traits}</p>
+                    <p style="margin-top:0.5rem;"><strong>天賦使命：</strong> ${data.strength}</p>
+                    <p><strong>需要留意：</strong> ${data.weakness}</p>
+                </div>
+
+                <div style="margin:1.2rem 0;">
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:0.3rem;">🌿 五行能量分佈</p>
+                    <div class="element-chart">${elementHtml}</div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.2rem 0;">
+                    <div style="background:#0f172a;padding:0.8rem 1rem;border-radius:10px;border:1px solid var(--border);">
+                        <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">💼 適合職業</div>
+                        <div style="font-weight:700;color:#f1f5f9;font-size:0.95rem;">${data.career}</div>
+                    </div>
+                    <div style="background:#0f172a;padding:0.8rem 1rem;border-radius:10px;border:1px solid var(--border);">
+                        <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">💞 靈魂伴侶</div>
+                        <div style="font-weight:700;color:#f1f5f9;font-size:0.95rem;">${data.love}</div>
+                    </div>
+                </div>
+
+                <div class="yearly-section">
+                    <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+                        <div>
+                            <div style="font-size:0.75rem;color:var(--text-muted);letter-spacing:1px;">2026 流年數字</div>
+                            <div class="yearly-number">${yearlyNumber}</div>
+                        </div>
+                        <div style="flex:1;min-width:150px;">
+                            <div style="color:#c084fc;font-weight:600;">${['','開創','合作','表達','執行','自由','責任','智慧','權力','奉獻'][yearlyNumber] || '轉變'}之年</div>
+                            <div style="color:var(--text-muted);font-size:0.9rem;">${data.turning}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cliffhanger">
+                    <span class="title">🧠 系統洞察：</span>
+                    你的命數 ${number} 與流年 ${yearlyNumber} 形成 ${number % 2 === 0 ? '共鳴放大' : '互補平衡'} 的能量格局。2026 年你將在 ${['','開創事業','關係合作','表達自我','執行計畫','自由探索','承擔責任','深度學習','權力運作','奉獻服務'][yearlyNumber] || '轉變'} 領域迎來關鍵突破。
+                </div>
+
+                <!-- ===== 付費牆 ===== -->
+                <div id="paywall-area">
+                    <div class="preview-block">
+                        <div class="preview-title">🔓 VIP 報告獨家試閱</div>
+                        <div class="preview-text">「${number} 號人的核心陰影是『${data.weakness.split('、')[0] || '自我設限'}』⋯⋯ 這將如何影響你的財富與關係？完整版為你解答。」</div>
+                        <div class="preview-more">（完整內容解鎖後可見）</div>
+                    </div>
+
+                    <div class="paywall">
+                        <div class="urgency">🔥 今日尚餘 <span>23</span> 份完整命盤名額</div>
+                        <div style="font-size:1.2rem;font-weight:600;color:#fbcfe8;">🔒 解鎖完整 VIP 靈數命盤</div>
+                        <div style="color:var(--text-muted);font-size:0.85rem;margin:0.3rem 0;">
+                            包含：流年完整解析｜財富密碼｜感情走向｜開運指南｜90天行動計畫
+                        </div>
+                        <div class="price-tag"><span>NT$ 599</span> NT$ 99</div>
+                        <div class="price-daily">相當於每天不到 <strong>NT$ 4</strong></div>
+                        <button class="pay-btn" onclick="simulatePayment()">💳 立即解鎖完整命盤</button>
+                        <div class="guarantee">🔒 如果不滿意，<span>3 天內可申請全額退費</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== VIP 完整內容（付費後顯示） ===== -->
+                <div id="vip-content-area" class="vip-content">
+                    <h3>👑 完整 VIP 靈數命盤</h3>
+
+                    <div class="vip-section">
+                        <div class="vip-label">🔮 核心陰影</div>
+                        <p>${data.vip_blindspot || '（請在資料庫中補上 vip_blindspot）'}</p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">💰 財富密碼</div>
+                        <p>${data.vip_wealth || '（請在資料庫中補上 vip_wealth）'}</p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">💞 靈魂伴侶進階解析</div>
+                        <p>${data.vip_love || '（請在資料庫中補上 vip_love）'}</p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">🗝️ 專屬開運指南</div>
+                        <p>✨ 開運顏色：<span style="color:${data.color};font-weight:700;">●</span> 多穿戴 ${data.color === '#f43f5e' ? '紅色' : data.color === '#3b82f6' ? '藍色' : data.color === '#f59e0b' ? '金色' : data.color === '#10b981' ? '綠色' : data.color === '#8b5cf6' ? '紫色' : '暖色系'} 的服飾或配件。<br>
+                        🔮 幸運數字：${number}、${number + 3}、${number + 6}<br>
+                        🪷 心法：${number % 2 === 0 ? '「慢，就是快。」' : '「跳，才有路。」'}</p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">📆 2026 完整流年解析</div>
+                        <p>${data.turning}</p>
+                        <p style="margin-top:0.5rem;color:#a5b4fc;font-size:0.9rem;">
+                            <strong>關鍵月份：</strong>${number % 2 === 0 ? '4 月、8 月、12 月' : '3 月、7 月、11 月'}
+                        </p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">🗝️ 90 天行動落地指南</div>
+                        <p style="white-space:pre-line;color:#cbd5e1;line-height:2;">${data.action}</p>
+                    </div>
+
+                    <div style="text-align:center;color:var(--text-muted);font-size:0.85rem;border-top:1px solid var(--border);padding-top:1rem;margin-top:0.5rem;">
+                        — 完整解碼完畢，願你在順流中找到真正的自己 —
+                    </div>
+                </div>
+
+                <div style="text-align:center;margin-top:1.5rem;">
+                    <a href="#" class="back-to-top" onclick="document.getElementById('result').scrollIntoView({behavior:'smooth'});return false;">⬆ 回到頂端</a>
+                </div>
+            `;
+
+            // 觸發五行動畫
+            setTimeout(() => {
+                document.querySelectorAll('.element-bar-fill').forEach(el => {
+                    const w = el.style.width;
+                    if (w) { el.style.transition = 'width 1.6s cubic-bezier(0.22,1,0.36,1)';
+                        el.style.width = w; }
+                });
+            }, 300);
+
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {});
+    </script>
+</body>
+</html>
