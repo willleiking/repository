@@ -310,24 +310,6 @@
             position: relative;
         }
         .paywall h4 { font-size: 1.5rem; margin-bottom: 1rem; color: #fbcfe8; }
-
-        /* ✨ 優化 2：限時名額稀缺性 */
-        .urgency-banner {
-            background: rgba(244, 63, 94, 0.08);
-            border: 1px solid rgba(244, 63, 94, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            display: inline-block;
-            font-size: 0.85rem;
-            color: #fda4af;
-            margin-bottom: 0.8rem;
-            font-weight: 600;
-        }
-        .urgency-banner span {
-            color: #f87171;
-            font-weight: 700;
-        }
-
         .paywall .blur-list {
             filter: blur(4px);
             user-select: none;
@@ -338,12 +320,11 @@
             list-style: none;
         }
         .paywall .blur-list li { margin-bottom: 0.6rem; font-size: 1rem; }
-
         .price-tag {
             font-size: 2.4rem;
             font-weight: 900;
             color: #f43f5e;
-            margin: 1rem 0 0.2rem;
+            margin: 1rem 0 1.2rem;
             text-shadow: 0 2px 12px rgba(244, 63, 94, 0.25);
         }
         .price-tag span {
@@ -353,18 +334,6 @@
             margin-right: 0.8rem;
             font-weight: 400;
         }
-
-        /* ✨ 優化 1：價格每日成本定錨 */
-        .price-daily {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-        .price-daily strong {
-            color: #fbbf24;
-            font-weight: 700;
-        }
-
         .pay-btn {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: #fff;
@@ -383,18 +352,6 @@
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 14px 40px rgba(236, 72, 153, 0.5);
         }
-
-        /* ✨ 優化 3：滿意度保證 */
-        .guarantee-text {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 0.6rem;
-        }
-        .guarantee-text span {
-            color: #34d399;
-            font-weight: 600;
-        }
-
         .paywall .fine-print { margin-top: 0.8rem; color: #64748b; font-size: 0.85rem; }
 
         .premium-result {
@@ -606,49 +563,6 @@
             margin: 0.1rem 0.2rem;
         }
 
-        /* ✨ 優化 4：報告結尾行動召喚 */
-        .cta-section {
-            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(236,72,153,0.08));
-            border: 1px solid rgba(99,102,241,0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-top: 2.5rem;
-            text-align: center;
-        }
-        .cta-section h3 {
-            color: #f1f5f9;
-            font-size: 1.3rem;
-            margin-bottom: 0.8rem;
-        }
-        .cta-section p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.8;
-        }
-        .cta-section .cta-steps {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.8rem 1.8rem;
-            margin: 1rem 0;
-        }
-        .cta-section .cta-steps span {
-            background: rgba(15,23,42,0.6);
-            padding: 0.3rem 1rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: #cbd5e1;
-            border: 1px solid rgba(99,102,241,0.15);
-        }
-        .cta-section .cta-steps span strong {
-            color: #f1f5f9;
-        }
-        .cta-divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 2rem 0 1.5rem;
-        }
-
         @media (max-width: 640px) {
             header h1 { font-size: 2rem; }
             .quiz-container, .input-container, .report-container { padding: 1.2rem; }
@@ -656,7 +570,6 @@
             .chart-label { width: 60px; font-size: 0.75rem; }
             .pay-btn { width: 100%; font-size: 1rem; padding: 0.9rem 1.5rem; }
             .identity-card .ic-row { flex-direction: column; gap: 0.4rem; }
-            .cta-section .cta-steps { flex-direction: column; align-items: center; }
         }
         @media print {
             .back-btn, .toolbar, .fomo-banner, .paywall { display: none !important; }
@@ -754,12 +667,7 @@
                 <span class="timer" id="countdown">10:00</span>
             </div>
 
-            <!-- ===== 付費牆（已整合 3 項優化） ===== -->
             <div id="paywall-zone" class="paywall">
-                <!-- ✨ 優化 2：限時名額稀缺性 -->
-                <div class="urgency-banner">
-                    🔥 今日尚餘 <span id="remaining-slots">23</span> 份（每日限額 50 份）
-                </div>
                 <h4>🔒 解鎖完整 VIP 身份解碼卡</h4>
                 <ul class="blur-list">
                     <li>▶ 潛意識能量矩陣分析（長條圖）</li>
@@ -772,12 +680,8 @@
                     <li>▶ 專屬開運與行動落地指南</li>
                     <li>▶ 職涯推薦 + 適配原因 + 技能清單</li>
                 </ul>
-                <!-- ✨ 優化 1：價格每日成本定錨 -->
                 <div class="price-tag"><span>NT$ 899</span> NT$ 99</div>
-                <div class="price-daily">相當於每天不到 <strong>NT$ 4</strong> —— 一杯飲料都不到的價格，換一份改變命運的報告</div>
                 <button class="pay-btn" onclick="simulatePayment()">💳 立即解鎖完整報告</button>
-                <!-- ✨ 優化 3：滿意度保證 -->
-                <div class="guarantee-text">🔒 如果不滿意，<span>3 天內可申請全額退費</span> —— 你沒有風險</div>
                 <p class="fine-print">付款後立即展開完整 VIP 報告</p>
             </div>
 
@@ -796,20 +700,6 @@
 
                 <div id="vip-dynamic-content"></div>
 
-                <!-- ===== ✨ 優化 4：報告結尾行動召喚 ===== -->
-                <hr class="cta-divider" />
-                <div class="cta-section">
-                    <h3>🎯 你現在可以做的事情</h3>
-                    <div class="cta-steps">
-                        <span>📱 <strong>截圖保存</strong> — 隨時回顧這份報告</span>
-                        <span>📤 <strong>分享給一位朋友</strong> — 他／她可能也需要這份洞察</span>
-                        <span>📝 <strong>寫下第一個行動</strong> — 從【90 天行動指南】選一件明天就做</span>
-                    </div>
-                    <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-muted);">
-                        ✨ 你的 <span id="cta-year">2026</span> 年，從這一步開始不同。
-                    </p>
-                </div>
-
                 <div class="toolbar">
                     <button onclick="exportPDF()">📄 下載 PDF 報告</button>
                     <button onclick="sharePoster()">🖼️ 生成分享海報</button>
@@ -822,11 +712,6 @@
     </div>
 
     <script>
-        // ================================================================
-        //  ✨ 動態年份
-        // ================================================================
-        const CURRENT_YEAR = new Date().getFullYear();
-
         // ================================================================
         //  0. 備用 JSON 內容（僅供 matrix 長條圖使用）
         // ================================================================
@@ -850,7 +735,7 @@
         };
 
         // ================================================================
-        //  1. 12 種組合完整文案（已複製你提供的完整內容）
+        //  1. 12 種組合完整文案（所有文字皆由此提供）
         // ================================================================
         const COMBO_ANALYSIS = {
             // ============================================================
@@ -1223,7 +1108,25 @@
         };
 
         // ================================================================
-        //  2. 題庫（保持不變）
+        //  ✨ 潛力指標資料（5 項）
+        // ================================================================
+        const POTENTIAL_DATA = {
+            'generator_flame': { 情緒價值: 86, 創業潛力: 94, 整合能力: 72, 韌性潛力: 68, 魅力潛力: 90 },
+            'generator_rhythm': { 情緒價值: 62, 創業潛力: 78, 整合能力: 80, 韌性潛力: 74, 魅力潛力: 58 },
+            'generator_steel': { 情緒價值: 48, 創業潛力: 76, 整合能力: 90, 韌性潛力: 72, 魅力潛力: 52 },
+            'flame_generator': { 情緒價值: 90, 創業潛力: 92, 整合能力: 70, 韌性潛力: 64, 魅力潛力: 94 },
+            'flame_rhythm': { 情緒價值: 92, 創業潛力: 72, 整合能力: 74, 韌性潛力: 70, 魅力潛力: 84 },
+            'flame_steel': { 情緒價值: 70, 創業潛力: 80, 整合能力: 82, 韌性潛力: 66, 魅力潛力: 78 },
+            'rhythm_generator': { 情緒價值: 60, 創業潛力: 70, 整合能力: 82, 韌性潛力: 80, 魅力潛力: 54 },
+            'rhythm_flame': { 情緒價值: 84, 創業潛力: 68, 整合能力: 76, 韌性潛力: 76, 魅力潛力: 76 },
+            'rhythm_steel': { 情緒價值: 52, 創業潛力: 60, 整合能力: 90, 韌性潛力: 78, 魅力潛力: 46 },
+            'steel_generator': { 情緒價值: 44, 創業潛力: 70, 整合能力: 94, 韌性潛力: 74, 魅力潛力: 48 },
+            'steel_flame': { 情緒價值: 66, 創業潛力: 74, 整合能力: 86, 韌性潛力: 72, 魅力潛力: 68 },
+            'steel_rhythm': { 情緒價值: 42, 創業潛力: 56, 整合能力: 92, 韌性潛力: 84, 魅力潛力: 44 }
+        };
+
+        // ================================================================
+        //  2. 題庫
         // ================================================================
         const GPS_QUESTIONS = [
             { q: '你拿到一個新專案時，通常會怎麼開始？', options: [{ text: '先想有哪些全新的做法可以嘗試', dim: 'generator' }, { text: '先找相關的人聊聊，收集意見', dim: 'flame' }, { text: '先確認流程與時間表，按部就班', dim: 'rhythm' }, { text: '先研究數據與過去案例，建立框架', dim: 'steel' }] },
@@ -1296,19 +1199,6 @@
             if (paywall) paywall.style.display = 'block';
             if (premium) premium.style.display = 'none';
             showView('home-view');
-        }
-
-        // ================================================================
-        //  ✨ 優化 2：限時名額稀缺性（動態顯示）
-        // ================================================================
-        function updateRemainingSlots() {
-            const slotEl = document.getElementById('remaining-slots');
-            if (!slotEl) return;
-            const now = new Date();
-            const base = 50;
-            const used = (now.getHours() * 2 + now.getMinutes() / 30) % 40;
-            const remaining = Math.max(2, Math.round(base - used));
-            slotEl.textContent = remaining;
         }
 
         // ================================================================
@@ -1389,15 +1279,8 @@
             startTimer(600);
             buildVIPContent();
 
-            // ✨ 優化 2：更新剩餘名額
-            updateRemainingSlots();
-
             const reportView = document.getElementById('report-view');
             if (reportView) reportView.scrollIntoView({ behavior: 'smooth' });
-
-            // ✨ 優化 4：動態年份
-            const yearEl = document.getElementById('cta-year');
-            if (yearEl) yearEl.textContent = CURRENT_YEAR;
         }
 
         // ================================================================
@@ -1519,118 +1402,165 @@
         }
 
         // ================================================================
-        //  9. GPS VIP 建構器
+        //  9. GPS VIP 建構器（完整版，含 5 項潛力指標）
         // ================================================================
-        function buildGPSVIP(gps, data, comboData, primaryKey) {
-            const sorted = Object.keys(gps).sort((a, b) => gps[b] - gps[a]);
-            const primary = sorted[0];
-            const secondary = sorted[1] || 'generator';
-            const primaryName = comboData.role || data.label || ENERGY_NAMES[primary] || '發電機型天才';
-            const secondaryName = ENERGY_NAMES[secondary] || '節奏型天才';
+		function buildGPSVIP(gps, data, comboData, primaryKey) {
+			const sorted = Object.keys(gps).sort((a, b) => gps[b] - gps[a]);
+			const primary = sorted[0];
+			const secondary = sorted[1] || 'generator';
+			const primaryName = comboData.role || data.label || ENERGY_NAMES[primary] || '發電機型天才';
+			const secondaryName = ENERGY_NAMES[secondary] || '節奏型天才';
 
-            const matrix = data.matrix || { '創造力': 70, '執行力': 60, '影響力': 50, '邏輯力': 40, '專注力': 50 };
-            const matrixColors = {
-                '創造力': '#f43f5e',
-                '執行力': '#3b82f6',
-                '影響力': '#f59e0b',
-                '邏輯力': '#8b5cf6',
-                '專注力': '#10b981'
-            };
-            const chartHtml = `
-                <div class="chart-box">
-                    ${Object.keys(matrix).map(label => {
-                        const val = matrix[label];
-                        const color = matrixColors[label] || '#6366f1';
-                        return `<div class="chart-row">
-                            <div class="chart-label">${label}</div>
-                            <div class="chart-bar-bg">
-                                <div class="chart-bar-fill" style="width:${val}%;background-color:${color};"></div>
-                            </div>
-                            <div class="chart-value">${val}%</div>
-                        </div>`;
-                    }).join('')}
-                </div>
-            `;
+			// ===== 原本的矩陣 =====
+			const matrix = data.matrix || { '創造力': 70, '執行力': 60, '影響力': 50, '邏輯力': 40, '專注力': 50 };
+			const matrixColors = {
+				'創造力': '#f43f5e',
+				'執行力': '#3b82f6',
+				'影響力': '#f59e0b',
+				'邏輯力': '#8b5cf6',
+				'專注力': '#10b981'
+			};
+			const chartHtml = `
+				<div class="chart-box">
+					${Object.keys(matrix).map(label => {
+						const val = matrix[label];
+						const color = matrixColors[label] || '#6366f1';
+						return `<div class="chart-row">
+							<div class="chart-label">${label}</div>
+							<div class="chart-bar-bg">
+								<div class="chart-bar-fill" style="width:${val}%;background-color:${color};"></div>
+							</div>
+							<div class="chart-value">${val}%</div>
+						</div>`;
+					}).join('')}
+				</div>
+			`;
 
-            const strengthsHtml = comboData.strengths || data.strengths || '（請在 COMBO_ANALYSIS 中補上優勢描述）';
-            const weaknessesHtml = comboData.weaknesses || data.weaknesses || '（請在 COMBO_ANALYSIS 中補上弱點描述）';
-            const weaknessFixerHtml = comboData.weaknessFixer || data.weakness_fixer || '';
-            const representativesHtml = comboData.representatives || data.representatives || '（請在 COMBO_ANALYSIS 中補上代表人物）';
-            const relationshipAdviceHtml = comboData.relationshipAdvice || data.relationship_advice || '';
+			// ===== ✨ 5 項潛力指標（修正：直接設定 width，不用 data-target） =====
+			const potential = POTENTIAL_DATA[primaryKey] || POTENTIAL_DATA['generator_flame'];
+			const potentialLabels = ['💖 情緒價值', '🚀 創業潛力', '🔗 整合能力', '⚡ 韌性潛力', '✨ 魅力潛力'];
+			const potentialKeys = ['情緒價值', '創業潛力', '整合能力', '韌性潛力', '魅力潛力'];
+			const potentialColors = ['#ec4899', '#f43f5e', '#8b5cf6', '#f59e0b', '#3b82f6'];
+			const potentialDescriptions = [
+				'你對他人情感需求的敏銳度，關係到你能否建立深層信任。高情緒價值的人，在關係中往往是「被需要」的那一方，這是你最珍貴的無形資產。',
+				'你把想法轉化為可持續系統的能力，決定了你的財富天花板。高創業潛力的人，不是「想當老闆」，而是「無法忍受被安排」。',
+				'你把不同資源、人脈、資訊串聯起來的潛力，是領導者的核心素質。整合能力決定了你能否從「執行者」躍升為「佈局者」。',
+				'你在面對失敗與壓力時的復原速度，是AI無法取代的心理護城河。韌性不是不跌倒，而是跌倒後能更快站起來繼續走。',
+				'你是否具備讓人願意跟隨的真實影響力，決定了你的領導力天花板。魅力不是討好，而是讓人「想成為像你這樣的人」。'
+			];
 
-            return `
-                <h3 class="vip-section-title">📊 潛意識能量矩陣分析</h3>
-                ${chartHtml}
-                <div class="vip-text">
-                    <p><span class="vip-highlight">🔥 主導能量：${primaryName}（${gps[primary]}%）</span></p>
-                    <p><span style="color:var(--text-muted);">⚡ 次要能量：${secondaryName}（<span class="vip-highlight">${gps[secondary]}%</span>）</span></p>
-                    <p>您的能量組合為「${primaryName} + ${secondaryName}」，這表示您具備 ${primaryName} 的核心天賦，同時擁有 ${secondaryName} 的輔助能力。</p>
-                    <p style="margin-top:0.8rem;"><strong>核心問句：</strong> ${comboData.coreQuestion || data.core_question || '—'}</p>
-                    <p><strong>核心天賦：</strong> ${comboData.coreTalent || data.core_talent || '—'}</p>
-                    <p><strong>專屬角色：</strong> <span class="vip-highlight">${comboData.role || '獨特實踐者'}</span></p>
-                </div>
+			// 🔧 直接設定 width，不用 data-target
+			const potentialHtml = `
+				<h3 class="vip-section-title">💎 你的隱藏潛力指數</h3>
+				<p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;">
+					以下五項潛力是根據你的「主能量＋次能量」組合推算，反映你在 AI 時代最關鍵的競爭優勢。
+				</p>
+				<div class="chart-box" style="background:linear-gradient(180deg,rgba(99,102,241,0.05),transparent);border-color:rgba(99,102,241,0.2);">
+					${potentialLabels.map((label, idx) => {
+						const key = potentialKeys[idx];
+						const val = potential[key] || 50;
+						const color = potentialColors[idx];
+						return `<div class="chart-row">
+							<div class="chart-label" style="font-size:0.8rem;width:105px;">${label}</div>
+							<div class="chart-bar-bg">
+								<div class="chart-bar-fill" style="width:${val}%;background:linear-gradient(90deg,${color}55,${color});"></div>
+							</div>
+							<div class="chart-value">${val}%</div>
+						</div>`;
+					}).join('')}
+				</div>
+				<div class="vip-text" style="margin-top:0.5rem;font-size:0.95rem;color:var(--text-muted);">
+					${potentialLabels.map((label, idx) => {
+						const key = potentialKeys[idx];
+						const val = potential[key] || 50;
+						const desc = potentialDescriptions[idx];
+						return `<p style="margin-bottom:0.6rem;"><strong>${label}（${val}%）</strong> — ${desc}</p>`;
+					}).join('')}
+				</div>
+			`;
 
-                <h3 class="vip-section-title">✅ 你的天生優勢</h3>
-                <div class="vip-text">
-                    <p>${strengthsHtml}</p>
-                </div>
+			// ===== 其他文字 =====
+			const strengthsHtml = comboData.strengths || data.strengths || '（請在 COMBO_ANALYSIS 中補上優勢描述）';
+			const weaknessesHtml = comboData.weaknesses || data.weaknesses || '（請在 COMBO_ANALYSIS 中補上弱點描述）';
+			const weaknessFixerHtml = comboData.weaknessFixer || data.weakness_fixer || '';
+			const representativesHtml = comboData.representatives || data.representatives || '（請在 COMBO_ANALYSIS 中補上代表人物）';
+			const relationshipAdviceHtml = comboData.relationshipAdvice || data.relationship_advice || '';
 
-                <h3 class="vip-section-title">⚠️ 需要留意的弱點</h3>
-                <div class="vip-text">
-                    <p>${weaknessesHtml}</p>
-                    ${weaknessFixerHtml ? `<div class="vip-sub-section">🤝 誰能補足你：</div><p>${weaknessFixerHtml}</p>` : ''}
-                </div>
+			return `
+				<h3 class="vip-section-title">📊 潛意識能量矩陣分析</h3>
+				${chartHtml}
+				<div class="vip-text">
+					<p><span class="vip-highlight">🔥 主導能量：${primaryName}（${gps[primary]}%）</span></p>
+					<p><span style="color:var(--text-muted);">⚡ 次要能量：${secondaryName}（<span class="vip-highlight">${gps[secondary]}%</span>）</span></p>
+					<p>您的能量組合為「${primaryName} + ${secondaryName}」，這表示您具備 ${primaryName} 的核心天賦，同時擁有 ${secondaryName} 的輔助能力。</p>
+					<p style="margin-top:0.8rem;"><strong>核心問句：</strong> ${comboData.coreQuestion || data.core_question || '—'}</p>
+					<p><strong>核心天賦：</strong> ${comboData.coreTalent || data.core_talent || '—'}</p>
+					<p><strong>專屬角色：</strong> <span class="vip-highlight">${comboData.role || '獨特實踐者'}</span></p>
+				</div>
 
-                <h3 class="vip-section-title">👤 代表人物</h3>
-                <div class="vip-text">
-                    <p>${representativesHtml}</p>
-                </div>
+				${potentialHtml}
 
-                <h3 class="vip-section-title">⚠️ 致命盲點與隱形破財危機</h3>
-                <div class="vip-text">
-                    <p>${comboData.blindspot || data.blindspot || '（請在 COMBO_ANALYSIS 中補上盲點描述）'}</p>
-                    ${comboData.businessPartner || data.business_partner ? `<div class="vip-sub-section">💼 事業上互補的對象：</div><p>${comboData.businessPartner || data.business_partner}</p>` : ''}
-                    ${data.blindspot_solution ? `<div class="vip-sub-section">🔑 破解方法：</div><p>${data.blindspot_solution}</p>` : ''}
-                </div>
+				<h3 class="vip-section-title">✅ 你的天生優勢</h3>
+				<div class="vip-text">
+					<p>${strengthsHtml}</p>
+				</div>
 
-                <h3 class="vip-section-title">💞 人際磁場與靈魂伴侶契合度</h3>
-                <div class="vip-text">
-                    <p>${comboData.relationship || data.relationship || '（請在 COMBO_ANALYSIS 中補上關係描述）'}</p>
-                    ${relationshipAdviceHtml ? `<div class="vip-sub-section">💌 相處建議：</div><p>${relationshipAdviceHtml}</p>` : ''}
-                </div>
+				<h3 class="vip-section-title">⚠️ 需要留意的弱點</h3>
+				<div class="vip-text">
+					<p>${weaknessesHtml}</p>
+					${weaknessFixerHtml ? `<div class="vip-sub-section">🤝 誰能補足你：</div><p>${weaknessFixerHtml}</p>` : ''}
+				</div>
 
-                <h3 class="vip-section-title">🚀 未來 90 天流年轉機預測</h3>
-                <div class="vip-text">
-                    <p>${comboData.turning || data.turning || '（請在 COMBO_ANALYSIS 中補上轉機預測）'}</p>
-                </div>
+				<h3 class="vip-section-title">👤 代表人物</h3>
+				<div class="vip-text">
+					<p>${representativesHtml}</p>
+				</div>
 
-                <h3 class="vip-section-title">🗝️ 專屬開運與行動落地指南</h3>
-                <div class="action-list">
-                    <ul>
-                        ${(comboData.action || data.action || '').split('\n').filter(s => s.trim()).map(item => `<li>${item.trim()}</li>`).join('')}
-                    </ul>
-                </div>
+				<h3 class="vip-section-title">⚠️ 致命盲點與隱形破財危機</h3>
+				<div class="vip-text">
+					<p>${comboData.blindspot || data.blindspot || '（請在 COMBO_ANALYSIS 中補上盲點描述）'}</p>
+					${comboData.businessPartner || data.business_partner ? `<div class="vip-sub-section">💼 事業上互補的對象：</div><p>${comboData.businessPartner || data.business_partner}</p>` : ''}
+					${data.blindspot_solution ? `<div class="vip-sub-section">🔑 破解方法：</div><p>${data.blindspot_solution}</p>` : ''}
+				</div>
 
-                <h3 class="vip-section-title">💼 職涯推薦與適配原因</h3>
-                <div class="vip-text">
-                    ${(comboData.careerDetail && comboData.careerDetail.jobs) ? comboData.careerDetail.jobs.map(job => `
-                        <div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);">
-                            <strong style="color:#f1f5f9;">${job.title}</strong>
-                            <span style="color:var(--text-muted);font-size:0.9rem;"> — ${job.description}</span>
-                            <div style="color:#a5b4fc;font-size:0.9rem;margin-top:0.2rem;">📌 適配原因：${job.reason}</div>
-                        </div>
-                    `).join('') : (data.career_detail && data.career_detail.jobs ? data.career_detail.jobs.map(job => `
-                        <div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);">
-                            <strong style="color:#f1f5f9;">${job.title}</strong>
-                            <span style="color:var(--text-muted);font-size:0.9rem;"> — ${job.description}</span>
-                            <div style="color:#a5b4fc;font-size:0.9rem;margin-top:0.2rem;">📌 適配原因：${job.reason}</div>
-                        </div>
-                    `).join('') : '<p>（請在 COMBO_ANALYSIS 中補上職涯推薦）</p>')}
-                    ${comboData.careerDetail && comboData.careerDetail.summaryReason ? `<p><strong>總結：</strong>${comboData.careerDetail.summaryReason}</p>` : (data.career_detail && data.career_detail.summary_reason ? `<p><strong>總結：</strong>${data.career_detail.summary_reason}</p>` : '')}
-                    ${comboData.careerDetail && comboData.careerDetail.skills ? `<p><strong>需要技能：</strong> ${comboData.careerDetail.skills.split('、').map(s => `<span class="skill-tag">${s}</span>`).join(' ')}</p>` : (data.career_detail && data.career_detail.skills ? `<p><strong>需要技能：</strong> ${data.career_detail.skills.split('、').map(s => `<span class="skill-tag">${s}</span>`).join(' ')}</p>` : '')}
-                </div>
-            `;
-        }
+				<h3 class="vip-section-title">💞 人際磁場與靈魂伴侶契合度</h3>
+				<div class="vip-text">
+					<p>${comboData.relationship || data.relationship || '（請在 COMBO_ANALYSIS 中補上關係描述）'}</p>
+					${relationshipAdviceHtml ? `<div class="vip-sub-section">💌 相處建議：</div><p>${relationshipAdviceHtml}</p>` : ''}
+				</div>
+
+				<h3 class="vip-section-title">🚀 未來 90 天流年轉機預測</h3>
+				<div class="vip-text">
+					<p>${comboData.turning || data.turning || '（請在 COMBO_ANALYSIS 中補上轉機預測）'}</p>
+				</div>
+
+				<h3 class="vip-section-title">🗝️ 專屬開運與行動落地指南</h3>
+				<div class="action-list">
+					<ul>
+						${(comboData.action || data.action || '').split('\n').filter(s => s.trim()).map(item => `<li>${item.trim()}</li>`).join('')}
+					</ul>
+				</div>
+
+				<h3 class="vip-section-title">💼 職涯推薦與適配原因</h3>
+				<div class="vip-text">
+					${(comboData.careerDetail && comboData.careerDetail.jobs) ? comboData.careerDetail.jobs.map(job => `
+						<div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);">
+							<strong style="color:#f1f5f9;">${job.title}</strong>
+							<span style="color:var(--text-muted);font-size:0.9rem;"> — ${job.description}</span>
+							<div style="color:#a5b4fc;font-size:0.9rem;margin-top:0.2rem;">📌 適配原因：${job.reason}</div>
+						</div>
+					`).join('') : (data.career_detail && data.career_detail.jobs ? data.career_detail.jobs.map(job => `
+						<div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);">
+							<strong style="color:#f1f5f9;">${job.title}</strong>
+							<span style="color:var(--text-muted);font-size:0.9rem;"> — ${job.description}</span>
+							<div style="color:#a5b4fc;font-size:0.9rem;margin-top:0.2rem;">📌 適配原因：${job.reason}</div>
+						</div>
+					`).join('') : '<p>（請在 COMBO_ANALYSIS 中補上職涯推薦）</p>')}
+					${comboData.careerDetail && comboData.careerDetail.summaryReason ? `<p><strong>總結：</strong>${comboData.careerDetail.summaryReason}</p>` : (data.career_detail && data.career_detail.summary_reason ? `<p><strong>總結：</strong>${data.career_detail.summary_reason}</p>` : '')}
+					${comboData.careerDetail && comboData.careerDetail.skills ? `<p><strong>需要技能：</strong> ${comboData.careerDetail.skills.split('、').map(s => `<span class="skill-tag">${s}</span>`).join(' ')}</p>` : (data.career_detail && data.career_detail.skills ? `<p><strong>需要技能：</strong> ${data.career_detail.skills.split('、').map(s => `<span class="skill-tag">${s}</span>`).join(' ')}</p>` : '')}
+				</div>
+			`;
+		}
 
         // ================================================================
         //  10. 付費與工具
@@ -1709,12 +1639,8 @@
                 gpsContent = DEFAULT_GPS_CONTENT;
                 console.log('ℹ️ 使用內建備用內容（長條圖用）');
             }
-
-            // ✨ 優化 2：初始更新剩餘名額
-            updateRemainingSlots();
-
             showView('home-view');
-            console.log('✨ 神祕領域 · 12 種人格組合已啟動');
+            console.log('✨ 神祕領域 · 12 種人格組合 + 5 項潛力指標已啟動');
         }
 
         if (document.readyState === 'loading') {
