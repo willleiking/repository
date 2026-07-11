@@ -843,55 +843,183 @@ const DEFAULT_GPS_CONTENT = {
         // ================================================================
         //  1. 題庫
         // ================================================================
-        const GPS_QUESTIONS = [
-            { q: '面對一個全新領域，你通常？', a: ['迫不及待想嘗試新方法', '先觀察別人怎麼做再跟進'], dim: 'generator' },
-            { q: '你更擅長哪種思考？', a: ['跳躍式聯想，產生新點子', '線性思考，專注解決問題'], dim: 'generator' },
-            { q: '朋友形容你時，最常說？', a: ['你總是有很多好點子', '你做事很穩'], dim: 'generator' },
-            { q: '你更喜歡哪種工作？', a: ['創造全新產品或服務', '優化現有流程'], dim: 'generator' },
-            { q: '面對繁瑣的細節工作，你？', a: ['很有耐心，能專注處理', '會想找捷徑或外包'], dim: 'rhythm' },
-            { q: '你更擅長哪種任務？', a: ['重複性高但需要精準的工作', '變化性高需要應變的工作'], dim: 'rhythm' },
-            { q: '你更注重哪種品質？', a: ['完美與精確', '速度與靈活性'], dim: 'rhythm' },
-            { q: '你覺得自己最大的優點是？', a: ['細心且有條理', '反應快且適應力強'], dim: 'rhythm' },
-            { q: '面對複雜問題，你優先？', a: ['建立框架與邏輯分析', '試錯與直覺判斷'], dim: 'steel' },
-            { q: '你更擅長？', a: ['制定規則與系統', '靈活應變與突破規則'], dim: 'steel' },
-            { q: '你更喜歡哪種決策方式？', a: ['數據驅動，理性分析', '直覺驅動，相信感受'], dim: 'steel' },
-            { q: '你覺得自己更接近哪種角色？', a: ['軍師/分析師', '冒險家/先鋒'], dim: 'steel' },
-            { q: '在團體中你更常？', a: ['主動發言，帶動氣氛', '觀察聆聽，偶爾發言'], dim: 'flame' },
-            { q: '你更擅長？', a: ['說服他人，推動行動', '獨自思考，不被打擾'], dim: 'flame' },
-            { q: '你更享受哪種情境？', a: ['舞台中央，眾人注目', '幕後策劃，默默影響'], dim: 'flame' },
-            { q: '你覺得自己最大的天賦是？', a: ['影響力與感染力', '洞察力與深度'], dim: 'flame' }
-        ];
+		const GPS_QUESTIONS = [
+			{
+				q: '你拿到一個新專案時，通常會怎麼開始？',
+				options: [
+					{ text: '先想有哪些全新的做法可以嘗試', dim: 'generator' },
+					{ text: '先找相關的人聊聊，收集意見', dim: 'flame' },
+					{ text: '先確認流程與時間表，按部就班', dim: 'rhythm' },
+					{ text: '先研究數據與過去案例，建立框架', dim: 'steel' }
+				]
+			},
+			{
+				q: '團隊在腦力激盪時，你通常扮演什麼角色？',
+				options: [
+					{ text: '丟出各種天馬行空的想法', dim: 'generator' },
+					{ text: '鼓勵大家發言，凝聚氣氛', dim: 'flame' },
+					{ text: '把大家的點子記錄下來並歸納整理', dim: 'rhythm' },
+					{ text: '分析每個點子的可行性與風險', dim: 'steel' }
+				]
+			},
+			{
+				q: '你覺得自己最擅長的是什麼？',
+				options: [
+					{ text: '打破框架，想出別人想不到的解法', dim: 'generator' },
+					{ text: '感染他人，讓大家願意一起行動', dim: 'flame' },
+					{ text: '穩定可靠，答應的事一定會完成', dim: 'rhythm' },
+					{ text: '把複雜問題拆解成可執行的步驟', dim: 'steel' }
+				]
+			},
+			{
+				q: '你更喜歡哪種工作環境？',
+				options: [
+					{ text: '沒有規則、自由探索的空間', dim: 'generator' },
+					{ text: '充滿互動、團隊合作的氛圍', dim: 'flame' },
+					{ text: '有明確流程與規範的環境', dim: 'rhythm' },
+					{ text: '安靜、可以深度思考的空間', dim: 'steel' }
+				]
+			},
+			{
+				q: '在社交場合中，你通常會？',
+				options: [
+					{ text: '觀察環境，找到有共鳴的人深聊', dim: 'generator' },
+					{ text: '主動認識新朋友，帶動氣氛', dim: 'flame' },
+					{ text: '先觀察再決定是否加入對話', dim: 'rhythm' },
+					{ text: '傾向在角落觀察，不急著參與', dim: 'steel' }
+				]
+			},
+			{
+				q: '你更擅長以下哪件事？',
+				options: [
+					{ text: '想出一個全新產品或服務', dim: 'generator' },
+					{ text: '說服別人接受你的想法', dim: 'flame' },
+					{ text: '耐心聆聽並理解他人的需求', dim: 'rhythm' },
+					{ text: '分析數據並做出精確判斷', dim: 'steel' }
+				]
+			},
+			{
+				q: '你覺得自己的核心能力是？',
+				options: [
+					{ text: '創造力與直覺', dim: 'generator' },
+					{ text: '感染力與說服力', dim: 'flame' },
+					{ text: '執行力與穩定度', dim: 'rhythm' },
+					{ text: '邏輯力與系統力', dim: 'steel' }
+				]
+			},
+			{
+				q: '你更喜歡哪種類型的工作？',
+				options: [
+					{ text: '需要不斷創新與嘗試的工作', dim: 'generator' },
+					{ text: '需要與人大量互動的工作', dim: 'flame' },
+					{ text: '需要專注與精確的工作', dim: 'rhythm' },
+					{ text: '需要策略規劃與分析的工作', dim: 'steel' }
+				]
+			},
+			{
+				q: '面對大量繁瑣的任務，你通常？',
+				options: [
+					{ text: '會想辦法簡化流程，找出新模式', dim: 'generator' },
+					{ text: '會找人一起分擔，邊做邊聊', dim: 'flame' },
+					{ text: '很有耐心，一件一件處理完畢', dim: 'rhythm' },
+					{ text: '會先分類排序，用最有效率的方式執行', dim: 'steel' }
+				]
+			},
+			{
+				q: '你覺得自己最大的優勢是？',
+				options: [
+					{ text: '靈活應變，能快速適應變化', dim: 'generator' },
+					{ text: '善於連結人脈，建立關係', dim: 'flame' },
+					{ text: '穩定可靠，答應的事一定會完成', dim: 'rhythm' },
+					{ text: '結構性思維，能建立系統', dim: 'steel' }
+				]
+			},
+			{
+				q: '你更注重哪種品質？',
+				options: [
+					{ text: '速度與靈活性', dim: 'generator' },
+					{ text: '和諧與團隊共識', dim: 'flame' },
+					{ text: '精確與完美', dim: 'rhythm' },
+					{ text: '邏輯與規則', dim: 'steel' }
+				]
+			},
+			{
+				q: '你更喜歡哪種工作節奏？',
+				options: [
+					{ text: '有挑戰、有變化、有驚喜', dim: 'generator' },
+					{ text: '與人協作、節奏由團隊帶動', dim: 'flame' },
+					{ text: '規律、可預測的步調', dim: 'rhythm' },
+					{ text: '自主掌控、有彈性的節奏', dim: 'steel' }
+				]
+			},
+			{
+				q: '面對一個複雜問題，你通常會？',
+				options: [
+					{ text: '先試錯，邊做邊調整', dim: 'generator' },
+					{ text: '先找人討論，聽聽不同觀點', dim: 'flame' },
+					{ text: '先找出關鍵節點，逐步解決', dim: 'rhythm' },
+					{ text: '建立框架，拆解成可執行的步驟', dim: 'steel' }
+				]
+			},
+			{
+				q: '你更擅長哪一種思考方式？',
+				options: [
+					{ text: '跳躍式聯想，產生新點子', dim: 'generator' },
+					{ text: '從他人角度思考，產生共鳴', dim: 'flame' },
+					{ text: '線性思考，專注解決問題', dim: 'rhythm' },
+					{ text: '結構化思考，建立邏輯框架', dim: 'steel' }
+				]
+			},
+			{
+				q: '你更喜歡哪種決策方式？',
+				options: [
+					{ text: '直覺驅動，相信感受', dim: 'generator' },
+					{ text: '共識驅動，重視團隊意見', dim: 'flame' },
+					{ text: '經驗驅動，依賴過去方法', dim: 'rhythm' },
+					{ text: '數據驅動，理性分析', dim: 'steel' }
+				]
+			},
+			{
+				q: '你覺得自己在團隊中的角色比較像？',
+				options: [
+					{ text: '開拓者 / 點子王', dim: 'generator' },
+					{ text: '連結者 / 凝聚者', dim: 'flame' },
+					{ text: '執行者 / 穩定者', dim: 'rhythm' },
+					{ text: '分析師 / 架構者', dim: 'steel' }
+				]
+			}
+		];
 
-        const ENERGY_NAMES = { generator: '發電機型天才', rhythm: '節奏型天才', steel: '鋼鐵型天才', flame: '火焰型天才' };
+		const ENERGY_NAMES = { generator: '發電機型天才', rhythm: '節奏型天才', steel: '鋼鐵型天才', flame: '火焰型天才' };
         const ENERGY_COLORS = { generator: '#f43f5e', rhythm: '#3b82f6', steel: '#8b5cf6', flame: '#f59e0b' };
 
         // ================================================================
         //  2. 核心計算
         // ================================================================
-        function getGPSScores(answers) {
-            const scores = { generator: 0, rhythm: 0, steel: 0, flame: 0 };
-            const dimMap = GPS_QUESTIONS.map(q => q.dim);
-            for (let idx = 0; idx < answers.length; idx++) {
-                const dim = dimMap[idx];
-                const val = answers[idx];
-                if (val === 0) { scores[dim] = (scores[dim] || 0) + 1; }
-            }
-            const result = {};
-            for (let key in scores) { result[key] = Math.round((scores[key] / 4) * 100); }
-            return result;
-        }
+		function getGPSScores(answers) {
+			const scores = { generator: 0, flame: 0, rhythm: 0, steel: 0 };
+			for (let dim of answers) {
+				if (scores[dim] !== undefined) scores[dim]++;
+			}
+			const result = {};
+			const total = GPS_QUESTIONS.length;
+			for (let key in scores) {
+				result[key] = Math.round((scores[key] / total) * 100);
+			}
+			return result;
+		}
 
         // ================================================================
         //  3. 狀態管理
         // ================================================================
-        const state = {
-            currentQuiz: null,
-            step: 0,
-            answers: [],
-            gpsScores: null,
-            paid: false,
-            timerInterval: null,
-        };
+		const state = {
+			currentQuiz: null,
+			step: 0,
+			answers: [],
+			gpsScores: null,
+			paid: false,
+			timerInterval: null,
+		};
 
         let gpsContent = null;
 
@@ -903,79 +1031,67 @@ const DEFAULT_GPS_CONTENT = {
             });
         }
 
-        function goBack() {
-            clearInterval(state.timerInterval);
-            state.paid = false;
-            state.currentQuiz = null;
-            state.step = 0;
-            state.answers = [];
-            const paywall = document.getElementById('paywall-zone');
-            const premium = document.getElementById('premium-zone');
-            if (paywall) paywall.style.display = 'block';
-            if (premium) premium.style.display = 'none';
-            showView('home-view');
-        }
+		function startQuiz(quizKey) {
+			console.log('startQuiz 被呼叫，quizKey:', quizKey);
+
+			if (quizKey === 'mbti') {
+				alert('MBTI 模組開發中，敬請期待！');
+				return;
+			}
+
+			if (quizKey === 'gps') {
+				// 重置狀態
+				state.currentQuiz = quizKey;
+				state.step = 0;
+				state.answers = [];
+				state.paid = false;
+				state.gpsScores = null;
+
+				showView('quiz-view');
+				renderQuestion();
+			}
+		}
 
         // ================================================================
         //  4. 測驗流程
         // ================================================================
-        function startQuiz(quizKey) {
-            console.log('startQuiz 被呼叫，quizKey:', quizKey);
-            
-            // 如果是 MBTI，顯示開發中訊息
-            if (quizKey === 'mbti') {
-                alert('MBTI 模組開發中，敬請期待！');
-                return;
-            }
+		function renderQuestion() {
+			const questions = GPS_QUESTIONS;
+			const total = questions.length;
 
-            state.currentQuiz = quizKey;
-            state.step = 0;
-            state.answers = [];
-            state.paid = false;
-            state.gpsScores = null;
+			const progress = document.getElementById('progress');
+			if (progress) progress.style.width = ((state.step / total) * 100) + '%';
 
-            if (quizKey === 'gps') {
-                showView('quiz-view');
-                renderQuestion();
-            }
-        }
+			if (state.step >= total) {
+				showView('loading-view');
+				const loadingText = document.getElementById('loading-text');
+				if (loadingText) loadingText.textContent = '正在運算您的專屬命盤…';
+				setTimeout(() => {
+					state.gpsScores = getGPSScores(state.answers);
+					showReport();
+				}, 2000);
+				return;
+			}
 
-        function renderQuestion() {
-            const questions = GPS_QUESTIONS;
-            const total = questions.length;
+			const q = questions[state.step];
+			const questionEl = document.getElementById('question');
+			if (questionEl) questionEl.textContent = q.q;
 
-            const progress = document.getElementById('progress');
-            if (progress) progress.style.width = ((state.step / total) * 100) + '%';
+			const container = document.getElementById('options');
+			if (!container) return;
+			container.innerHTML = '';
 
-            if (state.step >= total) {
-                showView('loading-view');
-                const loadingText = document.getElementById('loading-text');
-                if (loadingText) loadingText.textContent = '正在運算您的專屬命盤…';
-                setTimeout(() => {
-                    state.gpsScores = getGPSScores(state.answers);
-                    showReport();
-                }, 2000);
-                return;
-            }
-
-            const q = questions[state.step];
-            const questionEl = document.getElementById('question');
-            if (questionEl) questionEl.textContent = q.q;
-            
-            const container = document.getElementById('options');
-            if (!container) return;
-            container.innerHTML = '';
-            q.a.forEach((text, idx) => {
-                const btn = document.createElement('button');
-                btn.textContent = text;
-                btn.onclick = () => {
-                    state.answers.push(idx);
-                    state.step++;
-                    renderQuestion();
-                };
-                container.appendChild(btn);
-            });
-        }
+			q.options.forEach((opt) => {
+				const btn = document.createElement('button');
+				btn.textContent = opt.text;
+				btn.onclick = () => {
+					state.answers.push(opt.dim);
+					state.step++;
+					renderQuestion();
+				};
+				container.appendChild(btn);
+			});
+		}
 
         // ================================================================
         //  5. 報告生成
