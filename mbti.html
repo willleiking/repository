@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MBTI 16型人格 · 深度破解</title>
+    <style>
+        /* ===== 全域重置 ===== */
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --card-bg: #1e293b;
+            --border: #334155;
+            --text-muted: #94a3b8;
+            --text-light: #e2e8f0;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        }
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 8px; }
+
+        header {
+            background: linear-gradient(135deg, #1e1b4b, #311042);
+            padding: 2rem 1rem 1.8rem;
+            text-align: center;
+            border-bottom: 2px solid #3b0764;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        header h1 {
+            font-size: 2.6rem;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(to right, #a5b4fc, #fbcfe8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        header p { color: var(--text-muted); font-size: 1.05rem; }
+        header .back-link {
+            display: inline-block;
+            margin-top: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+        header .back-link:hover {
+            background: var(--border);
+            color: #fff;
+        }
+
+        .container { max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+
+        /* ===== 測驗容器 ===== */
+        .quiz-card {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .quiz-card.active { display: block; }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-bottom: 1.8rem;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.4s ease;
+        }
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #f8fafc;
+            line-height: 1.6;
+        }
+        .options-list button {
+            display: block;
+            width: 100%;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.7rem;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: var(--light);
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .options-list button:hover {
+            background: var(--border);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        /* ===== 開始頁 ===== */
+        .start-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .start-card .icon { font-size: 4rem; }
+        .start-card h2 {
+            font-size: 1.5rem;
+            color: #f1f5f9;
+            margin: 0.5rem 0;
+        }
+        .start-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+        .start-btn {
+            padding: 0.8rem 3rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+        }
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(236, 72, 153, 0.4);
+        }
+
+        /* ===== 結果區 ===== */
+        .result-card {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-top: 1.5rem;
+        }
+        .result-card .type-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        .result-card .type-name {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #f1f5f9;
+            line-height: 1.2;
+        }
+        .result-card .type-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 0.3rem 0 1rem;
+        }
+
+        .summary-box {
+            background: #0f172a;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            margin: 1.2rem 0;
+        }
+        .summary-box p { color: #cbd5e1; line-height: 1.8; }
+
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin: 1.2rem 0;
+        }
+        .dimension-item {
+            background: #0f172a;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .dimension-item .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .dimension-item .value {
+            font-weight: 700;
+            color: #f1f5f9;
+            font-size: 1rem;
+        }
+        .dimension-item .value .highlight-e { color: #f43f5e; }
+        .dimension-item .value .highlight-i { color: #3b82f6; }
+        .dimension-item .value .highlight-s { color: #10b981; }
+        .dimension-item .value .highlight-n { color: #8b5cf6; }
+        .dimension-item .value .highlight-t { color: #f59e0b; }
+        .dimension-item .value .highlight-f { color: #ec4899; }
+        .dimension-item .value .highlight-j { color: #06b6d4; }
+        .dimension-item .value .highlight-p { color: #f59e0b; }
+
+        .cliffhanger {
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            color: #fda4af;
+            font-weight: 500;
+            margin-top: 1rem;
+            line-height: 1.8;
+        }
+        .cliffhanger .title {
+            font-weight: 700;
+            color: #f87171;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .paywall {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 1));
+            border: 2px dashed var(--secondary);
+            border-radius: 14px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .paywall .urgency {
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #fda4af;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        .paywall .urgency span { color: #f87171; font-weight: 700; }
+        .paywall .price-tag {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #f43f5e;
+            margin: 0.3rem 0;
+        }
+        .paywall .price-tag span {
+            font-size: 1rem;
+            color: #64748b;
+            text-decoration: line-through;
+            margin-right: 0.8rem;
+            font-weight: 400;
+        }
+        .paywall .price-daily {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+        .paywall .price-daily strong { color: #fbbf24; font-weight: 700; }
+        .pay-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+            transition: 0.3s;
+            margin-top: 0.3rem;
+        }
+        .pay-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(236, 72, 153, 0.4);
+        }
+        .paywall .guarantee {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        .paywall .guarantee span { color: #34d399; font-weight: 600; }
+
+        .preview-block {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        .preview-block .preview-title {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .preview-block .preview-text {
+            color: #fda4af;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin: 0.3rem 0;
+        }
+        .preview-block .preview-more {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* VIP 內容 */
+        .vip-content {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--primary);
+        }
+        .vip-content h3 {
+            color: #c084fc;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+        .vip-section {
+            background: #0f172a;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--secondary);
+        }
+        .vip-section .vip-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .vip-section p {
+            color: #cbd5e1;
+            line-height: 1.9;
+        }
+
+        .stack-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.3rem;
+        }
+        .stack-tag {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 0.15rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #a5b4fc;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+        .back-to-top:hover {
+            background: var(--border);
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            .dimension-grid { grid-template-columns: 1fr; }
+            .result-card .type-name { font-size: 2rem; }
+            .container { padding: 0 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🧠 MBTI 16型人格 · 深度破解</h1>
+        <p>24道精準情境題，真實計算你的認知功能與人格類型</p>
+        <a href="index.html" class="back-link">← 返回入口</a>
+    </header>
+
+    <div class="container">
+
+        <!-- ===== 開始頁 ===== -->
+        <div id="start-card" class="start-card">
+            <div class="icon">🧠</div>
+            <h2>你準備好探索真實的自己了嗎？</h2>
+            <p>
+                透過 24 道情境題，精準定位你的認知功能偏好。<br />
+                這不是普通的二分法測驗，而是基於榮格心理學的深度人格解構。
+            </p>
+            <button class="start-btn" onclick="startQuiz()">🚀 開始測驗</button>
+        </div>
+
+        <!-- ===== 測驗區 ===== -->
+        <div id="quiz-card" class="quiz-card">
+            <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+            <div id="question" class="question-text">載入題目…</div>
+            <div id="options" class="options-list"></div>
+        </div>
+
+        <!-- ===== 結果區 ===== -->
+        <div id="result-card" class="result-card">
+            <!-- 由 JavaScript 動態填入 -->
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  1. 題庫（24 題，每個維度 6 題）
+        // ================================================================
+
+        const MBTI_QUESTIONS = [
+            // EI (6題)
+            { q: '在人群中，你更傾向於？', a: ['主動與許多人交談', '保持安靜，觀察他人'], dim: 'EI' },
+            { q: '週末你更喜歡？', a: ['參加聚會或社交活動', '一個人待在家裡'], dim: 'EI' },
+            { q: '你覺得哪種環境更能讓你充電？', a: ['熱鬧、充滿活力的場合', '安靜、獨處的空間'], dim: 'EI' },
+            { q: '面對陌生人，你通常？', a: ['很快就能打開話匣子', '需要一段時間才能放鬆'], dim: 'EI' },
+            { q: '你更喜歡哪種溝通方式？', a: ['當面即時交流', '書面或訊息慢慢回應'], dim: 'EI' },
+            { q: '在團隊中，你更常？', a: ['主動發言引導討論', '聆聽後再發表意見'], dim: 'EI' },
+            // SN (6題)
+            { q: '你更關注事物的哪一面？', a: ['眼前的具體事實與細節', '未來的可能性與隱含意義'], dim: 'SN' },
+            { q: '你更擅長哪種思考？', a: ['實際操作與動手解決', '理論推演與抽象概念'], dim: 'SN' },
+            { q: '你更喜歡哪類書籍？', a: ['實用指南或操作手冊', '科幻小說或哲學著作'], dim: 'SN' },
+            { q: '做計畫時，你更依賴？', a: ['過去累積的數據與經驗', '直覺與對趨勢的判斷'], dim: 'SN' },
+            { q: '你更重視哪種資訊？', a: ['具體可驗證的證據', '靈感與直覺的閃現'], dim: 'SN' },
+            { q: '面對問題，你通常？', a: ['先拆解成步驟再處理', '先看整體大局再深入'], dim: 'SN' },
+            // TF (6題)
+            { q: '做決定時，你更依賴？', a: ['邏輯分析與客觀事實', '個人感受與他人需求'], dim: 'TF' },
+            { q: '你更看重哪種價值？', a: ['公平正義與一致性', '和諧共情與人際關係'], dim: 'TF' },
+            { q: '當朋友找你訴苦，你通常？', a: ['幫他分析問題與解法', '先陪伴他抒發情緒'], dim: 'TF' },
+            { q: '你更擅長哪類工作？', a: ['需要理性判斷的任務', '需要同理心與溝通的任務'], dim: 'TF' },
+            { q: '你覺得哪種能力更重要？', a: ['清晰的邏輯思維', '敏銳的情感覺察'], dim: 'TF' },
+            { q: '面對爭執，你通常？', a: ['用道理說服對方', '優先考慮雙方感受'], dim: 'TF' },
+            // JP (6題)
+            { q: '你更喜歡哪種生活方式？', a: ['提前計畫，按表操課', '隨機應變，保留彈性'], dim: 'JP' },
+            { q: '面對任務，你更傾向？', a: ['盡快完成並做出結論', '持續探索各種可能性'], dim: 'JP' },
+            { q: '你更喜歡哪種工作環境？', a: ['明確的規則與時程', '自由的時間與空間'], dim: 'JP' },
+            { q: '你更擅長哪件事？', a: ['做出決定並執行', '保持開放收集更多資訊'], dim: 'JP' },
+            { q: '你更偏好哪種步調？', a: ['有條不紊地前進', '隨著靈感調整節奏'], dim: 'JP' },
+            { q: '你更在意？', a: ['把事情做完', '把事情做好做滿'], dim: 'JP' }
+        ];
+
+        // ================================================================
+        //  2. MBTI 16 型資料庫
+        // ================================================================
+
+        const MBTI_DATA = {
+            INTJ: {
+                name: '建築師',
+                desc: '戰略家，獨立、果斷、洞察力強。',
+                stack: 'Ni-Te-Fi-Se',
+                strengths: '獨立思考、戰略視野、深度專注、高效執行',
+                weaknesses: '過於固執、缺乏耐心、情感表達困難、容易過勞',
+                career: '策略顧問、數據科學家、企業決策者、軟體架構師',
+                love: '你會被 INTP 或 ENTJ 吸引，他們能理解你的深度思考。',
+                blindspot: '你的核心陰影是「情感壓抑」。你習慣用邏輯解決一切，包括感情問題。這讓你在親密關係中顯得疏離，但其實你的內心比誰都在乎。',
+                wealth: '你的財富密碼是「戰略變現」——你擅長看見別人看不見的趨勢。2026 年請把你的遠見轉化為具體行動，而不是只停留在思考。',
+                action: '【第 1-30 天】每天寫下一件讓你感動的小事，練習與情感連結。\n【第 31-60 天】主動與一位朋友分享你的內心想法，練習開放。\n【第 61-90 天】把一個長期計畫拆解成可執行的步驟，開始行動。'
+            },
+            INTP: {
+                name: '邏輯學家',
+                desc: '創新者，求知慾強、善於解構。',
+                stack: 'Ti-Ne-Si-Fe',
+                strengths: '邏輯推理、創新思維、深度分析、知識整合',
+                weaknesses: '過度理論化、缺乏執行力、社交障礙、容易分心',
+                career: '研究學者、軟體工程師、系統分析師、哲學家',
+                love: '你會被 INTJ 或 ENTP 吸引，他們能陪你探索知識的邊界。',
+                blindspot: '你的核心陰影是「行動恐懼」。你沉迷於理解世界，卻害怕干預世界。最大的智慧不在於知道，而在於行動。',
+                wealth: '你的財富密碼是「知識變現」——你的深度理解是稀缺資產。2026 年請把你的知識「產品化」：寫書、開課、建立系統。',
+                action: '【第 1-30 天】選一個你研究已久的主題，寫一篇 500 字的文章。\n【第 31-60 天】把一個理論應用到實際生活中，觀察結果。\n【第 61-90 天】主動與人分享你的發現，練習溝通你的想法。'
+            },
+            ENTJ: {
+                name: '指揮官',
+                desc: '領導者，果敢、高效、目標導向。',
+                stack: 'Te-Ni-Se-Fi',
+                strengths: '領導力、決策力、戰略思維、高效執行',
+                weaknesses: '過度強勢、缺乏同理心、急躁、容易過勞',
+                career: '企業家、高階主管、專案總監、政策制定者',
+                love: '你會被 INTJ 或 ENTP 吸引，他們能跟你並肩作戰。',
+                blindspot: '你的核心陰影是「害怕脆弱」。你習慣用「強大」來保護自己，但真正的領導力來自於你敢於承認「我不知道」。',
+                wealth: '你的財富密碼是「槓桿變現」——你天生知道如何用別人的資源放大影響力。2026 年請專注在「整合」而非「執行」。',
+                action: '【第 1-30 天】每天練習說「我不知道」和「我需要幫助」。\n【第 31-60 天】把一個重要任務交給別人，練習信任。\n【第 61-90 天】回顧你的領導風格，找出三個可以更柔軟的地方。'
+            },
+            ENTP: {
+                name: '辯論家',
+                desc: '發明家，機智、靈活、挑戰常規。',
+                stack: 'Ne-Ti-Fe-Si',
+                strengths: '創意思維、靈活應變、辯證能力、創新突破',
+                weaknesses: '難以專注、缺乏紀律、容易爭辯、情緒不穩',
+                career: '創業者、發明家、投資人、行銷總監',
+                love: '你會被 INTP 或 ENFP 吸引，他們能跟上你的思維速度。',
+                blindspot: '你的核心陰影是「害怕被框住」。你對「自由」的執著，有時讓你無法「完成」任何事。真正的自由不是逃避承諾，而是能選擇留下。',
+                wealth: '你的財富密碼是「創新變現」——你的點子是稀缺資產。2026 年請學會「減法」：選一個點子專注到底，而不是同時發想一百個。',
+                action: '【第 1-30 天】選一個點子，強迫自己專注 30 天不換題。\n【第 31-60 天】把這個點子製作成 MVP（最小可行產品）。\n【第 61-90 天】收集市場回饋，只優化被肯定的部分。'
+            },
+            INFJ: {
+                name: '提倡者',
+                desc: '諮商師，理想主義、共情力強。',
+                stack: 'Ni-Fe-Ti-Se',
+                strengths: '深度同理、願景洞察、溝通能力、堅定信念',
+                weaknesses: '過度理想、容易耗竭、完美主義、自我懷疑',
+                career: '心理諮商師、作家、教育家、非營利組織領導者',
+                love: '你會被 ENFP 或 INFP 吸引，他們能理解你的理想主義。',
+                blindspot: '你的核心陰影是「害怕不被需要」。你習慣用「照顧別人」來證明自己的價值，但這讓你逐漸耗盡自己。你的存在本身就有價值。',
+                wealth: '你的財富密碼是「願景變現」——你能看見更美好的世界。2026 年請把你的願景「具體化」：寫下來、說出來、開始行動。',
+                action: '【第 1-30 天】每天寫下一件「為自己做」的事，練習照顧自己。\n【第 31-60 天】把一個願景寫成具體計畫，開始執行第一步。\n【第 61-90 天】練習說「不」，為自己設立健康的界線。'
+            },
+            INFP: {
+                name: '調停者',
+                desc: '詩人，價值導向、溫柔堅定。',
+                stack: 'Fi-Ne-Si-Te',
+                strengths: '價值信念、創意表達、深度同理、適應力強',
+                weaknesses: '過度理想、逃避現實、自我懷疑、執行困難',
+                career: '藝術家、詩人、音樂家、社會工作者',
+                love: '你會被 ENFJ 或 INFJ 吸引，他們能看見你的內心世界。',
+                blindspot: '你的核心陰影是「害怕不被理解」。你渴望被看見真實的自己，卻又害怕被看透。勇敢地表達自己，你會發現有人真的懂你。',
+                wealth: '你的財富密碼是「創作變現」——你的表達是獨一無二的資產。2026 年請把你的創作「公開」：分享作品、建立品牌、找到你的讀者。',
+                action: '【第 1-30 天】每天寫下 200 字的內心日記，練習表達。\n【第 31-60 天】把一個作品公開分享，練習面對評價。\n【第 61-90 天】把創作轉化為有價值的服務或產品。'
+            },
+            ENFJ: {
+                name: '主人公',
+                desc: '教育家，鼓舞人心、善於引導。',
+                stack: 'Fe-Ni-Se-Ti',
+                strengths: '感染力、領導力、同理心、溝通能力',
+                weaknesses: '過度付出、忽略自己、容易受傷、界線模糊',
+                career: '培訓師、人力資源、公關經理、傳教士',
+                love: '你會被 INFJ 或 INFP 吸引，他們能與你靈魂共鳴。',
+                blindspot: '你的核心陰影是「害怕被拒絕」。你習慣用「討好」來換取連結，但真正的關係不需要你完美。真實的你不完美，但更值得被愛。',
+                wealth: '你的財富密碼是「影響力變現」——你能讓一群人願意跟隨你。2026 年請把你的影響力「產品化」：講課、寫書、建立社群。',
+                action: '【第 1-30 天】每天留 30 分鐘「完全屬於自己」的時間。\n【第 31-60 天】練習拒絕一個「額外請求」，為自己留空間。\n【第 61-90 天】把一個影響力行動轉化為可複製的內容。'
+            },
+            ENFP: {
+                name: '競選者',
+                desc: '自由靈魂，熱情、創意、善於連結。',
+                stack: 'Ne-Fi-Te-Si',
+                strengths: '熱情洋溢、創意豐富、人際連結、適應力強',
+                weaknesses: '注意力分散、三分鐘熱度、情緒波動、難以專注',
+                career: '創意總監、記者、廣告人、演員',
+                love: '你會被 INFJ 或 INTJ 吸引，他們能給你穩定的錨點。',
+                blindspot: '你的核心陰影是「害怕無聊」。你對「新鮮感」的渴望，讓你無法「深耕」任何領域。最深的滿足來自於「專注」而非「探索」。',
+                wealth: '你的財富密碼是「連結變現」——你的熱情能感染身邊的人。2026 年請把一個熱情「專注化」：成為一個領域的專家，而不是所有領域的過客。',
+                action: '【第 1-30 天】選一個領域，每天專注 60 分鐘不換主題。\n【第 31-60 天】把一個熱情轉化為具體的行動計畫。\n【第 61-90 天】把這個計畫執行到「完成」而非「開始」。'
+            },
+            ISTJ: {
+                name: '物流師',
+                desc: '檢查者，可靠、負責、注重細節。',
+                stack: 'Si-Te-Fi-Ne',
+                strengths: '可靠、細心、負責、有條理',
+                weaknesses: '過於保守、固執、缺乏彈性、不善表達情感',
+                career: '會計師、律師、工程師、管理者',
+                love: '你會被 ISFJ 或 ESTJ 吸引，他們能理解你的踏實。',
+                blindspot: '你的核心陰影是「害怕改變」。你習慣用「過去有效的方法」來面對現在的問題，但世界不會停下來等你。適應不是妥協，是生存。',
+                wealth: '你的財富密碼是「效率變現」——你能把任何事情做得又快又好。2026 年請把你的效率「產品化」：建立系統、標準化流程、複製成功經驗。',
+                action: '【第 1-30 天】每天嘗試一件「不在計畫內」的小事。\n【第 31-60 天】把一個舊流程優化為新方法，測試結果。\n【第 61-90 天】主動學習一項新技能，打破慣性。'
+            },
+            ISFJ: {
+                name: '守衛者',
+                desc: '保護者，溫暖、細心、忠誠。',
+                stack: 'Si-Fe-Ti-Ne',
+                strengths: '溫暖、細心、忠誠、責任感',
+                weaknesses: '過度付出、不敢拒絕、容易內疚、壓抑感受',
+                career: '護理師、教師、行政人員、社工',
+                love: '你會被 ISTJ 或 ESFJ 吸引，他們能給你穩定的支持。',
+                blindspot: '你的核心陰影是「害怕讓別人失望」。你習慣把別人的需求放在第一位，但這讓你逐漸失去自己。善良不是過度付出，是懂得照顧自己。',
+                wealth: '你的財富密碼是「服務變現」——你的細心和溫暖是稀缺資產。2026 年請把你的服務「專業化」：建立個人品牌、提供專業服務、為自己的價值定價。',
+                action: '【第 1-30 天】每天練習說一次「我需要...」，練習表達自己。\n【第 31-60 天】為自己的服務設定價格，勇敢收費。\n【第 61-90 天】回顧你的付出，確認是否照顧好了自己。'
+            },
+            ESTJ: {
+                name: '總經理',
+                desc: '監督者，務實、果斷、組織力強。',
+                stack: 'Te-Si-Ne-Fi',
+                strengths: '果斷、務實、組織力強、責任感',
+                weaknesses: '過於強勢、缺乏耐心、情感表達困難、抗拒變化',
+                career: '企業經理、法官、軍官、政策制定者',
+                love: '你會被 ISTJ 或 ESFJ 吸引，他們能與你互補平衡。',
+                blindspot: '你的核心陰影是「害怕失控」。你習慣用「控制」來對抗「不確定」，但人生中最重要的機會往往來自於你無法控制的事物。練習放手。',
+                wealth: '你的財富密碼是「管理變現」——你的組織能力是稀缺資產。2026 年請把你的管理能力「槓桿化」：建立團隊、複製系統、放大影響力。',
+                action: '【第 1-30 天】每天練習說「我不確定」和「我可能錯了」。\n【第 31-60 天】把一個重要任務完全交給別人，不追問。\n【第 61-90 天】回顧你的決策，找出三個可以更開放的選擇。'
+            },
+            ESFJ: {
+                name: '執政官',
+                desc: '東道主，友善、合作、重視和諧。',
+                stack: 'Fe-Si-Ne-Ti',
+                strengths: '溫暖、合作、同理心、組織力',
+                weaknesses: '過度在意他人、不敢拒絕、容易疲憊、討好型人格',
+                career: '教師、護理師、公關、人力資源',
+                love: '你會被 ISFJ 或 ESTJ 吸引，他們能給你穩定的支持。',
+                blindspot: '你的核心陰影是「害怕不被喜歡」。你習慣用「討好」來換取認同，但真正的喜歡不需要你討好任何人。做真實的自己，你會被真正適合的人愛上。',
+                wealth: '你的財富密碼是「社群變現」——你的人際網絡是稀缺資產。2026 年請把你的社群「產品化」：建立社群、提供服務、為你的影響力定價。',
+                action: '【第 1-30 天】每天練習說一次「我不同意」，練習表達立場。\n【第 31-60 天】為自己的服務設定價格，勇敢收費。\n【第 61-90 天】把一個社群行動轉化為可複製的服務。'
+            },
+            ISTP: {
+                name: '鑑賞家',
+                desc: '工匠，冷靜、靈活、擅長操作。',
+                stack: 'Ti-Se-Ni-Fe',
+                strengths: '冷靜、靈活、技術能力強、危機處理',
+                weaknesses: '過於冷漠、缺乏規劃、不善溝通、容易冒險',
+                career: '飛行員、外科醫生、機械工程師、運動員',
+                love: '你會被 ESTP 或 ISTJ 吸引，他們能理解你的獨立。',
+                blindspot: '你的核心陰影是「害怕承諾」。你習慣用「自由」來逃避「責任」，但真正的自由來自於你願意對什麼人、什麼事負起責任。',
+                wealth: '你的財富密碼是「技術變現」——你的操作能力是稀缺資產。2026 年請把你的技術「產品化」：成為教練、建立系統、複製你的專業。',
+                action: '【第 1-30 天】選一個領域，練習「深耕」而不是「跳躍」。\n【第 31-60 天】把一個技能轉化為可教導的課程或服務。\n【第 61-90 天】建立一個「專注 30 天」的目標，練習承諾。'
+            },
+            ISFP: {
+                name: '探險家',
+                desc: '藝術家，敏感、自由、審美獨特。',
+                stack: 'Fi-Se-Ni-Te',
+                strengths: '藝術天賦、敏感、自由、同理心',
+                weaknesses: '過於敏感、逃避現實、缺乏規劃、自我懷疑',
+                career: '設計師、攝影師、園藝師、珠寶匠',
+                love: '你會被 ESFP 或 ISFJ 吸引，他們能欣賞你的獨特。',
+                blindspot: '你的核心陰影是「害怕不被看見」。你渴望被理解卻又不敢主動表達。勇敢地把你的作品與世界分享，你會發現有人真正懂你。',
+                wealth: '你的財富密碼是「美感變現」——你的審美是稀缺資產。2026 年請把你的作品「公開」：建立品牌、分享創作、找到你的受眾。',
+                action: '【第 1-30 天】每天創作一件作品，練習表達。\n【第 31-60 天】把一個作品公開分享，練習面對評價。\n【第 61-90 天】把創作轉化為有價值的服務或產品。'
+            },
+            ESTP: {
+                name: '企業家',
+                desc: '冒險家，活力、機智、行動力強。',
+                stack: 'Se-Ti-Fe-Ni',
+                strengths: '行動力強、機智、社交能力、危機處理',
+                weaknesses: '缺乏紀律、注意力分散、冒險過度、不擅長長期規劃',
+                career: '銷售總監、企業家、運動員、偵探',
+                love: '你會被 ISTP 或 ESFP 吸引，他們能跟上你的節奏。',
+                blindspot: '你的核心陰影是「害怕無聊」。你對「刺激」的渴望，讓你無法「停留」在任何地方。最大的冒險不是不斷移動，而是敢於留在一個地方扎根。',
+                wealth: '你的財富密碼是「機會變現」——你總能找到別人看不見的機會。2026 年請學會「篩選」：只抓最好的 10% 機會，而不是同時抓 100 個。',
+                action: '【第 1-30 天】選一個機會，專注 30 天不換目標。\n【第 31-60 天】把這個機會轉化為具體的行動計畫。\n【第 61-90 天】建立一個可複製的系統，讓機會自動產生收益。'
+            },
+            ESFP: {
+                name: '表演者',
+                desc: '娛樂家，熱情、樂觀、感染力強。',
+                stack: 'Se-Fi-Te-Ni',
+                strengths: '熱情、樂觀、社交能力、感染力',
+                weaknesses: '注意力分散、缺乏深度、情緒波動、容易分心',
+                career: '演員、主持人、旅遊業者、活動企劃',
+                love: '你會被 ISFP 或 ESTP 吸引，他們能與你一起享受人生。',
+                blindspot: '你的核心陰影是「害怕被忽略」。你習慣用「表演」來吸引注意力，但真正的連結來自於你願意安靜下來的時刻。你不需要一直「上場」才能被愛。',
+                wealth: '你的財富密碼是「魅力變現」——你的感染力是稀缺資產。2026 年請把你的魅力「產品化」：建立品牌、提供服務、為你的影響力定價。',
+                action: '【第 1-30 天】每天練習安靜 15 分鐘，不說話、不表演。\n【第 31-60 天】把一個表演轉化為可複製的服務或產品。\n【第 61-90 天】建立一個可持續的系統，讓影響力自動產生收益。'
+            }
+        };
+
+        // ================================================================
+        //  3. 核心邏輯
+        // ================================================================
+
+        const state = {
+            step: 0,
+            answers: [],
+            quizStarted: false,
+            paid: false,
+            resultType: null
+        };
+
+        function startQuiz() {
+            state.step = 0;
+            state.answers = [];
+            state.paid = false;
+            state.quizStarted = true;
+            document.getElementById('start-card').style.display = 'none';
+            document.getElementById('quiz-card').style.display = 'block';
+            document.getElementById('result-card').style.display = 'none';
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const total = MBTI_QUESTIONS.length;
+            const progress = (state.step / total) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+
+            if (state.step >= total) {
+                showResult();
+                return;
+            }
+
+            const q = MBTI_QUESTIONS[state.step];
+            document.getElementById('question').textContent = q.q;
+            const container = document.getElementById('options');
+            container.innerHTML = '';
+            q.a.forEach((text, idx) => {
+                const btn = document.createElement('button');
+                btn.textContent = text;
+                btn.onclick = () => {
+                    state.answers.push(idx);
+                    state.step++;
+                    renderQuestion();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function getMBTIType(answers) {
+            let e = 0,
+                i = 0,
+                s = 0,
+                n = 0,
+                t = 0,
+                f = 0,
+                j = 0,
+                p = 0;
+            const dimMap = MBTI_QUESTIONS.map(q => q.dim);
+            for (let idx = 0; idx < answers.length; idx++) {
+                const dim = dimMap[idx];
+                const val = answers[idx];
+                if (dim === 'EI') { val === 0 ? e++ : i++; } else if (dim === 'SN') { val === 0 ? s++ : n++; } else if (dim ===
+                    'TF') { val === 0 ? t++ : f++; } else if (dim === 'JP') { val === 0 ? j++ : p++; }
+            }
+            const first = e >= i ? 'E' : 'I';
+            const second = s >= n ? 'S' : 'N';
+            const third = t >= f ? 'T' : 'F';
+            const fourth = j >= p ? 'J' : 'P';
+            return first + second + third + fourth;
+        }
+
+        function getTypeName(type) {
+            const map = {
+                INTJ: '建築師',
+                INTP: '邏輯學家',
+                ENTJ: '指揮官',
+                ENTP: '辯論家',
+                INFJ: '提倡者',
+                INFP: '調停者',
+                ENFJ: '主人公',
+                ENFP: '競選者',
+                ISTJ: '物流師',
+                ISFJ: '守衛者',
+                ESTJ: '總經理',
+                ESFJ: '執政官',
+                ISTP: '鑑賞家',
+                ISFP: '探險家',
+                ESTP: '企業家',
+                ESFP: '表演者'
+            };
+            return map[type] || '探索者';
+        }
+
+        // ================================================================
+        //  4. 顯示結果
+        // ================================================================
+
+        function showResult() {
+            const type = getMBTIType(state.answers);
+            state.resultType = type;
+            const data = MBTI_DATA[type] || MBTI_DATA['INTJ'];
+            const typeName = getTypeName(type);
+
+            document.getElementById('quiz-card').style.display = 'none';
+            const resultDiv = document.getElementById('result-card');
+            resultDiv.style.display = 'block';
+
+            // 計算各維度分數
+            let dimScores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+            const dimMap = MBTI_QUESTIONS.map(q => q.dim);
+            for (let idx = 0; idx < state.answers.length; idx++) {
+                const dim = dimMap[idx];
+                const val = state.answers[idx];
+                if (dim === 'EI') { val === 0 ? dimScores.E++ : dimScores.I++; } else if (dim === 'SN') { val === 0 ? dimScores
+                        .S++ : dimScores.N++; } else if (dim === 'TF') { val === 0 ? dimScores.T++ : dimScores.F++; } else if (
+                    dim === 'JP') { val === 0 ? dimScores.J++ : dimScores.P++; }
+            }
+
+            const dimLabels = [
+                { label: '外向 E', val: dimScores.E, max: 6, highlight: 'highlight-e' },
+                { label: '內向 I', val: dimScores.I, max: 6, highlight: 'highlight-i' },
+                { label: '實感 S', val: dimScores.S, max: 6, highlight: 'highlight-s' },
+                { label: '直覺 N', val: dimScores.N, max: 6, highlight: 'highlight-n' },
+                { label: '思考 T', val: dimScores.T, max: 6, highlight: 'highlight-t' },
+                { label: '情感 F', val: dimScores.F, max: 6, highlight: 'highlight-f' },
+                { label: '判斷 J', val: dimScores.J, max: 6, highlight: 'highlight-j' },
+                { label: '感知 P', val: dimScores.P, max: 6, highlight: 'highlight-p' }
+            ];
+
+            const dimHtml = dimLabels.map(d => `
+                <div class="dimension-item">
+                    <div class="label">${d.label}</div>
+                    <div class="value"><span class="${d.highlight}">${d.val}</span> / ${d.max}</div>
+                </div>
+            `).join('');
+
+            resultDiv.innerHTML = `
+                <div class="type-badge">你的 MBTI 類型</div>
+                <div class="type-name">${type}</div>
+                <div class="type-desc">${typeName} · ${data.desc}</div>
+
+                <div class="summary-box">
+                    <p><strong>認知功能堆疊：</strong> ${data.stack}</p>
+                    <p style="margin-top:0.3rem;"><strong>優勢：</strong> ${data.strengths}</p>
+                    <p><strong>需要留意：</strong> ${data.weaknesses}</p>
+                </div>
+
+                <div class="dimension-grid">${dimHtml}</div>
+
+                <div class="cliffhanger">
+                    <span class="title">🧠 深度洞察：</span>
+                    ${type} 型人格在人群中僅佔 ${['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP'].includes(type) ? '不到 10%' : '約 15%'}。你的認知功能組合 ${data.stack} 讓你在 ${type.includes('N') ? '直覺與未來導向' : '實感與當下體驗'} 方面具有獨特的優勢。
+                </div>
+
+                <div class="preview-block">
+                    <div class="preview-title">🔓 VIP 報告獨家試閱</div>
+                    <div class="preview-text">「${type} 的核心陰影是『${data.blindspot.split('。')[0] || '自我設限'}』⋯⋯」</div>
+                    <div class="preview-more">（完整內容解鎖後可見）</div>
+                </div>
+
+                <div id="paywall-area">
+                    <div class="paywall">
+                        <div class="urgency">🔥 今日尚餘 <span>23</span> 份完整人格報告</div>
+                        <div style="font-size:1.2rem;font-weight:600;color:#fbcfe8;">🔒 解鎖完整 VIP 人格深度報告</div>
+                        <div style="color:var(--text-muted);font-size:0.85rem;margin:0.3rem 0;">
+                            包含：認知功能深度解析｜盲點與破財危機｜職涯推薦｜戀愛契合度｜90天行動計畫
+                        </div>
+                        <div class="price-tag"><span>NT$ 599</span> NT$ 99</div>
+                        <div class="price-daily">相當於每天不到 <strong>NT$ 4</strong></div>
+                        <button class="pay-btn" onclick="simulatePayment()">💳 立即解鎖完整報告</button>
+                        <div class="guarantee">🔒 如果不滿意，<span>3 天內可申請全額退費</span></div>
+                    </div>
+                </div>
+
+                <div id="vip-content-area" class="vip-content">
+                    <h3>👑 完整 VIP 人格深度報告</h3>
+
+                    <div class="vip-section">
+                        <div class="vip-label">🧠 認知功能堆疊解析</div>
+                        <p><strong>${data.stack}</strong></p>
+                        <div class="stack-tags">
+                            ${data.stack.split('-').map(f => `<span class="stack-tag">${f}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">🔮 核心陰影與破財盲點</div>
+                        <p>${data.blindspot}</p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">💰 財富密碼</div>
+                        <p>${data.wealth}</p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">💞 戀愛契合度</div>
+                        <p>${data.love}</p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">💼 職涯推薦</div>
+                        <p>${data.career}</p>
+                    </div>
+
+                    <div class="vip-section">
+                        <div class="vip-label">🗝️ 90 天行動落地指南</div>
+                        <p style="white-space:pre-line;color:#cbd5e1;line-height:2;">${data.action}</p>
+                    </div>
+
+                    <div style="text-align:center;color:var(--text-muted);font-size:0.85rem;border-top:1px solid var(--border);padding-top:1rem;margin-top:0.5rem;">
+                        — 完整解碼完畢，願你在順流中找到真正的自己 —
+                    </div>
+                </div>
+
+                <div style="text-align:center;margin-top:1.5rem;">
+                    <a href="#" class="back-to-top" onclick="window.location.reload();return false;">🔄 重新測驗</a>
+                </div>
+            `;
+
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ================================================================
+        //  5. 付費功能
+        // ================================================================
+
+        let isPaid = false;
+
+        function simulatePayment() {
+            if (isPaid) {
+                alert('✅ 你已經解鎖完整報告了！');
+                return;
+            }
+            alert('✅ 模擬付費成功！\n系統已為您解鎖完整 VIP 人格深度報告。');
+            isPaid = true;
+            document.getElementById('paywall-area').style.display = 'none';
+            document.getElementById('vip-content-area').style.display = 'block';
+            document.getElementById('vip-content-area').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ================================================================
+        //  6. 初始化
+        // ================================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 顯示開始頁
+            document.getElementById('start-card').style.display = 'block';
+            document.getElementById('quiz-card').style.display = 'none';
+            document.getElementById('result-card').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
