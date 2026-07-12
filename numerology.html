@@ -237,6 +237,42 @@
             color: var(--secondary);
         }
 
+        /* ===== 九宮格樣式 ===== */
+        .grid-container {
+            display: inline-block;
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            margin: 0.5rem 0;
+        }
+        .grid-row {
+            display: flex;
+            gap: 4px;
+        }
+        .grid-cell {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            background: #1e293b;
+            transition: 0.3s;
+        }
+        .grid-cell.active {
+            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.2));
+            border: 2px solid var(--primary);
+            color: #f1f5f9;
+        }
+        .grid-cell.inactive {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #475569;
+        }
+
         .cliffhanger {
             background: rgba(244, 63, 94, 0.08);
             border: 1px solid rgba(244, 63, 94, 0.25);
@@ -312,6 +348,7 @@
             font-size: 0.9rem;
             font-style: italic;
             margin: 0.3rem 0;
+            line-height: 1.8;
         }
         .preview-block .preview-more {
             color: var(--text-muted);
@@ -342,7 +379,7 @@
         }
         .paywall .guarantee span { color: #34d399; font-weight: 600; }
 
-        /* ===== ✨ VIP 完整內容（付費後顯示） ===== */
+        /* VIP 完整內容 */
         .vip-content {
             display: none;
             margin-top: 1.5rem;
@@ -353,6 +390,7 @@
             color: #c084fc;
             font-size: 1.2rem;
             margin-bottom: 0.8rem;
+            margin-top: 1.5rem;
         }
         .vip-content .vip-section {
             background: #0f172a;
@@ -361,15 +399,16 @@
             margin-bottom: 1rem;
             border-left: 3px solid var(--secondary);
         }
-        .vip-content .vip-section p {
-            color: #cbd5e1;
-            line-height: 1.9;
-        }
         .vip-content .vip-section .vip-label {
             font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+        .vip-content .vip-section p {
+            color: #cbd5e1;
+            line-height: 1.9;
+            margin-bottom: 0.3rem;
         }
 
         .back-to-top {
@@ -394,6 +433,11 @@
             .container { padding: 0 0.8rem; }
             .result-card { padding: 1.2rem; }
             .hook-section { padding: 1.2rem; }
+            .grid-cell {
+                width: 44px;
+                height: 44px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -422,7 +466,7 @@
 
         <div class="input-card">
             <label for="birthday">📅 你的出生日期</label>
-            <input type="date" id="birthday" value="1995-06-15" />
+            <input type="date" id="birthday" value="1992-03-04" />
             <button class="submit-btn" onclick="calculateLifePath()">✨ 揭開你的靈魂命數</button>
         </div>
 
@@ -433,173 +477,273 @@
     </div>
 
     <script>
-        // ================================================================
-        //  1. 資料庫
+	        // ================================================================
+        //  1. 完整備用資料（內建 FALLBACK_DATA，確保即使 JSON 載入失敗也能正常顯示）
         // ================================================================
 
-        const NUMEROLOGY_DATA = {
-            1: {
-                label: '開創者',
-                emoji: '🌟',
-                traits: '獨立、領導力強，天生具備開疆闢土的氣魄。你來到這個世界是為了學習「成為自己」，而不是跟隨別人。',
-                strength: '果斷、創新、自信、行動力強',
-                weakness: '可能過於自我、缺乏耐心、不擅長團隊合作',
-                career: '企業家、高階主管、自由職業者、藝術總監',
-                love: '你會被 2、3、5 號人吸引，他們能帶給你平衡與溫柔。',
-                turning: '2026 年是你的「行動年」，第 1-3 個月將出現一個改變職涯方向的機會。',
-                action: '【第 1-30 天】每天寫下一個「只屬於你自己」的決定，練習獨立思考。\n【第 31-60 天】主動承擔一個領導角色，即使只是小組組長。\n【第 61-90 天】覆盤你的領導風格，寫下三個可以更好的地方。',
-                element: { 木: 85, 火: 70, 土: 45, 金: 60, 水: 40 },
-                color: '#f43f5e',
-                vip_blindspot: '你的核心陰影是「害怕脆弱」。你習慣用「我很強」來掩蓋「我需要幫助」的事實，這讓你即使累垮了也不願開口求援。真正的領導力不是永遠強悍，而是懂得在對的時候放下盔甲。',
-                vip_wealth: '你的財富密碼是「影響力變現」。你不是靠勞力賺錢的人，你是靠「讓別人願意跟隨你」來累積財富。2026 年請專注打造你的個人品牌，而不是埋頭苦幹。',
-                vip_love: '你的靈魂伴侶必須是「能看穿你的盔甲」的人。他們不會被你的強勢嚇跑，反而會溫柔地問你：「你還好嗎？」——這是你最需要的愛情。'
+        const FALLBACK_DATA = {
+            "1": {
+                label: "開創者",
+                emoji: "🌟",
+                core_traits: "獨立、領導力強，天生具備開疆闢土的氣魄。你來到這個世界是為了學習「成為自己」，而不是跟隨別人。",
+                strengths: "果斷、創新、自信、行動力強",
+                weaknesses: "可能過於自我、缺乏耐心、不擅長團隊合作",
+                career: "企業家、高階主管、自由職業者、藝術總監",
+                element: { "木": 85, "火": 70, "土": 45, "金": 60, "水": 40 },
+                lucky_color: "紅色",
+                lucky_numbers: "1, 3, 5",
+                lucky_crystal: "紅瑪瑙",
+                soul_lesson: {
+                    "28": "你的靈魂課題是「從個人英雄轉變為團隊領袖」。你習慣靠自己解決問題，但這輩子要學會的是：真正的力量來自於啟發他人，而不是獨自扛下所有。",
+                    "10": "你的命運轉折點在於「學會放下控制」。你的人生會在 10 的週期（10歲、20歲、30歲...）出現重大轉折，關鍵不是更用力，而是更信任。",
+                    "1": "你的最終天賦是「獨立開創」。你來到這個世界不是為了跟隨，而是為了走出自己的路。"
+                },
+                missing_meanings: {
+                    "5": { theme: "平衡", tendency: "容易想太多、猶豫不決、情緒容易被外界影響", advice: "多運動、多旅行、多接觸不同圈子，讓身體帶著心走" },
+                    "6": { theme: "責任與愛的界線", tendency: "容易過度付出，或反過來逃避承諾", advice: "練習說『不』，同時練習接受別人的付出" },
+                    "7": { theme: "深度與信任", tendency: "容易停留在表面，不願深入探索自己", advice: "每天留 10 分鐘靜心，練習與自己對話" },
+                    "8": { theme: "物質與權力", tendency: "對金錢和權力較無感，容易忽略現實面", advice: "學習理財基礎，建立與物質世界健康的關係" }
+                },
+                advantage_lines: {
+                    "123": { name: "思考線", desc: "點子多、反應快、學習能力佳。你天生具備從靈感到表達的完整迴路。" },
+                    "159": { name: "意志線", desc: "目標明確、行動力強。你一旦決定要做，就會堅持到底。" },
+                    "357": { name: "溝通線", desc: "表達能力強、善於社交。你是天生的說服者。" },
+                    "369": { name: "創意線", desc: "想像力豐富、藝術天賦高。你有把抽象概念具象化的能力。" },
+                    "789": { name: "務實線", desc: "執行力強、注重細節。你擅長把計畫變成現實。" },
+                    "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
+                    "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
+                },
+                vip_blindspot: "你的核心陰影是「害怕脆弱」。你習慣用「我很強」來掩蓋「我需要幫助」的事實，這讓你即使累垮了也不願開口求援。真正的領導力不是永遠強悍，而是懂得在對的時候放下盔甲。",
+                vip_wealth: "你的財富密碼是「影響力變現」。你不是靠勞力賺錢的人，你是靠「讓別人願意跟隨你」來累積財富。2026 年請專注打造你的個人品牌，而不是埋頭苦幹。",
+                vip_action: "【第 1-30 天】每天寫下一個「只屬於你自己」的決定，練習獨立思考。\n【第 31-60 天】主動承擔一個領導角色，即使只是小組組長。\n【第 61-90 天】覆盤你的領導風格，寫下三個可以更好的地方。",
+                love_reconcile: { style: "冷靜戰略家", desc: "你傾向用理性分析面對分手，懂得給彼此空間。這是最有機會修復關係的模式，但要注意別讓對方覺得你太冷。", steps: ["先暫停聯繫 7 天，讓雙方情緒冷卻", "第 8 天傳一封「不帶期待」的訊息", "如果對方回覆，先聊近況不急著談復合"], success_rate: "65%", hot: true },
+                love_attraction: { score: 82, traits: ["自信", "果斷", "獨立"], desc: "你的存在感很強，你不需要刻意做什麼就能吸引別人的目光。但要注意，你的「獨立」有時會讓想靠近你的人覺得有距離。", action_plan: "每天練習一個「溫柔的溝通」—— 多問對方「你覺得呢？」", hot: false },
+                love_crush: { sincere_index: 55, signals: ["對方會主動約你嗎？", "對方記得你說過的小事嗎？", "對方願意花時間在你身上嗎？"], advice: "觀察 2 週，不急著表態。如果對方只是被你的「強勢」吸引，而不是被「真實的你」吸引，那可能只是一時好奇。", hot: true },
+                love_fwb: { risk_index: 30, signals: ["對方只在深夜聯繫你", "對方從不介紹你給朋友", "對方對你的生活細節不感興趣"], advice: "直接問清楚關係定位。你能接受就繼續，不能接受就果斷離開。", hot: false },
+                love_bad_attract: { score: 40, reasons: ["你總是看到對方的「潛力」而不是「現實」", "你容易被需要你的人吸引", "你習慣在關係中當「拯救者」"], fix: "練習「三個月規則」— 不急著投入，給自己三個月觀察對方是否真誠。", hot: true },
+                love_crush_index: { score: 55, desc: "你是容易暈船的類型嗎？你的暈船指數中等偏上，你會在感覺對了的時候投入很快，但有時會忽略現實訊號。", brakes: ["每天問自己：這是愛還是寂寞？", "問自己：對方為你做了什麼？你為對方做了什麼？", "請一個理性朋友幫你把關"], hot: false },
+                love_personality: { best_match: ["2號人", "3號人", "5號人"], desc: "你容易被溫柔、有耐心的人吸引。2號人讓你感受到被理解，3號人讓你感受到生活的樂趣，5號人讓你感受到自由的空間。", hot: false },
+                relation_phase: { phase: "穩定期或冷淡期", desc: "根據你的能量狀態，你目前可能處於關係的穩定期或剛進入冷淡期。你習慣用行動證明愛，但對方可能需要更多情感交流。", advice: "試著放慢腳步，多問對方「你最近感覺怎麼樣？」而不是急著解決問題。", hot: false },
+                reconcile_timing: { best_timing: "分手後第 7-10 天", desc: "你太早聯繫會讓對方覺得有壓力，太晚聯繫會讓對方覺得你不在乎。第 7-10 天是黃金窗口。", approach: "傳一封簡短的訊息，關心但不要求回應。例如：「最近還好嗎？只是想到你。」", hot: false },
+                numerology_love: { timeline: { best_month: "5月", worst_month: "11月", advice: "5 月多出門社交，11 月先專注自己。" }, desc: "1 號人在 2026 年的愛情運勢是「先蹲後跳」。上半年你可能會經歷一些關係的調整，下半年機會會逐漸浮現。", hot: false },
+                love_weakness: { weakness: "過於理性，讓對方覺得你不夠在乎", desc: "你習慣用「解決問題」來回應情緒，但很多時候對方要的不是解法，而是被理解。", fix: "練習說「我感覺...」而不是「我認為...」。先回應情緒，再提供建議。", hot: true },
+                attract_guide: { advice: "多穿紅色系的服飾，在公開場合展現你的自信與幽默感。你有領導者的氣場，但也需要讓別人感覺到你的溫度。", key_place: "工作場合、產業聚會、運動場", key_energy: "自信但不強勢", hot: false },
+                yearly_2026: { trend: "先蹲後跳", key_months: ["3月（認識新對象）", "7月（關係升溫）", "12月（考驗期）"], desc: "2026 年你的愛情運勢是「低開高走」。上半年可能有一些不確定性，但下半年會漸入佳境。7 月是最有機會的月份。", lucky_color: "紅色", lucky_number: "1, 3, 5", hot: false },
+                love_read_receipt: { title: "💬 他已讀不回背後的真相", desc: "他不是真的忙，而是⋯⋯ 根據你的生命靈數，我們解析了他已讀不回的 3 種真實可能。", insights: ["他正在猶豫要不要投入 — 你的 1 號能量太強，他需要時間消化", "他對你有好感但不敢前進 — 你的獨立讓他又愛又怕", "他其實在等你主動 — 但他不會說出口"], action: "什麼時候該主動？什麼時候該冷卻？完整報告為你解析時間點。", hot: true },
+                love_pattern: { title: "🔄 為什麼你總是愛上同一種人", desc: "每段感情都像複製貼上？同樣的爭吵、同樣的分手理由⋯⋯ 這不是運氣，是你的「感情循環模式」。", pattern: "你容易被需要你的人吸引，因為你想當「拯救者」。但這也讓你一次次把自己消耗殆盡。", need: "你真正需要的不是「被你拯救的人」，而是「能跟你並肩作戰的人」。", hot: true },
+                love_golden_21: { title: "⏳ 分手後的黃金 21 天", desc: "分手後第 1 天到第 21 天，每一天都是關鍵。這份地圖告訴你：什麼時候該做什麼，什麼時候絕對不能做什麼。", week1: "情緒急救 — 禁止聯繫、禁止翻舊帳、禁止自我否定", week2: "自我重建 — 找回生活節奏、重新定義自己", week3: "決策時刻 — 挽回還是放下？用這 3 個問題幫你判斷", hot: true }
             },
-            2: {
-                label: '協調者',
-                emoji: '🤝',
-                traits: '溫和、敏銳，善於溝通與調和，是絕佳的夥伴。你來到這個世界是為了學習「合作」與「平衡」。',
-                strength: '同理心強、善於傾聽、外交能力、細膩',
-                weakness: '容易猶豫不決、過度依賴他人、害怕衝突',
-                career: '公關、人力資源、心理諮商、外交官',
-                love: '你會被 1、6、8 號人吸引，他們能給你安全感和方向。',
-                turning: '2026 年是你的「關係年」，第 4-6 個月將出現一個重要的合作機會。',
-                action: '【第 1-30 天】每天練習說出「我需要...」，練習表達自己的需求。\n【第 31-60 天】主動參與一個團隊專案，練習在合作中發聲。\n【第 61-90 天】回顧你在關係中的模式，找出一個可以調整的習慣。',
-                element: { 木: 45, 火: 35, 土: 70, 金: 55, 水: 85 },
-                color: '#3b82f6',
-                vip_blindspot: '你的核心陰影是「害怕不被需要」。你習慣用「配合別人」來換取安全感，但這讓你逐漸失去自己的聲音。你值得被愛，不是因為你會配合，而是因為你就是你。',
-                vip_wealth: '你的財富密碼是「連結變現」。你的天賦是把不同的人、資源、資訊串聯在一起。2026 年請專注在「幫別人牽線」——財富會自然流向你。',
-                vip_love: '你的靈魂伴侶必須是「能看見你沉默背後的渴望」的人。他們不會因為你的猶豫而不耐煩，反而會給你足夠的空間。'
+            "2": {
+                label: "協調者",
+                emoji: "🤝",
+                core_traits: "溫和、敏銳，善於溝通與調和，是絕佳的夥伴。你來到這個世界是為了學習「合作」與「平衡」。",
+                strengths: "同理心強、善於傾聽、外交能力、細膩",
+                weaknesses: "容易猶豫不決、過度依賴他人、害怕衝突",
+                career: "公關、人力資源、心理諮商、外交官",
+                element: { "木": 45, "火": 35, "土": 70, "金": 55, "水": 85 },
+                lucky_color: "藍色",
+                lucky_numbers: "2, 4, 6",
+                lucky_crystal: "海藍寶",
+                soul_lesson: {
+                    "29": "你的靈魂課題是「從配合者轉變為共同創造者」。你擅長支持別人，但這輩子要學會的是：你也有權利站在舞台中央。",
+                    "11": "你的命運轉折點在於「學會表達真實的自己」。你的人生會在 11 的週期出現重大轉折，關鍵是說出心裡話，而不是只說別人想聽的。",
+                    "2": "你的最終天賦是「橋樑連結」。你來到這個世界不是為了競爭，而是為了讓不同的人事物產生共鳴。"
+                },
+                missing_meanings: {
+                    "1": { theme: "獨立與自信", tendency: "容易依賴他人、缺乏自我主張", advice: "每天練習說「我想要...」而不是「你覺得呢？」" },
+                    "3": { theme: "表達與創造", tendency: "容易壓抑自己的情緒與想法", advice: "寫日記或創作，讓內心的聲音有出口" },
+                    "5": { theme: "自由與冒險", tendency: "容易安於現狀、害怕改變", advice: "每個月做一件「從來沒做過」的事" },
+                    "7": { theme: "深度與信任", tendency: "容易停留在表面關係，不敢深入", advice: "練習分享一個秘密，建立真正的連結" },
+                    "8": { theme: "物質與權力", tendency: "對資源和權力缺乏掌握感", advice: "學習理財和談判，為自己爭取應得的" },
+                    "9": { theme: "大愛與放下", tendency: "容易對小事執著，放不下", advice: "練習感恩和寬恕，讓心更開闊" }
+                },
+                advantage_lines: {
+                    "123": { name: "思考線", desc: "點子多、反應快、學習能力佳。你天生具備從靈感到表達的完整迴路。" },
+                    "159": { name: "意志線", desc: "目標明確、行動力強。你一旦決定要做，就會堅持到底。" },
+                    "357": { name: "溝通線", desc: "表達能力強、善於社交。你是天生的說服者。" },
+                    "369": { name: "創意線", desc: "想像力豐富、藝術天賦高。你有把抽象概念具象化的能力。" },
+                    "789": { name: "務實線", desc: "執行力強、注重細節。你擅長把計畫變成現實。" },
+                    "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
+                    "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
+                },
+                vip_blindspot: "你的核心陰影是「害怕不被需要」。你習慣用「配合別人」來換取安全感，這讓你逐漸失去自己的聲音。你值得被愛，不是因為你會配合，而是因為你就是你。",
+                vip_wealth: "你的財富密碼是「連結變現」。你的天賦是把不同的人、資源、資訊串聯在一起。2026 年請專注在「幫別人牽線」— 財富會自然流向你。",
+                vip_action: "【第 1-30 天】每天練習說出「我需要...」，練習表達自己的需求。\n【第 31-60 天】主動參與一個團隊專案，練習在合作中發聲。\n【第 61-90 天】回顧你在關係中的模式，找出一個可以調整的習慣。",
+                love_reconcile: { style: "溫柔陪伴者", desc: "你習慣用耐心和等待來修復關係，但這有時會讓對方覺得你在逃避問題。溫柔需要搭配勇敢。", steps: ["誠實表達你的感受，不要只說「好」", "給對方選擇的空間，而非一味等待", "設定一個「停損點」保護自己"], success_rate: "55%", hot: true },
+                love_attraction: { score: 78, traits: ["溫柔", "善解人意", "包容"], desc: "你的魅力來自於你的「治癒感」。跟你在一起，對方會覺得被接納、被理解。", action_plan: "練習適時表達自己的需求，讓對方也有機會照顧你。", hot: false },
+                love_crush: { sincere_index: 60, signals: ["對方會關心你的感受嗎？", "對方願意為你調整行程嗎？", "對方重視你的意見嗎？"], advice: "你可以主動一點，但不要過度討好。你的溫柔是優勢，不要把它變成弱點。", hot: true },
+                love_fwb: { risk_index: 45, signals: ["對方經常臨時約你", "對方對你個人生活不太關心", "對方從不談未來"], advice: "問自己：你是在享受這段關係，還是在害怕孤單？你值得被認真對待。", hot: false },
+                love_bad_attract: { score: 55, reasons: ["你習慣當「照顧者」", "你容易被需要幫助的人吸引", "你害怕拒絕會失去關係"], fix: "練習問自己：「這個人是在成長，還是在依賴我？」", hot: true },
+                love_crush_index: { score: 45, desc: "你不容易暈船，因為你習慣先觀察再投入。但一旦你確定了，就會很堅定。", brakes: ["確認對方是真誠的，再投入感情", "不要美化對方，接受對方的真實面貌"], hot: false },
+                love_personality: { best_match: ["1號人", "6號人", "8號人"], desc: "你容易被有方向感的人吸引。1號人帶你前進，6號人給你穩定，8號人讓你感到被保護。", hot: false },
+                relation_phase: { phase: "和諧期或冷淡期", desc: "你習慣維持表面的和諧，但有時這會讓真實的問題被忽略。", advice: "練習說出「我不太舒服」而不是「沒關係」。", hot: false },
+                reconcile_timing: { best_timing: "分手後第 14-21 天", desc: "你需要更多時間讓對方想念你。太快聯繫會讓對方覺得你沒有底線。", approach: "傳一封訊息：「最近過得好嗎？只是想跟你說聲謝謝。」", hot: false },
+                numerology_love: { timeline: { best_month: "6月", worst_month: "12月", advice: "6 月是關鍵，12 月需要更多耐心。" }, desc: "2 號人在 2026 年的愛情運勢是「慢慢升溫」。上半年專注自我成長，下半年關係會自然發展。", hot: false },
+                love_weakness: { weakness: "過度配合，讓對方不知道你的真實想法", desc: "你習慣把別人的需求放在前面，但這會讓關係變成單向的付出。", fix: "練習說「我想要...」而不是「你覺得呢？」", hot: true },
+                attract_guide: { advice: "穿藍色系，在藝術或心靈相關場合展現你的溫柔。你的魅力來自於你願意真正聆聽。", key_place: "藝文活動、咖啡廳、讀書會", key_energy: "溫柔但有界線", hot: false },
+                yearly_2026: { trend: "慢慢升溫", key_months: ["4月（認識新朋友）", "8月（關係升溫）", "12月（考驗期）"], desc: "2026 年對你來說是「關係建設年」。你會更清楚自己想要什麼樣的感情，也會學會設立健康的界線。", lucky_color: "藍色", lucky_number: "2, 4, 6", hot: false },
+                love_read_receipt: { title: "💬 他已讀不回背後的真相", desc: "他不是真的忙，而是⋯⋯ 根據你的生命靈數，我們解析了他已讀不回的 3 種真實可能。", insights: ["他正在思考如何回應你 — 你的 2 號能量讓他覺得需要謹慎", "他其實不知道怎麼面對你的溫柔", "他需要更多時間才能確定自己的感受"], action: "什麼時候該主動？什麼時候該冷卻？完整報告為你解析時間點。", hot: true },
+                love_pattern: { title: "🔄 為什麼你總是愛上同一種人", desc: "每段感情都像複製貼上？同樣的爭吵、同樣的分手理由⋯⋯ 這不是運氣，是你的「感情循環模式」。", pattern: "你容易被「需要被照顧」的人吸引，因為你想被需要。但這也讓你一次次把自己掏空。", need: "你真正需要的不是「被你照顧的人」，而是「願意照顧你的人」。", hot: true },
+                love_golden_21: { title: "⏳ 分手後的黃金 21 天", desc: "分手後第 1 天到第 21 天，每一天都是關鍵。這份地圖告訴你：什麼時候該做什麼，什麼時候絕對不能做什麼。", week1: "情緒急救 — 禁止聯繫、禁止自我否定、禁止想太多", week2: "自我重建 — 找回自己的聲音、練習表達需求", week3: "決策時刻 — 挽回還是放下？用這 3 個問題幫你判斷", hot: true }
             },
-            3: {
-                label: '表達者',
-                emoji: '🎨',
-                traits: '創意、熱情，擁有藝術天賦與感染力。你來到這個世界是為了學習「表達真實的自己」。',
-                strength: '創造力、幽默感、社交能力、樂觀',
-                weakness: '容易分散注意力、膚淺、情緒化',
-                career: '作家、演員、設計師、行銷企劃',
-                love: '你會被 1、5、9 號人吸引，他們能激發你的靈感。',
-                turning: '2026 年是你的「表達年」，第 7-9 個月將有一個展現才華的舞台。',
-                action: '【第 1-30 天】每天寫下一個「創意靈感」，培養表達的習慣。\n【第 31-60 天】將一個點子具體化為作品或企劃，練習完成。\n【第 61-90 天】主動分享你的作品，練習接受掌聲與批評。',
-                element: { 木: 90, 火: 80, 土: 30, 金: 45, 水: 50 },
-                color: '#f59e0b',
-                vip_blindspot: '你的核心陰影是「害怕被忽略」。你習慣用「搞笑」和「表現」來吸引注意力，但這讓你離真實的自己越來越遠。最動人的表達，往往來自於你敢於安靜的時刻。',
-                vip_wealth: '你的財富密碼是「創意變現」。你的靈感就是你的資產，但你需要學會「把點子轉化為產品」——2026 年請練習「減法」，專注在一個點子上做到極致。',
-                vip_love: '你的靈魂伴侶必須是「能欣賞你的光芒、也能承接你的陰影」的人。他們不會因為你情緒化而轉身離開。'
-            },
-            4: {
-                label: '建築者',
-                emoji: '🏗️',
-                traits: '務實、穩定，是組織與執行的中流砥柱。你來到這個世界是為了學習「建立秩序」。',
-                strength: '可靠、勤奮、有條理、專注',
-                weakness: '過於保守、固執、缺乏彈性',
-                career: '工程師、會計師、建築師、專案經理',
-                love: '你會被 2、6、8 號人吸引，他們能帶來溫暖與變化。',
-                turning: '2026 年是你的「建設年」，第 2-4 個月將有機會建立一個長期計畫。',
-                action: '【第 1-30 天】寫下你的「人生藍圖」——三個長期目標。\n【第 31-60 天】將其中一個目標拆解為可執行的步驟。\n【第 61-90 天】開始執行第一步，並記錄進度。',
-                element: { 木: 30, 火: 25, 土: 95, 金: 70, 水: 40 },
-                color: '#10b981',
-                vip_blindspot: '你的核心陰影是「害怕失控」。你習慣用「計畫」來對抗「不確定性」，但人生中最重要的機會往往來自於計畫之外。練習容許 10% 的混亂。',
-                vip_wealth: '你的財富密碼是「系統變現」。你擅長建立流程與制度，2026 年請把你的專業「產品化」——做成課程、模板、顧問服務，讓你的知識能被複製。',
-                vip_love: '你的靈魂伴侶必須是「能帶你冒險」的人。他們不會讓你永遠待在舒適圈，而是會溫柔地拉著你說：「走吧，這次不計畫。」'
-            },
-            5: {
-                label: '自由者',
-                emoji: '🦅',
-                traits: '冒險、多變，熱愛挑戰與新鮮事物。你來到這個世界是為了學習「擁抱變化」。',
-                strength: '適應力強、好奇心、勇氣、靈活',
-                weakness: '缺乏紀律、三分鐘熱度、容易分心',
-                career: '旅遊作家、創業家、導遊、演藝人員',
-                love: '你會被 1、3、7 號人吸引，他們能給你空間與深度。',
-                turning: '2026 年是你的「冒險年」，第 5-7 個月將有一個意外機會出現。',
-                action: '【第 1-30 天】嘗試一件「以前從未做過」的事。\n【第 31-60 天】主動接受一個「不確定」的機會。\n【第 61-90 天】回顧你的冒險，寫下三個學到的教訓。',
-                element: { 木: 60, 火: 90, 土: 25, 金: 40, 水: 55 },
-                color: '#8b5cf6',
-                vip_blindspot: '你的核心陰影是「害怕被困住」。你對「自由」的執著，有時反而讓你無法「扎根」。真正的自由不是永遠在移動，而是能選擇在哪裡停留。',
-                vip_wealth: '你的財富密碼是「趨勢變現」。你對市場的嗅覺極為敏銳，2026 年請相信你的直覺——當你「感覺」到什麼要來了，那就是你的機會。',
-                vip_love: '你的靈魂伴侶必須是「能給你安全感但不束縛你」的人。他們不會要求你停下來，而是會說：「我陪你去下一個地方。」'
-            },
-            6: {
-                label: '守護者',
-                emoji: '🛡️',
-                traits: '責任、關懷，是家庭與社群的核心支柱。你來到這個世界是為了學習「愛與服務」。',
-                strength: '責任感、同理心、治癒力、忠誠',
-                weakness: '過度付出、控制慾、容易內疚',
-                career: '護理師、教師、社工、家庭諮商',
-                love: '你會被 2、4、8 號人吸引，他們能給你穩定的支持。',
-                turning: '2026 年是你的「服務年」，第 6-8 個月將有一個幫助他人的機會。',
-                action: '【第 1-30 天】每天做一件「不期待回報」的善事。\n【第 31-60 天】練習設立「界線」，學會說不。\n【第 61-90 天】回顧你的付出，確認是否照顧好了自己。',
-                element: { 木: 40, 火: 30, 土: 75, 金: 50, 水: 80 },
-                color: '#ec4899',
-                vip_blindspot: '你的核心陰影是「害怕不被需要」。你習慣用「照顧別人」來證明自己的價值，但這讓你陷入「過勞」與「委屈」的循環。你的存在本身就有價值，不需用付出換取愛。',
-                vip_wealth: '你的財富密碼是「關懷變現」。你的同理心是天賦，2026 年請把你的照顧能力「專業化」——可以嘗試教練、顧問、療癒等服務，讓你的溫柔也能養活自己。',
-                vip_love: '你的靈魂伴侶必須是「能照顧你」的人。你已經照顧別人太久了，你需要一個會問「你今天過得好嗎」的人。'
-            },
-            7: {
-                label: '思考者',
-                emoji: '🧠',
-                traits: '內省、智慧，追求真理與深度知識。你來到這個世界是為了學習「理解生命」。',
-                strength: '洞察力、分析能力、直覺、專注',
-                weakness: '孤僻、過於理性、挑剔、容易疏離',
-                career: '研究員、科學家、哲學家、數據分析師',
-                love: '你會被 3、5、9 號人吸引，他們能帶你走出象牙塔。',
-                turning: '2026 年是你的「智慧年」，第 3-5 個月將有重要啟發出現。',
-                action: '【第 1-30 天】每天讀一個主題的深度文章，練習專注。\n【第 31-60 天】將一個想法寫成完整的論述。\n【第 61-90 天】主動分享你的見解，練習與人交流。',
-                element: { 木: 50, 火: 35, 土: 60, 金: 90, 水: 70 },
-                color: '#06b6d4',
-                vip_blindspot: '你的核心陰影是「害怕被看透」。你習慣用「智慧」來保護自己，用「分析」來保持距離。但真正的連結不需要完美的論述，只需要真實的敞開。',
-                vip_wealth: '你的財富密碼是「知識變現」。你的洞察力是稀缺資源，2026 年請把你的思考「輸出」——寫書、開課、諮詢，讓你的智慧能被更多人看見。',
-                vip_love: '你的靈魂伴侶必須是「能讓你放下分析」的人。他們不會要求你證明自己，而是會說：「不用想那麼多，感覺就好。」'
-            },
-            8: {
-                label: '權力者',
-                emoji: '👑',
-                traits: '果斷、野心，具備商業頭腦與影響力。你來到這個世界是為了學習「掌握權力」。',
-                strength: '領導力、決策力、商業直覺、韌性',
-                weakness: '過度追求成功、缺乏同理心、容易過勞',
-                career: '企業家、金融顧問、高階主管、政治家',
-                love: '你會被 2、4、6 號人吸引，他們能帶來平衡與溫暖。',
-                turning: '2026 年是你的「權力年」，第 8-10 個月將有一個升遷或創業機會。',
-                action: '【第 1-30 天】盤點你的資源與能力。\n【第 31-60 天】主動爭取一個更大責任的任務。\n【第 61-90 天】覆盤你的決策，寫下三個成功與三個失敗。',
-                element: { 木: 55, 火: 75, 土: 65, 金: 85, 水: 35 },
-                color: '#f43f5e',
-                vip_blindspot: '你的核心陰影是「害怕失敗」。你對「成功」的執著，讓你無法接受任何不完美的結果。但真正的強者不是從不跌倒，而是跌倒後能笑著站起來。',
-                vip_wealth: '你的財富密碼是「槓桿變現」。你天生知道如何用別人的資源放大自己的影響力，2026 年請專注在「整合」——把對的人、對的資源放在對的位置。',
-                vip_love: '你的靈魂伴侶必須是「能讓你放下盔甲」的人。他們不會被你的成就嚇到，而是會說：「我知道你很累，休息一下吧。」'
-            },
-            9: {
-                label: '奉獻者',
-                emoji: '🌟',
-                traits: '博愛、理想，致力於服務與改變世界。你來到這個世界是為了學習「放下與奉獻」。',
-                strength: '同理心、遠見、包容、理想主義',
-                weakness: '過度理想、容易受傷、忽略自己',
-                career: '非營利組織、社會工作者、藝術家、心靈導師',
-                love: '你會被 3、5、7 號人吸引，他們能帶來靈感與深度。',
-                turning: '2026 年是你的「轉化年」，第 9-11 個月將有一個重要的放手時刻。',
-                action: '【第 1-30 天】每天練習「感恩」，寫下三件感謝的事。\n【第 31-60 天】主動參與一項服務行動。\n【第 61-90 天】回顧你的成長，寫下你對世界的貢獻。',
-                element: { 木: 80, 火: 55, 土: 35, 金: 40, 水: 70 },
-                color: '#8b5cf6',
-                vip_blindspot: '你的核心陰影是「害怕沒有意義」。你對「使命感」的執著，有時反而讓你無法享受當下的平凡。最大的意義，往往藏在最小的日常裡。',
-                vip_wealth: '你的財富密碼是「願景變現」。你能看見更美好的世界，這本身就是一種天賦。2026 年請把你的願景「具體化」——寫成計畫、建立社群、發起行動，讓感動你的人願意支持你。',
-                vip_love: '你的靈魂伴侶必須是「能陪你走進世界、也能陪你回家」的人。他們不會把你的理想當作笑話，而是會說：「我跟你一起。」'
+            "3": {
+                label: "表達者",
+                emoji: "🎨",
+                core_traits: "創意、熱情，擁有藝術天賦與感染力。你來到這個世界是為了學習「表達真實的自己」。",
+                strengths: "創造力、幽默感、社交能力、樂觀",
+                weaknesses: "容易分散注意力、膚淺、情緒化",
+                career: "作家、演員、設計師、行銷企劃",
+                element: { "木": 90, "火": 80, "土": 30, "金": 45, "水": 50 },
+                lucky_color: "金色",
+                lucky_numbers: "3, 6, 9",
+                lucky_crystal: "黃水晶",
+                soul_lesson: {
+                    "30": "你的靈魂課題是「從表演者轉變為真實者」。你擅長帶給別人歡樂，但這輩子要學會的是：最動人的表達，來自於你敢於呈現真實的自己。",
+                    "12": "你的命運轉折點在於「學會專注」。你的人生會在 12 的週期出現重大轉折，關鍵是選擇一件事做到極致，而不是什麼都碰。",
+                    "3": "你的最終天賦是「創造與表達」。你來到這個世界不是為了複製別人，而是為了創造獨一無二的作品。"
+                },
+                missing_meanings: {
+                    "1": { theme: "獨立與自信", tendency: "容易依賴他人認可、缺乏自我肯定", advice: "每天寫一個「今天我為自己感到驕傲的事」" },
+                    "2": { theme: "耐心與合作", tendency: "容易急躁、不擅長等待與配合", advice: "練習深呼吸，放慢說話和行動的節奏" },
+                    "4": { theme: "紀律與穩定", tendency: "容易虎頭蛇尾、缺乏執行力", advice: "把大目標拆成小步驟，每天完成一點" },
+                    "5": { theme: "自由與冒險", tendency: "容易害怕失去自由而不敢承諾", advice: "問自己：我是真的想逃，還是因為害怕？" },
+                    "7": { theme: "深度與信任", tendency: "容易停留在表面，不敢深入探索", advice: "練習獨處，與自己建立深度對話" },
+                    "8": { theme: "物質與權力", tendency: "對金錢和資源缺乏管理意識", advice: "學習記帳和投資，讓財富支持你的創作" }
+                },
+                advantage_lines: {
+                    "123": { name: "思考線", desc: "點子多、反應快、學習能力佳。你天生具備從靈感到表達的完整迴路。" },
+                    "159": { name: "意志線", desc: "目標明確、行動力強。你一旦決定要做，就會堅持到底。" },
+                    "357": { name: "溝通線", desc: "表達能力強、善於社交。你是天生的說服者。" },
+                    "369": { name: "創意線", desc: "想像力豐富、藝術天賦高。你有把抽象概念具象化的能力。" },
+                    "789": { name: "務實線", desc: "執行力強、注重細節。你擅長把計畫變成現實。" },
+                    "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
+                    "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
+                },
+                vip_blindspot: "你的核心陰影是「害怕被忽略」。你習慣用「搞笑」和「表現」來吸引注意力，但這讓你離真實的自己越來越遠。最動人的表達，往往來自於你敢於安靜的時刻。",
+                vip_wealth: "你的財富密碼是「創意變現」。你的靈感就是你的資產，但你需要學會「把點子轉化為產品」。2026 年請練習「減法」，專注在一個點子上做到極致。",
+                vip_action: "【第 1-30 天】每天寫下一個「創意靈感」，培養表達的習慣。\n【第 31-60 天】將一個點子具體化為作品或企劃。\n【第 61-90 天】主動分享你的作品，練習接受掌聲與批評。",
+                love_reconcile: { style: "熱情挽回者", desc: "你習慣用「證明自己」來挽回，但對方可能覺得你在表演。最有力的挽回是安靜地改變。", steps: ["把挽回的能量轉為提升自己", "停止發送長篇訊息", "用行動證明你變了，而不是用言語"], success_rate: "50%", hot: true },
+                love_attraction: { score: 90, traits: ["幽默", "熱情", "創造力"], desc: "你的魅力是「行走的太陽」— 你讓人想靠近你、跟你待在一起。但有時你可能太耀眼，讓對方覺得自己配不上你。", action_plan: "偶爾安靜，讓對方有機會主動靠近你。", hot: false },
+                love_crush: { sincere_index: 45, signals: ["對方會因為你的笑話而開心嗎？", "對方會主動找你聊天嗎？", "對方記得住你分享過的事情嗎？"], advice: "你很容易讓別人對你有好感，但你要分清楚：對方是喜歡你的「表演」，還是喜歡「真實的你」？", hot: true },
+                love_fwb: { risk_index: 35, signals: ["對方喜歡跟你出去玩但不想談心", "對方不接你的情緒話題", "對方在你難過時會消失"], advice: "問對方：「你覺得我們是什麼關係？」直接確認定位。", hot: false },
+                love_bad_attract: { score: 30, reasons: ["你太容易相信人", "你習慣看到對方的優點", "你容易被有趣的人吸引，不管對方是不是真誠"], fix: "練習三個月規則：認識一個人至少三個月再決定要不要認真。", hot: true },
+                love_crush_index: { score: 65, desc: "你是容易暈船的類型，因為你太享受「心動的感覺」。但你的熱情有時會讓你把短暫的好感當成真愛。", brakes: ["問自己：我喜歡的是這個人，還是喜歡「喜歡他的感覺」？", "給自己一週冷靜期"], hot: false },
+                love_personality: { best_match: ["1號人", "5號人", "9號人"], desc: "你容易被能帶給你靈感的人吸引。1號人讓你看到方向，5號人陪你探索，9號人讓你感到意義。", hot: false },
+                relation_phase: { phase: "熱戀期或平淡期", desc: "你喜歡新鮮感，當關係進入平淡期，你可能會開始懷疑「是不是不愛了」。", advice: "學習在平淡中找到深度，而不是一直追求刺激。", hot: false },
+                reconcile_timing: { best_timing: "分手後第 10-14 天", desc: "你太早或太晚都不合適。第 10-14 天是黃金時間，讓對方有空間想念你，又不會覺得你已經忘記了。", approach: "傳一個輕鬆的訊息：「剛看到一個東西，想到你以前說過的話。」", hot: false },
+                numerology_love: { timeline: { best_month: "3月", worst_month: "9月", advice: "3 月是認識新對象的好時機，9 月先專注自己。" }, desc: "3 號人在 2026 年的愛情運勢是「燦爛的一年」。你的魅力會吸引很多人，但你要學會分辨誰是認真的。", hot: false },
+                love_weakness: { weakness: "容易把熱情誤認為愛情", desc: "你容易被新鮮感驅動，但真正的愛需要時間來證明。", fix: "給關係 90 天的觀察期，不急著決定「就是他了」。", hot: true },
+                attract_guide: { advice: "穿金色系，在創意場合展現你的才華。你的幽默感是最大的吸引力，但要記得讓對方也有說話的空間。", key_place: "派對、創作空間、展覽", key_energy: "熱情但不壓迫", hot: false },
+                yearly_2026: { trend: "燦爛綻放", key_months: ["3月（桃花盛開）", "6月（關係發展）", "9月（考驗期）"], desc: "2026 年對你來說是「愛情大年」。你的魅力會在 3 月達到高峰，但 9 月要注意別讓情緒主導判斷。", lucky_color: "金色", lucky_number: "3, 6, 9", hot: false },
+                love_read_receipt: { title: "💬 他已讀不回背後的真相", desc: "他不是真的忙，而是⋯⋯ 根據你的生命靈數，我們解析了他已讀不回的 3 種真實可能。", insights: ["他其實被你嚇到了 — 你的 3 號能量太耀眼，他需要時間消化", "他在享受你對他的關注，但不急著承諾", "他害怕跟不上你的節奏"], action: "什麼時候該主動？什麼時候該冷卻？完整報告為你解析時間點。", hot: true },
+                love_pattern: { title: "🔄 為什麼你總是愛上同一種人", desc: "每段感情都像複製貼上？同樣的爭吵、同樣的分手理由⋯⋯ 這不是運氣，是你的「感情循環模式」。", pattern: "你容易被「有趣的人」吸引，因為他們讓你覺得生活精彩。但新鮮感退去後，你會發現你們根本不合。", need: "你真正需要的不是「讓你開心的人」，而是「願意陪你走過平淡的人」。", hot: true },
+                love_golden_21: { title: "⏳ 分手後的黃金 21 天", desc: "分手後第 1 天到第 21 天，每一天都是關鍵。這份地圖告訴你：什麼時候該做什麼，什麼時候絕對不能做什麼。", week1: "情緒急救 — 禁止聯繫、禁止自我否定、禁止衝動發文", week2: "自我重建 — 專注一個創作、回歸自己的生活節奏", week3: "決策時刻 — 挽回還是放下？用這 3 個問題幫你判斷", hot: true }
             }
         };
 
-        const ZODIAC_MAP = [
-            [1, 20, 2, 18, '水瓶'],
-            [2, 19, 3, 20, '雙魚'],
-            [3, 21, 4, 19, '牡羊'],
-            [4, 20, 5, 20, '金牛'],
-            [5, 21, 6, 21, '雙子'],
-            [6, 22, 7, 22, '巨蟹'],
-            [7, 23, 8, 22, '獅子'],
-            [8, 23, 9, 22, '處女'],
-            [9, 23, 10, 23, '天秤'],
-            [10, 24, 11, 22, '天蠍'],
-            [11, 23, 12, 21, '射手'],
-            [12, 22, 1, 19, '魔羯']
-        ];
+        // ================================================================
+        //  2. 載入 JSON，若失敗則使用備用資料
+        // ================================================================
 
-        let currentNumber = 0;
+        let numerologyData = {};
+
+        async function loadNumerologyData() {
+            try {
+                const response = await fetch('numerology_content.json');
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                const json = await response.json();
+                numerologyData = json;
+                console.log('✅ 成功載入 numerology_content.json');
+            } catch (err) {
+                console.warn('⚠️ 載入 numerology_content.json 失敗，使用內建備用資料', err);
+                numerologyData = FALLBACK_DATA;
+            }
+        }
+
+        // ================================================================
+        //  3. 生命靈數 2.0 核心計算函式
+        // ================================================================
+
+        function calculateFullLifePath(birthday) {
+            const digits = birthday.replace(/[^0-9]/g, '').split('').map(Number);
+            const sum = digits.reduce((a, b) => a + b, 0);
+            const soulNumber = sum;
+            let powerNumber = String(sum).split('').map(Number).reduce((a, b) => a + b, 0);
+            let finalNumber = powerNumber;
+            while (finalNumber > 9) {
+                finalNumber = String(finalNumber).split('').map(Number).reduce((a, b) => a + b, 0);
+            }
+            return {
+                soulNumber: soulNumber,
+                powerNumber: powerNumber,
+                finalNumber: finalNumber,
+                display: `${soulNumber}/${powerNumber}/${finalNumber}`,
+                short: `${soulNumber}${powerNumber}${finalNumber}`
+            };
+        }
+
+        function findMissingNumbers(birthday) {
+            const digits = birthday.replace(/[^0-9]/g, '').split('').map(Number);
+            const present = new Set(digits);
+            const missing = [];
+            for (let i = 1; i <= 9; i++) {
+                if (!present.has(i)) missing.push(i);
+            }
+            return missing;
+        }
+
+        function detectLines(presentNumbers) {
+            const present = new Set(presentNumbers);
+            const lines = [
+                { key: '123', name: '思考線', desc: '點子多、反應快、學習能力佳' },
+                { key: '159', name: '意志線', desc: '目標明確、行動力強' },
+                { key: '357', name: '溝通線', desc: '表達能力強、善於社交' },
+                { key: '369', name: '創意線', desc: '想像力豐富、藝術天賦高' },
+                { key: '789', name: '務實線', desc: '執行力強、注重細節' },
+                { key: '147', name: '組織線', desc: '條理分明、善於規劃' },
+                { key: '258', name: '情感線', desc: '同理心強、善於連結' }
+            ];
+            return lines.filter(line => {
+                const nums = line.key.split('').map(Number);
+                return nums.every(n => present.has(n));
+            });
+        }
+
+        function renderGrid(presentNumbers) {
+            const present = new Set(presentNumbers);
+            const positions = [[1,2,3],[4,5,6],[7,8,9]];
+            let html = '<div class="grid-container">';
+            for (let row of positions) {
+                html += '<div class="grid-row">';
+                for (let num of row) {
+                    const exists = present.has(num);
+                    html += `<div class="grid-cell ${exists ? 'active' : 'inactive'}">${num}${exists ? ' ⭕' : ' ✕'}</div>`;
+                }
+                html += '</div>';
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function getMissingDescription(missingNumbers, data) {
+            if (!data || !data.missing_meanings) return [];
+            return missingNumbers.map(num => {
+                const info = data.missing_meanings[num];
+                if (!info) return null;
+                return { number: num, theme: info.theme, tendency: info.tendency, advice: info.advice };
+            }).filter(item => item !== null);
+        }
+
+        // ================================================================
+        //  4. 其他輔助函式
+        // ================================================================
+
+        const ZODIAC_MAP = [
+            [1,20,2,18,'水瓶'],[2,19,3,20,'雙魚'],[3,21,4,19,'牡羊'],
+            [4,20,5,20,'金牛'],[5,21,6,21,'雙子'],[6,22,7,22,'巨蟹'],
+            [7,23,8,22,'獅子'],[8,23,9,22,'處女'],[9,23,10,23,'天秤'],
+            [10,24,11,22,'天蠍'],[11,23,12,21,'射手'],[12,22,1,19,'魔羯']
+        ];
 
         function getZodiac(birthday) {
             const parts = birthday.split('-');
@@ -611,25 +755,12 @@
             return '魔羯';
         }
 
-        function getLifePathNumber(birthday) {
-            const digits = birthday.replace(/[^0-9]/g, '').split('').map(Number);
-            let sum = digits.reduce((a, b) => a + b, 0);
-            while (sum > 9) { sum = String(sum).split('').map(Number).reduce((a, b) => a + b, 0); }
-            return sum;
-        }
-
-        // ================================================================
-        //  2. 付費功能
-        // ================================================================
-
         let isPaid = false;
+        let currentNumber = 0;
 
         function simulatePayment() {
-            if (isPaid) {
-                alert('✅ 你已經解鎖完整報告了！');
-                return;
-            }
-            alert('✅ 模擬付費成功！\n系統已為您解鎖完整 VIP 靈數命盤。');
+            if (isPaid) { alert('✅ 你已經解鎖完整報告了！'); return; }
+            alert('✅ 模擬付費成功！\n系統已為您解鎖完整 VIP 靈數命盤 + 16 個感情主題。');
             isPaid = true;
             document.getElementById('paywall-area').style.display = 'none';
             document.getElementById('vip-content-area').style.display = 'block';
@@ -637,32 +768,26 @@
         }
 
         // ================================================================
-        //  3. 計算與渲染
+        //  5. 主計算與渲染
         // ================================================================
 
         function calculateLifePath() {
             const birthday = document.getElementById('birthday').value;
             if (!birthday) { alert('請選擇出生日期'); return; }
 
-            const number = getLifePathNumber(birthday);
+            const fullPath = calculateFullLifePath(birthday);
+            const number = fullPath.finalNumber;
             currentNumber = number;
             const zodiac = getZodiac(birthday);
-            const data = NUMEROLOGY_DATA[number] || NUMEROLOGY_DATA[1];
+            const data = numerologyData[number] || numerologyData[String(number)] || FALLBACK_DATA[String(number)] || FALLBACK_DATA["1"];
             const yearlyNumber = (number + 6) % 9 || 9;
 
             const resultDiv = document.getElementById('result');
             resultDiv.style.display = 'block';
 
-            const elementColors = {
-                '木': '#10b981',
-                '火': '#f43f5e',
-                '土': '#f59e0b',
-                '金': '#8b5cf6',
-                '水': '#3b82f6'
-            };
-
-            const elementHtml = Object.keys(data.element).map(key => {
-                const val = data.element[key];
+            const elementColors = { '木':'#10b981','火':'#f43f5e','土':'#f59e0b','金':'#8b5cf6','水':'#3b82f6' };
+            const elementHtml = Object.keys(data.element || {}).map(key => {
+                const val = data.element[key] || 50;
                 const color = elementColors[key] || '#6366f1';
                 return `<div class="element-row">
                     <div class="element-label">${key}</div>
@@ -673,38 +798,156 @@
                 </div>`;
             }).join('');
 
-            // 重置付費狀態
+            // ===== 五行能量說明 =====
+            const wuxingHtml = `
+            <div style="background:#0f172a;border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0;border:1px solid var(--border);">
+                <div style="font-size:0.75rem;color:var(--text-muted);letter-spacing:0.5px;margin-bottom:0.5rem;">🌿 五行能量與事業方向</div>
+                <div style="color:var(--text-muted);font-size:0.85rem;line-height:1.8;margin-bottom:0.8rem;">
+                    你的五行能量分佈，會影響你天生的優勢和適合的發展方向：
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.85rem;">
+                    <div style="background:rgba(16,185,129,0.08);border-left:3px solid #10b981;padding:0.4rem 0.6rem;border-radius:4px;">
+                        <span style="color:#10b981;font-weight:700;">木</span>
+                        <span style="color:var(--text-muted);">成長、創造、開拓 — 適合創意、教育、設計</span>
+                    </div>
+                    <div style="background:rgba(244,63,94,0.08);border-left:3px solid #f43f5e;padding:0.4rem 0.6rem;border-radius:4px;">
+                        <span style="color:#f43f5e;font-weight:700;">火</span>
+                        <span style="color:var(--text-muted);">熱情、行動、影響 — 適合領導、創業、演藝</span>
+                    </div>
+                    <div style="background:rgba(245,158,11,0.08);border-left:3px solid #f59e0b;padding:0.4rem 0.6rem;border-radius:4px;">
+                        <span style="color:#f59e0b;font-weight:700;">土</span>
+                        <span style="color:var(--text-muted);">穩定、承載、滋養 — 適合建築、管理、社工</span>
+                    </div>
+                    <div style="background:rgba(139,92,246,0.08);border-left:3px solid #8b5cf6;padding:0.4rem 0.6rem;border-radius:4px;">
+                        <span style="color:#8b5cf6;font-weight:700;">金</span>
+                        <span style="color:var(--text-muted);">果斷、紀律、價值 — 適合金融、法律、醫療</span>
+                    </div>
+                    <div style="background:rgba(59,130,246,0.08);border-left:3px solid #3b82f6;padding:0.4rem 0.6rem;border-radius:4px;grid-column:span 2;">
+                        <span style="color:#3b82f6;font-weight:700;">水</span>
+                        <span style="color:var(--text-muted);">智慧、溝通、連結 — 適合公關、心理、研究、旅遊</span>
+                    </div>
+                </div>
+                <div style="color:var(--text-muted);font-size:0.75rem;margin-top:0.6rem;border-top:1px solid var(--border);padding-top:0.5rem;">
+                    💡 你的五行能量中，最高的一項代表你的「天賦優勢」，最低的一項是你的「成長課題」
+                </div>
+            </div>
+            `;
+
+            // ---- 缺數分析 ----
+            const missingNums = findMissingNumbers(birthday);
+            const missingDescriptions = getMissingDescription(missingNums, data);
+            let missingHtml = '';
+            if (missingNums.length > 0) {
+                missingHtml = `
+                    <div style="margin:1.2rem 0;background:#0f172a;border-radius:10px;padding:1rem;border:1px solid var(--border);">
+                        <div style="font-weight:700;color:#fbbf24;font-size:1rem;">📊 缺數分析</div>
+                        <div style="color:var(--text-muted);font-size:0.85rem;margin-bottom:0.5rem;">你的生日數字中缺少：${missingNums.join('、')}</div>
+                        ${missingDescriptions.map(m => `
+                            <div style="background:rgba(251,191,36,0.05);border-left:3px solid #fbbf24;padding:0.6rem 0.8rem;margin:0.5rem 0;border-radius:4px;">
+                                <div style="display:flex;align-items:center;gap:0.5rem;">
+                                    <span style="font-weight:700;color:#fbbf24;">缺 ${m.number}</span>
+                                    <span style="color:#c084fc;font-size:0.85rem;">主題：${m.theme}</span>
+                                </div>
+                                <div style="color:var(--text-muted);font-size:0.85rem;">傾向：${m.tendency}</div>
+                                <div style="color:#fbcfe8;font-size:0.85rem;">💡 建議：${m.advice}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                missingHtml = `
+                    <div style="margin:1.2rem 0;background:#0f172a;border-radius:10px;padding:1rem;border:1px solid var(--border);">
+                        <div style="font-weight:700;color:#34d399;font-size:1rem;">✅ 完整數字</div>
+                        <div style="color:var(--text-muted);font-size:0.85rem;">你的生日包含了 1~9 所有數字，能量完整平衡！</div>
+                    </div>
+                `;
+            }
+
+            // ---- 九宮格 + 連線（付費區） ----
+            const presentNums = birthday.replace(/[^0-9]/g, '').split('').map(Number);
+            const activeLines = detectLines(presentNums);
+            const gridHtml = renderGrid(presentNums);
+            let linesHtml = '';
+            if (activeLines.length > 0) {
+                linesHtml = `
+                    <div style="margin:0.5rem 0;">
+                        <div style="font-weight:600;color:#c084fc;">✅ 已啟動的優勢連線</div>
+                        ${activeLines.map(line => `
+                            <div style="background:rgba(99,102,241,0.05);border-left:3px solid #6366f1;padding:0.4rem 0.8rem;margin:0.3rem 0;border-radius:4px;">
+                                <span style="font-weight:700;color:#a5b4fc;">${line.key} ${line.name}</span>
+                                <span style="color:var(--text-muted);font-size:0.85rem;">— ${line.desc}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                linesHtml = `
+                    <div style="color:var(--text-muted);font-size:0.9rem;margin:0.5rem 0;">
+                        ⚡ 目前尚未形成主要連線，建議透過刻意練習補足缺少的數字。
+                    </div>
+                `;
+            }
+
             isPaid = false;
 
             resultDiv.innerHTML = `
                 <div class="life-path-circle">
                     <div class="life-path-number">${number}</div>
                     <div class="life-path-info">
-                        <div class="label">${data.emoji} 你的生命靈數</div>
-                        <div class="title">${data.label}</div>
+                        <div class="label">${data.emoji || '🌟'} 你的生命靈數</div>
+                        <div class="title">${data.label || '探索者'}</div>
                         <div class="subtitle">${zodiac}座 · ${number % 2 === 0 ? '和諧互補' : '動態張力'} 能量</div>
                     </div>
                 </div>
 
-                <div class="summary">
-                    <p><strong>${data.label}</strong> — ${data.traits}</p>
-                    <p style="margin-top:0.5rem;"><strong>天賦使命：</strong> ${data.strength}</p>
-                    <p><strong>需要留意：</strong> ${data.weakness}</p>
+                <!-- 完整計算過程 -->
+                <div style="background:#0f172a;border-radius:10px;padding:0.8rem 1.2rem;margin:1rem 0;border:1px solid var(--border);text-align:center;">
+                    <div style="font-size:0.7rem;color:var(--text-muted);letter-spacing:1px;">✦ 完整生命靈數計算 ✦</div>
+                    <div style="font-size:1.1rem;font-weight:600;color:#f1f5f9;margin-top:0.2rem;">
+                        ${birthday.replace(/-/g,'')} → ${birthday.replace(/[^0-9]/g,'').split('').join('+')} = ${fullPath.soulNumber}
+                        → ${fullPath.powerNumber} → ${fullPath.finalNumber}
+                    </div>
+                    <div style="font-size:0.85rem;color:#c084fc;font-weight:600;margin-top:0.2rem;">
+                        ${fullPath.display} · ${fullPath.short}
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-top:0.5rem;font-size:0.8rem;color:var(--text-muted);">
+                        <div><span style="color:#f1f5f9;font-weight:600;">${fullPath.soulNumber}</span><br>靈魂課題數</div>
+                        <div><span style="color:#f1f5f9;font-weight:600;">${fullPath.powerNumber}</span><br>力量數</div>
+                        <div><span style="color:#f1f5f9;font-weight:600;">${fullPath.finalNumber}</span><br>生命道路數</div>
+                    </div>
                 </div>
+
+                <!-- 靈魂課題說明 -->
+                <div style="background:rgba(99,102,241,0.05);border-left:3px solid var(--primary);padding:0.8rem 1rem;margin:0.5rem 0;border-radius:4px;">
+                    <div style="font-size:0.7rem;color:var(--text-muted);letter-spacing:0.5px;">🔮 三層數字解析</div>
+                    <div style="color:#cbd5e1;font-size:0.9rem;line-height:1.6;">
+                        ${data.soul_lesson ? data.soul_lesson[fullPath.soulNumber] || data.soul_lesson[String(fullPath.soulNumber)] || '請在 JSON 中補上對應數字' : '請在 JSON 中補上 soul_lesson 欄位'}
+                    </div>
+                </div>
+
+                <div class="summary">
+                    <p><strong>${data.label || ''}</strong> — ${data.core_traits || ''}</p>
+                    <p style="margin-top:0.5rem;"><strong>天賦使命：</strong> ${data.strengths || ''}</p>
+                    <p><strong>需要留意：</strong> ${data.weaknesses || ''}</p>
+                </div>
+
+                <!-- 缺數分析（免費區） -->
+                ${missingHtml}
 
                 <div style="margin:1.2rem 0;">
                     <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:0.3rem;">🌿 五行能量分佈</p>
                     <div class="element-chart">${elementHtml}</div>
+                    ${wuxingHtml}
                 </div>
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.2rem 0;">
                     <div style="background:#0f172a;padding:0.8rem 1rem;border-radius:10px;border:1px solid var(--border);">
                         <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">💼 適合職業</div>
-                        <div style="font-weight:700;color:#f1f5f9;font-size:0.95rem;">${data.career}</div>
+                        <div style="font-weight:700;color:#f1f5f9;font-size:0.95rem;">${data.career || ''}</div>
                     </div>
                     <div style="background:#0f172a;padding:0.8rem 1rem;border-radius:10px;border:1px solid var(--border);">
-                        <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">💞 靈魂伴侶</div>
-                        <div style="font-weight:700;color:#f1f5f9;font-size:0.95rem;">${data.love}</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">🍀 開運小物</div>
+                        <div style="font-weight:700;color:#f1f5f9;font-size:0.95rem;">${data.lucky_color || ''} · ${data.lucky_crystal || ''}</div>
                     </div>
                 </div>
 
@@ -716,7 +959,7 @@
                         </div>
                         <div style="flex:1;min-width:150px;">
                             <div style="color:#c084fc;font-weight:600;">${['','開創','合作','表達','執行','自由','責任','智慧','權力','奉獻'][yearlyNumber] || '轉變'}之年</div>
-                            <div style="color:var(--text-muted);font-size:0.9rem;">${data.turning}</div>
+                            <div style="color:var(--text-muted);font-size:0.9rem;">${data.turning || '請在 numerology_content.json 中補上 turning 欄位'}</div>
                         </div>
                     </div>
                 </div>
@@ -730,7 +973,7 @@
                 <div id="paywall-area">
                     <div class="preview-block">
                         <div class="preview-title">🔓 VIP 報告獨家試閱</div>
-                        <div class="preview-text">「${number} 號人的核心陰影是『${data.weakness.split('、')[0] || '自我設限'}』⋯⋯ 這將如何影響你的財富與關係？完整版為你解答。」</div>
+                        <div class="preview-text">「你是不是常常覺得，明明自己很優秀，卻總是在感情裡吃虧？你習慣用『我很強』來武裝自己，但這正是讓你跟伴侶越來越遠的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」</div>
                         <div class="preview-more">（完整內容解鎖後可見）</div>
                     </div>
 
@@ -738,7 +981,7 @@
                         <div class="urgency">🔥 今日尚餘 <span>23</span> 份完整命盤名額</div>
                         <div style="font-size:1.2rem;font-weight:600;color:#fbcfe8;">🔒 解鎖完整 VIP 靈數命盤</div>
                         <div style="color:var(--text-muted);font-size:0.85rem;margin:0.3rem 0;">
-                            包含：流年完整解析｜財富密碼｜感情走向｜開運指南｜90天行動計畫
+                            包含：核心陰影｜財富密碼｜九宮格連線｜16 個感情主題｜90 天行動計畫
                         </div>
                         <div class="price-tag"><span>NT$ 599</span> NT$ 99</div>
                         <div class="price-daily">相當於每天不到 <strong>NT$ 4</strong></div>
@@ -747,43 +990,174 @@
                     </div>
                 </div>
 
-                <!-- ===== VIP 完整內容（付費後顯示） ===== -->
+                <!-- ===== VIP 完整內容 ===== -->
                 <div id="vip-content-area" class="vip-content">
                     <h3>👑 完整 VIP 靈數命盤</h3>
 
                     <div class="vip-section">
                         <div class="vip-label">🔮 核心陰影</div>
-                        <p>${data.vip_blindspot || '（請在資料庫中補上 vip_blindspot）'}</p>
+                        <p>${data.vip_blindspot || '請在 numerology_content.json 中補上 vip_blindspot'}</p>
                     </div>
 
                     <div class="vip-section">
                         <div class="vip-label">💰 財富密碼</div>
-                        <p>${data.vip_wealth || '（請在資料庫中補上 vip_wealth）'}</p>
+                        <p>${data.vip_wealth || '請在 numerology_content.json 中補上 vip_wealth'}</p>
+                    </div>
+
+                    <!-- ===== 九宮格 + 連線（付費區） ===== -->
+                    <div class="vip-section">
+                        <div class="vip-label">🧩 生命靈數九宮格</div>
+                        <div style="text-align:center;">
+                            ${gridHtml}
+                        </div>
+                        ${linesHtml}
                     </div>
 
                     <div class="vip-section">
-                        <div class="vip-label">💞 靈魂伴侶進階解析</div>
-                        <p>${data.vip_love || '（請在資料庫中補上 vip_love）'}</p>
+                        <div class="vip-label">🗝️ 90 天行動計畫</div>
+                        <p style="white-space:pre-line;">${data.vip_action || '請在 numerology_content.json 中補上 vip_action'}</p>
                     </div>
 
+                    <!-- ===== 16 個感情主題 ===== -->
+                    <h3>💕 16 個感情主題完整分析</h3>
+
+                    <!-- 1. 感情挽回指南 -->
                     <div class="vip-section">
-                        <div class="vip-label">🗝️ 專屬開運指南</div>
-                        <p>✨ 開運顏色：<span style="color:${data.color};font-weight:700;">●</span> 多穿戴 ${data.color === '#f43f5e' ? '紅色' : data.color === '#3b82f6' ? '藍色' : data.color === '#f59e0b' ? '金色' : data.color === '#10b981' ? '綠色' : data.color === '#8b5cf6' ? '紫色' : '暖色系'} 的服飾或配件。<br>
-                        🔮 幸運數字：${number}、${number + 3}、${number + 6}<br>
-                        🪷 心法：${number % 2 === 0 ? '「慢，就是快。」' : '「跳，才有路。」'}</p>
+                        <div class="vip-label">💔 感情挽回指南 ${data.love_reconcile?.hot ? '🔥' : ''}</div>
+                        <p><strong>你的挽回風格：</strong>${data.love_reconcile?.style || ''}</p>
+                        <p>${data.love_reconcile?.desc || ''}</p>
+                        <p style="margin-top:0.3rem;"><strong>復合成功率：</strong>${data.love_reconcile?.success_rate || ''}</p>
+                        <p><strong>步驟：</strong></p>
+                        <p>${(data.love_reconcile?.steps || []).map((s, i) => `${i+1}. ${s}`).join('<br>')}</p>
                     </div>
 
+                    <!-- 2. 桃花運勢與吸引力分析 -->
                     <div class="vip-section">
-                        <div class="vip-label">📆 2026 完整流年解析</div>
-                        <p>${data.turning}</p>
-                        <p style="margin-top:0.5rem;color:#a5b4fc;font-size:0.9rem;">
-                            <strong>關鍵月份：</strong>${number % 2 === 0 ? '4 月、8 月、12 月' : '3 月、7 月、11 月'}
-                        </p>
+                        <div class="vip-label">💕 桃花運勢與吸引力分析 ${data.love_attraction?.hot ? '🔥' : ''}</div>
+                        <p><strong>你的桃花運值：</strong>${data.love_attraction?.score || 0}%</p>
+                        <p>${data.love_attraction?.desc || ''}</p>
+                        <p><strong>你吸引人的特質：</strong>${(data.love_attraction?.traits || []).join('、')}</p>
+                        <p><strong>吸引力提升計畫：</strong>${data.love_attraction?.action_plan || ''}</p>
                     </div>
 
+                    <!-- 3. 曖昧對象真心判定 -->
                     <div class="vip-section">
-                        <div class="vip-label">🗝️ 90 天行動落地指南</div>
-                        <p style="white-space:pre-line;color:#cbd5e1;line-height:2;">${data.action}</p>
+                        <div class="vip-label">❤️ 曖昧對象真心判定 ${data.love_crush?.hot ? '🔥' : ''}</div>
+                        <p><strong>對方真心指數：</strong>${data.love_crush?.sincere_index || 0}%</p>
+                        <p><strong>關鍵訊號：</strong></p>
+                        <p>${(data.love_crush?.signals || []).map(s => `• ${s}`).join('<br>')}</p>
+                        <p><strong>建議行動：</strong>${data.love_crush?.advice || ''}</p>
+                    </div>
+
+                    <!-- 4. 潛在炮友風險檢測 -->
+                    <div class="vip-section">
+                        <div class="vip-label">⚠️ 潛在炮友風險檢測 ${data.love_fwb?.hot ? '🔥' : ''}</div>
+                        <p><strong>你的風險指數：</strong>${data.love_fwb?.risk_index || 0}%</p>
+                        <p><strong>危險訊號：</strong></p>
+                        <p>${(data.love_fwb?.signals || []).map(s => `• ${s}`).join('<br>')}</p>
+                        <p><strong>保護自己的做法：</strong>${data.love_fwb?.advice || ''}</p>
+                    </div>
+
+                    <!-- 5. 吸渣體質檢測 -->
+                    <div class="vip-section">
+                        <div class="vip-label">🧲 吸渣體質檢測 ${data.love_bad_attract?.hot ? '🔥' : ''}</div>
+                        <p><strong>你的吸渣指數：</strong>${data.love_bad_attract?.score || 0}%</p>
+                        <p><strong>可能原因：</strong></p>
+                        <p>${(data.love_bad_attract?.reasons || []).map(s => `• ${s}`).join('<br>')}</p>
+                        <p><strong>破解方法：</strong>${data.love_bad_attract?.fix || ''}</p>
+                    </div>
+
+                    <!-- 6. 暈船指數評估 -->
+                    <div class="vip-section">
+                        <div class="vip-label">🌊 暈船指數評估 ${data.love_crush_index?.hot ? '🔥' : ''}</div>
+                        <p><strong>你的暈船指數：</strong>${data.love_crush_index?.score || 0}%</p>
+                        <p>${data.love_crush_index?.desc || ''}</p>
+                        <p><strong>煞車機制：</strong></p>
+                        <p>${(data.love_crush_index?.brakes || []).map(s => `• ${s}`).join('<br>')}</p>
+                    </div>
+
+                    <!-- 7. 戀愛人格配對 -->
+                    <div class="vip-section">
+                        <div class="vip-label">💞 戀愛人格配對 ${data.love_personality?.hot ? '🔥' : ''}</div>
+                        <p><strong>最適合你的伴侶類型：</strong>${(data.love_personality?.best_match || []).join('、')}</p>
+                        <p>${data.love_personality?.desc || ''}</p>
+                    </div>
+
+                    <!-- 8. 關係階段定位 -->
+                    <div class="vip-section">
+                        <div class="vip-label">📌 關係階段定位 ${data.relation_phase?.hot ? '🔥' : ''}</div>
+                        <p><strong>當前階段：</strong>${data.relation_phase?.phase || ''}</p>
+                        <p>${data.relation_phase?.desc || ''}</p>
+                        <p><strong>建議：</strong>${data.relation_phase?.advice || ''}</p>
+                    </div>
+
+                    <!-- 9. 復合時機預測 -->
+                    <div class="vip-section">
+                        <div class="vip-label">⏰ 復合時機預測 ${data.reconcile_timing?.hot ? '🔥' : ''}</div>
+                        <p><strong>最佳聯繫時機：</strong>${data.reconcile_timing?.best_timing || ''}</p>
+                        <p>${data.reconcile_timing?.desc || ''}</p>
+                        <p><strong>建議做法：</strong>${data.reconcile_timing?.approach || ''}</p>
+                    </div>
+
+                    <!-- 10. 生命靈數愛情運勢 -->
+                    <div class="vip-section">
+                        <div class="vip-label">🔮 生命靈數愛情運勢 ${data.numerology_love?.hot ? '🔥' : ''}</div>
+                        <p>${data.numerology_love?.desc || ''}</p>
+                        <p><strong>最佳桃花月：</strong>${data.numerology_love?.timeline?.best_month || ''}</p>
+                        <p><strong>需要謹慎的月份：</strong>${data.numerology_love?.timeline?.worst_month || ''}</p>
+                        <p><strong>建議：</strong>${data.numerology_love?.timeline?.advice || ''}</p>
+                    </div>
+
+                    <!-- 11. 愛情致命弱點分析 -->
+                    <div class="vip-section">
+                        <div class="vip-label">🎯 愛情致命弱點分析 ${data.love_weakness?.hot ? '🔥' : ''}</div>
+                        <p><strong>你的愛情致命傷：</strong>${data.love_weakness?.weakness || ''}</p>
+                        <p>${data.love_weakness?.desc || ''}</p>
+                        <p><strong>改善方法：</strong>${data.love_weakness?.fix || ''}</p>
+                    </div>
+
+                    <!-- 12. 吸引愛人開運指南 -->
+                    <div class="vip-section">
+                        <div class="vip-label">✨ 吸引愛人開運指南 ${data.attract_guide?.hot ? '🔥' : ''}</div>
+                        <p>${data.attract_guide?.advice || ''}</p>
+                        <p><strong>關鍵場合：</strong>${data.attract_guide?.key_place || ''}</p>
+                        <p><strong>關鍵能量：</strong>${data.attract_guide?.key_energy || ''}</p>
+                    </div>
+
+                    <!-- 13. 2026 愛情運勢年報 -->
+                    <div class="vip-section">
+                        <div class="vip-label">🌟 2026 愛情運勢年報 ${data.yearly_2026?.hot ? '🔥' : ''}</div>
+                        <p><strong>全年趨勢：</strong>${data.yearly_2026?.trend || ''}</p>
+                        <p>${data.yearly_2026?.desc || ''}</p>
+                        <p><strong>關鍵月份：</strong>${(data.yearly_2026?.key_months || []).join('、')}</p>
+                        <p><strong>開運顏色：</strong>${data.yearly_2026?.lucky_color || ''}</p>
+                        <p><strong>幸運數字：</strong>${data.yearly_2026?.lucky_number || ''}</p>
+                    </div>
+
+                    <!-- ===== 14. 他已讀不回背後的真相（新增） ===== -->
+                    <div class="vip-section" style="border-left-color: #f59e0b;">
+                        <div class="vip-label">💬 他已讀不回背後的真相 ${data.love_read_receipt?.hot ? '🔥' : ''}</div>
+                        <p>${data.love_read_receipt?.desc || '請在 JSON 中補上 love_read_receipt.desc'}</p>
+                        <p><strong>3 種真實可能：</strong></p>
+                        <p>${(data.love_read_receipt?.insights || ['請補上 insights 陣列']).map(s => `• ${s}`).join('<br>')}</p>
+                        <p><strong>你的行動策略：</strong>${data.love_read_receipt?.action || '請補上 action'}</p>
+                    </div>
+
+                    <!-- ===== 15. 為什麼你總是愛上同一種人（新增） ===== -->
+                    <div class="vip-section" style="border-left-color: #ec4899;">
+                        <div class="vip-label">🔄 為什麼你總是愛上同一種人 ${data.love_pattern?.hot ? '🔥' : ''}</div>
+                        <p>${data.love_pattern?.desc || '請在 JSON 中補上 love_pattern.desc'}</p>
+                        <p><strong>你的循環模式：</strong>${data.love_pattern?.pattern || '請補上 pattern'}</p>
+                        <p><strong>你真正需要的：</strong>${data.love_pattern?.need || '請補上 need'}</p>
+                    </div>
+
+                    <!-- ===== 16. 分手後的黃金 21 天（新增） ===== -->
+                    <div class="vip-section" style="border-left-color: #8b5cf6;">
+                        <div class="vip-label">⏳ 分手後的黃金 21 天 ${data.love_golden_21?.hot ? '🔥' : ''}</div>
+                        <p>${data.love_golden_21?.desc || '請在 JSON 中補上 love_golden_21.desc'}</p>
+                        <p><strong>第 1-7 天（情緒急救）：</strong>${data.love_golden_21?.week1 || '請補上 week1'}</p>
+                        <p><strong>第 8-14 天（自我重建）：</strong>${data.love_golden_21?.week2 || '請補上 week2'}</p>
+                        <p><strong>第 15-21 天（決策時刻）：</strong>${data.love_golden_21?.week3 || '請補上 week3'}</p>
                     </div>
 
                     <div style="text-align:center;color:var(--text-muted);font-size:0.85rem;border-top:1px solid var(--border);padding-top:1rem;margin-top:0.5rem;">
@@ -796,11 +1170,10 @@
                 </div>
             `;
 
-            // 觸發五行動畫
             setTimeout(() => {
                 document.querySelectorAll('.element-bar-fill').forEach(el => {
                     const w = el.style.width;
-                    if (w) { el.style.transition = 'width 1.6s cubic-bezier(0.22,1,0.36,1)';
+                    if (w) { el.style.transition = 'width 1.6s cubic-bezier(0.22, 1, 0.36, 1)';
                         el.style.width = w; }
                 });
             }, 300);
@@ -808,7 +1181,14 @@
             resultDiv.scrollIntoView({ behavior: 'smooth' });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {});
+        // ================================================================
+        //  6. 初始化
+        // ================================================================
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadNumerologyData();
+            document.getElementById('result').style.display = 'none';
+        });
     </script>
 </body>
 </html>
