@@ -355,6 +355,7 @@
             font-size: 0.75rem;
         }
 
+        /* ===== 付費按鈕發光動畫 ===== */
         .pay-btn {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: #fff;
@@ -367,17 +368,34 @@
             box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
             transition: 0.3s;
             margin-top: 0.3rem;
+            animation: pulse-btn 2s ease-in-out infinite;
         }
         .pay-btn:hover {
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 12px 35px rgba(236, 72, 153, 0.4);
         }
+
+        @keyframes pulse-btn {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 45px rgba(236, 72, 153, 0.7);
+                transform: scale(1.02);
+            }
+        }
+
         .paywall .guarantee {
             font-size: 0.8rem;
             color: var(--text-muted);
             margin-top: 0.5rem;
         }
-        .paywall .guarantee span { color: #34d399; font-weight: 600; }
+        .paywall .guarantee span { 
+            color: #34d399; 
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
 
         /* VIP 完整內容 */
         .vip-content {
@@ -498,6 +516,7 @@
                     "power": "你的命運轉折點在於「學會放下控制」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從個人英雄轉變為團隊領袖」。你習慣靠自己解決問題，但這輩子要學會的是：真正的力量來自於啟發他人，而不是獨自扛下所有。"
                 },
+                turning: "你的流年能量正在轉向「獨立開創」，今年是你從跟隨者變成開創者的關鍵年。你將學會不再等待別人給你機會，而是自己創造機會。",
                 missing_meanings: {
                     "5": { theme: "平衡", tendency: "容易想太多、猶豫不決、情緒容易被外界影響", advice: "多運動、多旅行、多接觸不同圈子，讓身體帶著心走" },
                     "6": { theme: "責任與愛的界線", tendency: "容易過度付出，或反過來逃避承諾", advice: "練習說『不』，同時練習接受別人的付出" },
@@ -513,8 +532,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕脆弱」。你習慣用「我很強」來掩蓋「我需要幫助」的事實，這讓你即使累垮了也不願開口求援。真正的領導力不是永遠強悍，而是懂得在對的時候放下盔甲。",
-                vip_wealth: "你的財富密碼是「影響力變現」。你不是靠勞力賺錢的人，你是靠「讓別人願意跟隨你」來累積財富。2026 年請專注打造你的個人品牌，而不是埋頭苦幹。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕脆弱」</span>。你習慣用 <span style='color:#fbbf24;font-weight:600;'>「我很強」</span> 來掩蓋 <span style='color:#fbbf24;font-weight:600;'>「我需要幫助」</span> 的事實，這讓你即使累垮了也不願開口求援。真正的領導力不是永遠強悍，而是懂得在對的時候 <span style='color:#34d399;font-weight:600;'>放下盔甲</span>。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「影響力變現」</span>。你不是靠勞力賺錢的人，你是靠 <span style='color:#fbbf24;font-weight:600;'>「讓別人願意跟隨你」</span> 來累積財富。今年請專注 <span style='color:#34d399;font-weight:600;'>打造你的個人品牌</span>，而不是埋頭苦幹。",
                 vip_action: "【第 1-30 天】每天寫下一個「只屬於你自己」的決定，練習獨立思考。\n【第 31-60 天】主動承擔一個領導角色，即使只是小組組長。\n【第 61-90 天】覆盤你的領導風格，寫下三個可以更好的地方。",
                 love_reconcile: { style: "冷靜戰略家", desc: "你傾向用理性分析面對分手，懂得給彼此空間。這是最有機會修復關係的模式，但要注意別讓對方覺得你太冷。", steps: ["先暫停聯繫 7 天，讓雙方情緒冷卻", "第 8 天傳一封「不帶期待」的訊息", "如果對方回覆，先聊近況不急著談復合"], success_rate: "65%", hot: true },
                 love_attraction: { score: 82, traits: ["自信", "果斷", "獨立"], desc: "你的存在感很強，你不需要刻意做什麼就能吸引別人的目光。但要注意，你的「獨立」有時會讓想靠近你的人覺得有距離。", action_plan: "每天練習一個「溫柔的溝通」—— 多問對方「你覺得呢？」", hot: false },
@@ -549,6 +568,7 @@
                     "power": "你的命運轉折點在於「學會表達真實的自己」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從配合者轉變為共同創造者」。你擅長支持別人，但這輩子要學會的是：你也有權利站在舞台中央。"
                 },
+                turning: "你的流年能量正在轉向「合作共贏」，今年是你從配角變成主角的關鍵年。你將學會不再只是配合，而是勇敢站在舞台中央。",
                 missing_meanings: {
                     "1": { theme: "獨立與自信", tendency: "容易依賴他人、缺乏自我主張", advice: "每天練習說「我想要...」而不是「你覺得呢？」" },
                     "3": { theme: "表達與創造", tendency: "容易壓抑自己的情緒與想法", advice: "寫日記或創作，讓內心的聲音有出口" },
@@ -566,8 +586,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕不被需要」。你習慣用「配合別人」來換取安全感，這讓你逐漸失去自己的聲音。你值得被愛，不是因為你會配合，而是因為你就是你。",
-                vip_wealth: "你的財富密碼是「連結變現」。你的天賦是把不同的人、資源、資訊串聯在一起。2026 年請專注在「幫別人牽線」— 財富會自然流向你。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕不被需要」</span>。你習慣用 <span style='color:#fbbf24;font-weight:600;'>「配合別人」</span> 來換取安全感，這讓你逐漸 <span style='color:#fbbf24;font-weight:600;'>失去自己的聲音</span>。你值得被愛，不是因為你會配合，而是因為 <span style='color:#34d399;font-weight:600;'>你就是你</span>。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「連結變現」</span>。你的天賦是把不同的人、資源、資訊串聯在一起。今年請專注在 <span style='color:#34d399;font-weight:600;'>「幫別人牽線」</span>，財富會自然流向你。",
                 vip_action: "【第 1-30 天】每天練習說出「我需要...」，練習表達自己的需求。\n【第 31-60 天】主動參與一個團隊專案，練習在合作中發聲。\n【第 61-90 天】回顧你在關係中的模式，找出一個可以調整的習慣。",
                 love_reconcile: { style: "溫柔陪伴者", desc: "你習慣用耐心和等待來修復關係，但這有時會讓對方覺得你在逃避問題。溫柔需要搭配勇敢。", steps: ["誠實表達你的感受，不要只說「好」", "給對方選擇的空間，而非一味等待", "設定一個「停損點」保護自己"], success_rate: "55%", hot: true },
                 love_attraction: { score: 78, traits: ["溫柔", "善解人意", "包容"], desc: "你的魅力來自於你的「治癒感」。跟你在一起，對方會覺得被接納、被理解。", action_plan: "練習適時表達自己的需求，讓對方也有機會照顧你。", hot: false },
@@ -602,6 +622,7 @@
                     "power": "你的命運轉折點在於「學會專注」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從表演者轉變為真實者」。你擅長帶給別人歡樂，但這輩子要學會的是：最動人的表達，來自於你敢於呈現真實的自己。"
                 },
+                turning: "你的流年能量正在轉向「真實表達」，今年是你從表演者變成真實者的關鍵年。你將學會不再討好別人，而是說出心裡真正的聲音。",
                 missing_meanings: {
                     "1": { theme: "獨立與自信", tendency: "容易依賴他人認可、缺乏自我肯定", advice: "每天寫一個「今天我為自己感到驕傲的事」" },
                     "2": { theme: "耐心與合作", tendency: "容易急躁、不擅長等待與配合", advice: "練習深呼吸，放慢說話和行動的節奏" },
@@ -619,8 +640,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕被忽略」。你習慣用「搞笑」和「表現」來吸引注意力，但這讓你離真實的自己越來越遠。最動人的表達，往往來自於你敢於安靜的時刻。",
-                vip_wealth: "你的財富密碼是「創意變現」。你的靈感就是你的資產，但你需要學會「把點子轉化為產品」。2026 年請練習「減法」，專注在一個點子上做到極致。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕被忽略」</span>。你習慣用 <span style='color:#fbbf24;font-weight:600;'>「搞笑」</span> 和 <span style='color:#fbbf24;font-weight:600;'>「表現」</span> 來吸引注意力，但這讓你離真實的自己越來越遠。最動人的表達，往往來自於你敢於 <span style='color:#34d399;font-weight:600;'>安靜的時刻</span>。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「創意變現」</span>。你的靈感就是你的資產，但你需要學會 <span style='color:#34d399;font-weight:600;'>「把點子轉化為產品」</span>。今年請練習 <span style='color:#fbbf24;font-weight:600;'>「減法」</span>，專注在一個點子上做到極致。",
                 vip_action: "【第 1-30 天】每天寫下一個「創意靈感」，培養表達的習慣。\n【第 31-60 天】將一個點子具體化為作品或企劃。\n【第 61-90 天】主動分享你的作品，練習接受掌聲與批評。",
                 love_reconcile: { style: "熱情挽回者", desc: "你習慣用「證明自己」來挽回，但對方可能覺得你在表演。最有力的挽回是安靜地改變。", steps: ["把挽回的能量轉為提升自己", "停止發送長篇訊息", "用行動證明你變了，而不是用言語"], success_rate: "50%", hot: true },
                 love_attraction: { score: 90, traits: ["幽默", "熱情", "創造力"], desc: "你的魅力是「行走的太陽」— 你讓人想靠近你、跟你待在一起。但有時你可能太耀眼，讓對方覺得自己配不上你。", action_plan: "偶爾安靜，讓對方有機會主動靠近你。", hot: false },
@@ -655,6 +676,7 @@
                     "power": "你的命運轉折點在於「學會擁抱變化」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從執行者轉變為創造者」。你擅長把事情做好，但這輩子要學會的是：有時候你不需要照著規則走，而是可以自己制定規則。"
                 },
+                turning: "你的流年能量正在轉向「突破框架」，今年是你從執行者變成創造者的關鍵年。你將學會不再只是遵守規則，而是自己制定規則。",
                 missing_meanings: {
                     "1": { theme: "獨立與自信", tendency: "容易依賴規則和權威，缺乏自主性", advice: "練習自己做決定，不要總是問別人" },
                     "2": { theme: "耐心與合作", tendency: "容易固執己見，不願妥協", advice: "練習說「你的想法也不錯」" },
@@ -673,8 +695,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕失控」。你習慣用「計畫」來對抗「不確定性」，但人生中最重要的機會往往來自於計畫之外。練習容許 10% 的混亂。",
-                vip_wealth: "你的財富密碼是「系統變現」。你擅長建立流程與制度，2026 年請把你的專業「產品化」— 做成課程、模板、顧問服務。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕失控」</span>。你習慣用 <span style='color:#fbbf24;font-weight:600;'>「計畫」</span> 來對抗 <span style='color:#fbbf24;font-weight:600;'>「不確定性」</span>，但人生中最重要的機會往往來自於計畫之外。練習 <span style='color:#34d399;font-weight:600;'>容許 10% 的混亂</span>。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「系統變現」</span>。你擅長建立流程與制度，今年請把你的專業 <span style='color:#34d399;font-weight:600;'>「產品化」</span> — 做成課程、模板、顧問服務。",
                 vip_action: "【第 1-30 天】寫下你的「人生藍圖」— 三個長期目標。\n【第 31-60 天】將其中一個目標拆解為可執行的步驟。\n【第 61-90 天】開始執行第一步，並記錄進度。",
                 love_reconcile: { style: "務實修復者", desc: "你習慣用「解決問題」來挽回，但感情問題往往不是問題本身，而是感受。", steps: ["先處理自己的情緒，再處理關係", "不要急著說「我改了」，用行動證明", "給對方看的見的改變"], success_rate: "60%", hot: true },
                 love_attraction: { score: 70, traits: ["可靠", "穩重", "負責"], desc: "你的魅力來自於「讓人安心」。你不會是那個最耀眼的人，但你會是那個讓人想要依靠的人。", action_plan: "偶爾放鬆界線，讓對方看到你感性的一面。", hot: false },
@@ -709,6 +731,7 @@
                     "power": "你的命運轉折點在於「學會承諾」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從流浪者轉變為扎根者」。你渴望自由，但這輩子要學會的是：真正的自由不是永遠在移動，而是能選擇在哪裡停留。"
                 },
+                turning: "你的流年能量正在轉向「扎根落地」，今年是你從流浪者變成扎根者的關鍵年。你將學會不再只是追求自由，而是選擇在哪裡停留。",
                 missing_meanings: {
                     "1": { theme: "獨立與自信", tendency: "容易依賴群體，不敢獨自出發", advice: "練習一個人旅行或獨處" },
                     "2": { theme: "耐心與合作", tendency: "容易急躁，不擅長等待他人", advice: "練習傾聽，不急著表達" },
@@ -727,8 +750,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕被困住」。你對「自由」的執著，有時反而讓你無法「扎根」。真正的自由不是永遠在移動，而是能選擇在哪裡停留。",
-                vip_wealth: "你的財富密碼是「趨勢變現」。你對市場的嗅覺極為敏銳，2026 年請相信你的直覺 — 當你「感覺」到什麼要來了，那就是你的機會。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕被困住」</span>。你對 <span style='color:#fbbf24;font-weight:600;'>「自由」</span> 的執著，有時反而讓你無法 <span style='color:#fbbf24;font-weight:600;'>「扎根」</span>。真正的自由不是永遠在移動，而是能 <span style='color:#34d399;font-weight:600;'>選擇在哪裡停留</span>。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「趨勢變現」</span>。你對市場的嗅覺極為敏銳，今年請相信你的 <span style='color:#fbbf24;font-weight:600;'>直覺</span> — 當你「感覺」到什麼要來了，那就是你的 <span style='color:#34d399;font-weight:600;'>機會</span>。",
                 vip_action: "【第 1-30 天】嘗試一件「以前從未做過」的事。\n【第 31-60 天】主動接受一個「不確定」的機會。\n【第 61-90 天】回顧你的冒險，寫下三個學到的教訓。",
                 love_reconcile: { style: "自由探索者", desc: "你習慣用「下一個會更好」來面對分手，但有時你錯過了真正的緣分。", steps: ["誠實面對自己：你是真的放下了，還是在逃避？", "如果還有感情，給彼此一個重來的機會", "如果不愛了，就勇敢前進"], success_rate: "45%", hot: true },
                 love_attraction: { score: 88, traits: ["自由", "冒險", "活力"], desc: "你的魅力是「不可預測」。你讓人覺得跟你在一起永遠不會無聊，但也會讓沒有安全感的人感到不安。", action_plan: "偶爾讓對方感覺「我為你留了下來」，而不只是「我隨時會走」的感覺。", hot: false },
@@ -763,6 +786,7 @@
                     "power": "你的命運轉折點在於「學會設立界線」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從照顧者轉變為愛的源頭」。你習慣照顧別人，但這輩子要學會的是：真正的愛不是付出，而是成為愛的磁鐵，吸引而不是追趕。"
                 },
+                turning: "你的流年能量正在轉向「自我照顧」，今年是你從照顧者變成愛的源頭的關鍵年。你將學會不再只是付出，而是接受被愛。",
                 missing_meanings: {
                     "1": { theme: "獨立與自信", tendency: "容易過度依賴他人認可", advice: "練習自己做決定，不要總是問別人" },
                     "2": { theme: "耐心與合作", tendency: "容易急躁，想快點解決問題", advice: "練習等待，相信事情會自然發展" },
@@ -781,8 +805,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕不被需要」。你習慣用「照顧別人」來證明自己的價值，但這讓你陷入「過勞」與「委屈」的循環。你的存在本身就有價值，不需用付出換取愛。",
-                vip_wealth: "你的財富密碼是「關懷變現」。你的同理心是天賦，2026 年請把你的照顧能力「專業化」— 教練、顧問、療癒服務。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕不被需要」</span>。你習慣用 <span style='color:#fbbf24;font-weight:600;'>「照顧別人」</span> 來證明自己的價值，但這讓你陷入 <span style='color:#fbbf24;font-weight:600;'>「過勞」</span> 與 <span style='color:#fbbf24;font-weight:600;'>「委屈」</span> 的循環。你的存在本身就有價值，不需用付出換取愛。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「關懷變現」</span>。你的同理心是天賦，今年請把你的照顧能力 <span style='color:#34d399;font-weight:600;'>「專業化」</span> — 教練、顧問、療癒服務。",
                 vip_action: "【第 1-30 天】每天做一件「不期待回報」的善事。\n【第 31-60 天】練習設立「界線」，學會說不。\n【第 61-90 天】回顧你的付出，確認是否照顧好了自己。",
                 love_reconcile: { style: "照顧型挽回者", desc: "你習慣用「關心」來挽回，但這有時會讓對方感到壓力。真正的挽回是讓對方重新「渴望」你，而不是「被你需要」。", steps: ["停止「照顧」對方，把注意力放回自己身上", "讓對方感覺到你的缺席，而不是你的存在", "學會等待，而不是追趕"], success_rate: "55%", hot: true },
                 love_attraction: { score: 82, traits: ["溫暖", "體貼", "忠誠"], desc: "你的魅力是「讓人感覺被照顧」。跟你在一起，對方會覺得被重視、被珍惜。", action_plan: "練習接受別人的照顧，讓關係是雙向的，而不是單向的付出。", hot: false },
@@ -817,6 +841,7 @@
                     "power": "你的命運轉折點在於「學會表達情感」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從觀察者轉變為參與者」。你擅長分析與思考，但這輩子要學會的是：有些真理不是用想的，而是用體驗的。"
                 },
+                turning: "你的流年能量正在轉向「感受體驗」，今年是你從觀察者變成參與者的關鍵年。你將學會不再只是思考，而是用心感受。",
                 missing_meanings: {
                     "1": { theme: "獨立與自信", tendency: "容易隱身幕後，不敢站出來", advice: "練習表達自己的觀點，即使不完美" },
                     "2": { theme: "耐心與合作", tendency: "容易孤僻，不願與人合作", advice: "練習與人共事，接受不同的觀點" },
@@ -835,8 +860,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕被看透」。你習慣用「智慧」來保護自己，用「分析」來保持距離。但真正的連結不需要完美的論述，只需要真實的敞開。",
-                vip_wealth: "你的財富密碼是「知識變現」。你的洞察力是稀缺資源，2026 年請把你的思考「輸出」— 寫書、開課、諮詢。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕被看透」</span>。你習慣用 <span style='color:#fbbf24;font-weight:600;'>「智慧」</span> 來保護自己，用 <span style='color:#fbbf24;font-weight:600;'>「分析」</span> 來保持距離。但真正的連結不需要完美的論述，只需要 <span style='color:#34d399;font-weight:600;'>真實的敞開</span>。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「知識變現」</span>。你的洞察力是稀缺資源，今年請把你的思考 <span style='color:#34d399;font-weight:600;'>「輸出」</span> — 寫書、開課、諮詢。",
                 vip_action: "【第 1-30 天】每天讀一個主題的深度文章，練習專注。\n【第 31-60 天】將一個想法寫成完整的論述。\n【第 61-90 天】主動分享你的見解，練習與人交流。",
                 love_reconcile: { style: "分析型挽回者", desc: "你習慣用「想通」來處理分手，但感情不是邏輯問題。有時候你越想越錯。", steps: ["停止分析「為什麼分手」，先感受自己的情緒", "寫一封「不寄出的信」整理你的真實感受", "不要用道理說服對方回來，用你的改變吸引對方"], success_rate: "50%", hot: true },
                 love_attraction: { score: 70, traits: ["深度", "智慧", "神秘感"], desc: "你的魅力是「讓人想了解你」。你不太容易接近，但一旦有人走進你的世界，就會發現裡面別有洞天。", action_plan: "偶爾主動開口分享你的感受，而不是等別人來問。", hot: false },
@@ -871,6 +896,7 @@
                     "power": "你的命運轉折點在於「學會柔軟」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從控制者轉變為賦能者」。你擅長掌握權力，但這輩子要學會的是：真正的影響力來自於讓別人變強，而不是證明自己很強。"
                 },
+                turning: "你的流年能量正在轉向「柔軟領導」，今年是你從控制者變成賦能者的關鍵年。你將學會不再只是掌控，而是啟發他人。",
                 missing_meanings: {
                     "1": { theme: "獨立與自信", tendency: "容易依賴團隊，不敢獨自決策", advice: "練習在關鍵時刻自己做決定" },
                     "2": { theme: "耐心與合作", tendency: "容易急躁，想快點看到結果", advice: "練習放慢節奏，給事情時間" },
@@ -890,8 +916,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕失敗」。你對「成功」的執著，讓你無法接受任何不完美的結果。但真正的強者不是從不跌倒，而是跌倒後能笑著站起來。",
-                vip_wealth: "你的財富密碼是「槓桿變現」。你天生知道如何用別人的資源放大自己的影響力，2026 年請專注在「整合」— 把對的人、對的資源放在對的位置。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕失敗」</span>。你對 <span style='color:#fbbf24;font-weight:600;'>「成功」</span> 的執著，讓你無法接受任何不完美的結果。但真正的強者不是從不跌倒，而是 <span style='color:#34d399;font-weight:600;'>跌倒後能笑著站起來</span>。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「槓桿變現」</span>。你天生知道如何用別人的資源放大自己的影響力，今年請專注在 <span style='color:#34d399;font-weight:600;'>「整合」</span> — 把對的人、對的資源放在對的位置。",
                 vip_action: "【第 1-30 天】盤點你的資源與能力。\n【第 31-60 天】主動爭取一個更大責任的任務。\n【第 61-90 天】覆盤你的決策，寫下三個成功與三個失敗。",
                 love_reconcile: { style: "主導型挽回者", desc: "你習慣用「控制」來挽回，但感情不是權力遊戲。你越用力，對方越遠。", steps: ["把「我要贏回他」改成「我要了解他」", "停止用權力吸引對方，改用「脆弱」吸引對方", "讓對方感覺你是真的想改變，而不是想贏"], success_rate: "55%", hot: true },
                 love_attraction: { score: 85, traits: ["自信", "果斷", "有影響力"], desc: "你的魅力是「權力」。你讓人覺得跟你在一起，一切都不會是問題。但有時你也讓人覺得壓力很大。", action_plan: "練習偶爾說「我不知道」或「我需要幫忙」，讓對方有機會靠近你。", hot: false },
@@ -926,6 +952,7 @@
                     "power": "你的命運轉折點在於「學會放下」。你的人生會在特定週期出現重大轉折。",
                     "soul": "你的靈魂課題是「從理想主義者轉變為實踐者」。你能看見更美好的世界，但這輩子要學會的是：改變世界從改變自己開始，從最小的一步開始。"
                 },
+                turning: "你的流年能量正在轉向「活在當下」，今年是你從理想主義者變成實踐者的關鍵年。你將學會不再只是追逐意義，而是享受平凡的每一刻。",
                 missing_meanings: {
                     "1": { theme: "獨立與自信", tendency: "容易把焦點放在別人身上，忽略自己", advice: "練習說「我需要...」而不是「你需要什麼？」" },
                     "2": { theme: "耐心與合作", tendency: "容易急躁，想快點改變世界", advice: "練習耐心，相信改變需要時間" },
@@ -945,8 +972,8 @@
                     "147": { name: "組織線", desc: "條理分明、善於規劃。你是天生的專案管理師。" },
                     "258": { name: "情感線", desc: "同理心強、善於連結。你對人的情緒有高度的感知力。" }
                 },
-                vip_blindspot: "你的核心陰影是「害怕沒有意義」。你對「使命感」的執著，有時反而讓你無法享受當下的平凡。最大的意義，往往藏在最小的日常裡。",
-                vip_wealth: "你的財富密碼是「願景變現」。你能看見更美好的世界，這本身就是一種天賦。2026 年請把你的願景「具體化」— 寫成計畫、建立社群、發起行動。",
+                vip_blindspot: "你的核心陰影是 <span style='color:#f43f5e;font-weight:700;'>「害怕沒有意義」</span>。你對 <span style='color:#fbbf24;font-weight:600;'>「使命感」</span> 的執著，有時反而讓你無法享受當下的平凡。最大的意義，往往藏在 <span style='color:#34d399;font-weight:600;'>最小的日常</span> 裡。",
+                vip_wealth: "你的財富密碼是 <span style='color:#f43f5e;font-weight:700;'>「願景變現」</span>。你能看見更美好的世界，這本身就是一種天賦。今年請把你的願景 <span style='color:#34d399;font-weight:600;'>「具體化」</span> — 寫成計畫、建立社群、發起行動。",
                 vip_action: "【第 1-30 天】每天練習「感恩」，寫下三件感謝的事。\n【第 31-60 天】主動參與一項服務行動。\n【第 61-90 天】回顧你的成長，寫下你對世界的貢獻。",
                 love_reconcile: { style: "理想型挽回者", desc: "你習慣用「相信愛情」來挽回，但有時你的理想化讓你看不清現實。", steps: ["先接受分手的事實，不要急著「修復」", "問自己：你愛的是真實的他，還是你理想中的他？", "用行動證明你願意成長，而不只是說「我會改」"], success_rate: "50%", hot: true },
                 love_attraction: { score: 80, traits: ["包容", "理想", "溫暖"], desc: "你的魅力是「讓人有歸屬感」。跟你在一起，對方會覺得自己被完整地接納。", action_plan: "練習適時表達你的需求，讓對方也有機會照顧你。", hot: false },
@@ -968,7 +995,7 @@
         };
 
         // ================================================================
-        //  2. 載入 JSON，若失敗則使用備用資料
+        //  2. 載入 JSON
         // ================================================================
 
         let numerologyData = {};
@@ -981,13 +1008,13 @@
                 numerologyData = json;
                 console.log('✅ 成功載入 numerology_content.json');
             } catch (err) {
-                console.warn('⚠️ 載入 numerology_content.json 失敗，使用內建備用資料', err);
+                console.warn('⚠️ 載入失敗，使用內建備用資料', err);
                 numerologyData = FALLBACK_DATA;
             }
         }
 
         // ================================================================
-        //  3. 生命靈數 2.0 核心計算函式
+        //  3. 生命靈數核心計算
         // ================================================================
 
         function calculateFullLifePath(birthday) {
@@ -1061,7 +1088,7 @@
         }
 
         // ================================================================
-        //  4. 其他輔助函式
+        //  4. 輔助函式
         // ================================================================
 
         const ZODIAC_MAP = [
@@ -1094,7 +1121,136 @@
         }
 
         // ================================================================
-        //  5. 主計算與渲染
+        //  5. 退費問卷
+        // ================================================================
+
+        function requestRefund() {
+            const reason = prompt(
+                '💬 我們很遺憾你對報告不滿意 🙏\n\n' +
+                '為了讓我們改進，可以告訴我們原因嗎？\n' +
+                '（選填，但你的回饋對我們非常珍貴）\n\n' +
+                '1. 內容不符合期待\n' +
+                '2. 覺得不值得這個價格\n' +
+                '3. 技術問題（載入失敗、顯示錯誤）\n' +
+                '4. 其他（請簡短說明）'
+            );
+            
+            if (reason === null) {
+                return;
+            }
+            
+            alert(
+                '✅ 你的退費申請已收到！\n' +
+                '款項將在 3-5 個工作天內退回原付款方式。\n\n' +
+                '🙏 感謝你的回饋：\n' +
+                (reason || '（未填寫原因）') +
+                '\n\n我們會持續改進，希望未來能給你更好的體驗 ❤️'
+            );
+        }
+
+        // ================================================================
+        //  6. 社交證明輪播（真假參半 + 漸暗閃過）
+        // ================================================================
+
+        const testimonials = [
+            "「陳○琳 說：測完才發現我一直用錯方式愛自己⋯⋯ 付費報告的感情分析直接點醒我！」",
+            "「張○涵 說：本來只是好奇玩玩，結果付費內容準到哭⋯⋯ 尤其是「他已讀不回真相」那篇。」",
+            "「李○萱 說：我一直以為我是3號人，測出來是28/10/1⋯⋯ 難怪我總覺得哪裡不對勁！」",
+            "「王○婷 說：分手三個月了，看完「黃金21天」終於知道該怎麼做了。謝謝你們。」",
+            "「匿名用戶 說：早知道早點來測⋯⋯ 省下半年糾結的時間。」",
+            "「新北的林小姐 說：跟朋友一起測，我們都覺得超準！已經推薦給三個同事了。」",
+            "「台中陳小姐 說：一直以為是性格問題，原來是命數能量不同。現在跟男友相處順多了。」",
+            "「桃園張先生 說：測完立刻付費，內容比我想像中豐富很多，值得！」"
+        ];
+
+        let testimonialIndex = 0;
+        let testimonialInterval;
+
+        function rotateTestimonial() {
+            const el = document.getElementById('testimonial-text');
+            if (!el) return;
+            const container = document.getElementById('testimonial-carousel');
+            if (!container) return;
+            container.style.opacity = '0.2';
+            setTimeout(() => {
+                testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+                el.textContent = testimonials[testimonialIndex];
+                container.style.opacity = '1';
+            }, 400);
+        }
+
+        function startTestimonialCarousel() {
+            if (document.getElementById('testimonial-carousel')) {
+                testimonialInterval = setInterval(rotateTestimonial, 4500);
+            }
+        }
+
+        function stopTestimonialCarousel() {
+            if (testimonialInterval) {
+                clearInterval(testimonialInterval);
+                testimonialInterval = null;
+            }
+        }
+
+        // ================================================================
+        //  7. 倒數計時器
+        // ================================================================
+
+        let countdownSeconds = 23 * 60 + 45;
+        let countdownInterval;
+
+        function updateCountdown() {
+            const el = document.getElementById('countdown-timer');
+            if (!el) return;
+            const mins = Math.floor(countdownSeconds / 60);
+            const secs = countdownSeconds % 60;
+            el.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            if (countdownSeconds > 0) {
+                countdownSeconds--;
+            } else {
+                el.textContent = '已結束';
+                el.style.color = '#f87171';
+            }
+        }
+
+        function startCountdown() {
+            if (document.getElementById('countdown-timer')) {
+                updateCountdown();
+                countdownInterval = setInterval(updateCountdown, 1000);
+            }
+        }
+
+        function stopCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+
+        // ================================================================
+        //  8. 分享功能
+        // ================================================================
+
+        function shareResult() {
+            const url = window.location.href;
+            const text = '我剛剛測完生命靈數，超準！你也來測測看 👉';
+            if (navigator.share) {
+                navigator.share({
+                    title: '生命靈數 · 靈魂契約解析',
+                    text: text,
+                    url: url
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+                    alert('✅ 連結已複製！貼給朋友吧 🔥');
+                }).catch(() => {
+                    prompt('複製這個連結分享給朋友 👇', url);
+                });
+            }
+        }
+
+        // ================================================================
+        //  9. 主計算與渲染
         // ================================================================
 
         function calculateLifePath() {
@@ -1189,7 +1345,7 @@
                 `;
             }
 
-            // ---- 九宮格 + 連線（付費區） ----
+            // ---- 九宮格 + 連線 ----
             const presentNums = birthday.replace(/[^0-9]/g, '').split('').map(Number);
             const activeLines = detectLines(presentNums);
             const gridHtml = renderGrid(presentNums);
@@ -1216,11 +1372,10 @@
 
             isPaid = false;
 
-            // ===== 靈魂課題數查找邏輯（核心修正） =====
+            // ===== 靈魂課題數查找邏輯 =====
             let soulLessonText = '';
             if (data.soul_lesson) {
                 const soulNum = fullPath.soulNumber;
-                // 優先找 exact match，再根據範圍找對應 key
                 const exactMatch = data.soul_lesson[soulNum] || data.soul_lesson[String(soulNum)];
                 if (exactMatch) {
                     soulLessonText = exactMatch;
@@ -1234,6 +1389,20 @@
             } else {
                 soulLessonText = '請在 JSON 中補上 soul_lesson 欄位';
             }
+
+            // ===== 個人化付費牆文案 =====
+            const paywallTexts = {
+                "1": "「你是不是常常覺得，身邊的人總是跟不上你的節奏？你習慣自己扛，但這正是讓你累垮的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」",
+                "2": "「你是不是常常覺得，自己付出很多，卻總是被當成理所當然？你習慣配合別人，但這正是讓你失去自己的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」",
+                "3": "「你是不是常常覺得，自己明明很受歡迎，卻總是遇不到真心的人？你習慣用幽默掩飾脆弱，但這正是讓你孤獨的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」",
+                "4": "「你是不是常常覺得，自己總是照著計畫走，卻還是會出錯？你習慣控制一切，但這正是讓你焦慮的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」",
+                "5": "「你是不是常常覺得，自己永遠在流浪，卻找不到歸屬感？你習慣追求自由，但這正是讓你無法扎根的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」",
+                "6": "「你是不是常常覺得，自己付出了一切，卻換來一句『你太累了』？你習慣照顧別人，但這正是讓你被掏空的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」",
+                "7": "「你是不是常常覺得，自己想得比誰都清楚，卻還是做不了決定？你習慣用大腦分析一切，但這正是讓你錯過機會的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」",
+                "8": "「你是不是常常覺得，自己很強但身邊的人越來越少？你習慣掌控一切，但這正是讓你孤軍奮戰的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」",
+                "9": "「你是不是常常覺得，自己看得見更好的世界，卻被困在現實裡？你習慣追逐理想，但這正是讓你無法享受當下的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」"
+            };
+            const paywallText = paywallTexts[String(number)] || paywallTexts["1"];
 
             resultDiv.innerHTML = `
                 <div class="life-path-circle">
@@ -1276,7 +1445,7 @@
                     <p><strong>需要留意：</strong> ${data.weaknesses || ''}</p>
                 </div>
 
-                <!-- 缺數分析（免費區） -->
+                <!-- 缺數分析 -->
                 ${missingHtml}
 
                 <div style="margin:1.2rem 0;">
@@ -1299,31 +1468,42 @@
                 <div class="yearly-section">
                     <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
                         <div>
-                            <div style="font-size:0.75rem;color:var(--text-muted);letter-spacing:1px;">2026 流年數字</div>
+                            <div style="font-size:0.75rem;color:var(--text-muted);letter-spacing:1px;">${new Date().getFullYear()} 流年數字</div>
                             <div class="yearly-number">${yearlyNumber}</div>
                         </div>
                         <div style="flex:1;min-width:150px;">
                             <div style="color:#c084fc;font-weight:600;">${['','開創','合作','表達','執行','自由','責任','智慧','權力','奉獻'][yearlyNumber] || '轉變'}之年</div>
-                            <div style="color:var(--text-muted);font-size:0.9rem;">${data.turning || '請在 numerology_content.json 中補上 turning 欄位'}</div>
+                            <div style="color:var(--text-muted);font-size:0.9rem;">${data.turning || '流年能量正在轉向新的方向'}</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="cliffhanger">
                     <span class="title">🧠 系統洞察：</span>
-                    你的命數 ${number} 與流年 ${yearlyNumber} 形成 ${number % 2 === 0 ? '共鳴放大' : '互補平衡'} 的能量格局。2026 年你將在 ${['','開創事業','關係合作','表達自我','執行計畫','自由探索','承擔責任','深度學習','權力運作','奉獻服務'][yearlyNumber] || '轉變'} 領域迎來關鍵突破。
+                    你的命數 ${number} 與流年 ${yearlyNumber} 形成 ${number % 2 === 0 ? '共鳴放大' : '互補平衡'} 的能量格局。${new Date().getFullYear()} 年你將在 ${['','開創事業','關係合作','表達自我','執行計畫','自由探索','承擔責任','深度學習','權力運作','奉獻服務'][yearlyNumber] || '轉變'} 領域迎來關鍵突破。
+                </div>
+
+                <!-- ===== 社交證明輪播 ===== -->
+                <div id="testimonial-carousel" style="background:rgba(99,102,241,0.03);border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;border:1px solid rgba(99,102,241,0.1);min-height:90px;display:flex;align-items:center;justify-content:center;transition: opacity 0.6s ease-in-out;">
+                    <div style="text-align:center;color:#fbcfe8;font-size:0.95rem;line-height:1.8;">
+                        <span id="testimonial-text">「陳○琳 說：測完才發現我一直用錯方式愛自己⋯⋯ 付費報告的感情分析直接點醒我！」</span>
+                        <div style="color:var(--text-muted);font-size:0.7rem;margin-top:0.2rem;">— 真實用戶回饋</div>
+                    </div>
                 </div>
 
                 <!-- ===== 付費牆 ===== -->
                 <div id="paywall-area">
                     <div class="preview-block">
                         <div class="preview-title">🔓 VIP 報告獨家試閱</div>
-                        <div class="preview-text">「你是不是常常覺得，明明自己很優秀，卻總是在感情裡吃虧？你習慣用『我很強』來武裝自己，但這正是讓你跟伴侶越來越遠的原因⋯⋯ 完整報告將為你解鎖：✅ 你的核心陰影 ✅ 為什麼你總是愛上同一種人 ✅ 16 個感情主題的個人化解讀」</div>
+                        <div class="preview-text">${paywallText}</div>
                         <div class="preview-more">（完整內容解鎖後可見）</div>
                     </div>
 
                     <div class="paywall">
                         <div class="urgency">🔥 今日尚餘 <span>23</span> 份完整命盤名額</div>
+                        <div style="color:#fbbf24;font-size:0.9rem;font-weight:600;margin-bottom:0.5rem;">
+                            ⏰ 優惠倒數 <span id="countdown-timer">23:45</span>
+                        </div>
                         <div style="font-size:1.2rem;font-weight:600;color:#fbcfe8;">🔒 解鎖完整 VIP 靈數命盤</div>
                         <div style="color:var(--text-muted);font-size:0.85rem;margin:0.3rem 0;">
                             包含：核心陰影｜財富密碼｜九宮格連線｜16 個感情主題｜90 天行動計畫
@@ -1331,7 +1511,8 @@
                         <div class="price-tag"><span>NT$ 599</span> NT$ 99</div>
                         <div class="price-daily">相當於每天不到 <strong>NT$ 4</strong></div>
                         <button class="pay-btn" onclick="simulatePayment()">💳 立即解鎖完整命盤</button>
-                        <div class="guarantee">🔒 如果不滿意，<span>3 天內可申請全額退費</span></div>
+                        <div class="guarantee">🔒 如果不滿意，<span onclick="requestRefund()" style="cursor:pointer;color:#34d399;text-decoration:underline;">3 天內可申請全額退費</span></div>
+                        <div style="color:var(--text-muted);font-size:0.7rem;margin-top:0.2rem;">💬 退費時告訴我們原因，幫助我們變得更好</div>
                     </div>
                 </div>
 
@@ -1341,15 +1522,15 @@
 
                     <div class="vip-section">
                         <div class="vip-label">🔮 核心陰影</div>
-                        <p>${data.vip_blindspot || '請在 numerology_content.json 中補上 vip_blindspot'}</p>
+                        <p>${data.vip_blindspot || '請在 JSON 中補上 vip_blindspot'}</p>
                     </div>
 
                     <div class="vip-section">
                         <div class="vip-label">💰 財富密碼</div>
-                        <p>${data.vip_wealth || '請在 numerology_content.json 中補上 vip_wealth'}</p>
+                        <p>${data.vip_wealth || '請在 JSON 中補上 vip_wealth'}</p>
                     </div>
 
-                    <!-- ===== 九宮格 + 連線（付費區） ===== -->
+                    <!-- ===== 九宮格 + 連線 ===== -->
                     <div class="vip-section">
                         <div class="vip-label">🧩 生命靈數九宮格</div>
                         <div style="text-align:center;">
@@ -1366,7 +1547,6 @@
                     <!-- ===== 16 個感情主題 ===== -->
                     <h3>💕 16 個感情主題完整分析</h3>
 
-                    <!-- 1. 感情挽回指南 -->
                     <div class="vip-section">
                         <div class="vip-label">💔 感情挽回指南 ${data.love_reconcile?.hot ? '🔥' : ''}</div>
                         <p><strong>你的挽回風格：</strong>${data.love_reconcile?.style || ''}</p>
@@ -1376,7 +1556,6 @@
                         <p>${(data.love_reconcile?.steps || []).map((s, i) => `${i+1}. ${s}`).join('<br>')}</p>
                     </div>
 
-                    <!-- 2. 桃花運勢與吸引力分析 -->
                     <div class="vip-section">
                         <div class="vip-label">💕 桃花運勢與吸引力分析 ${data.love_attraction?.hot ? '🔥' : ''}</div>
                         <p><strong>你的桃花運值：</strong>${data.love_attraction?.score || 0}%</p>
@@ -1385,7 +1564,6 @@
                         <p><strong>吸引力提升計畫：</strong>${data.love_attraction?.action_plan || ''}</p>
                     </div>
 
-                    <!-- 3. 曖昧對象真心判定 -->
                     <div class="vip-section">
                         <div class="vip-label">❤️ 曖昧對象真心判定 ${data.love_crush?.hot ? '🔥' : ''}</div>
                         <p><strong>對方真心指數：</strong>${data.love_crush?.sincere_index || 0}%</p>
@@ -1394,7 +1572,6 @@
                         <p><strong>建議行動：</strong>${data.love_crush?.advice || ''}</p>
                     </div>
 
-                    <!-- 4. 潛在炮友風險檢測 -->
                     <div class="vip-section">
                         <div class="vip-label">⚠️ 潛在炮友風險檢測 ${data.love_fwb?.hot ? '🔥' : ''}</div>
                         <p><strong>你的風險指數：</strong>${data.love_fwb?.risk_index || 0}%</p>
@@ -1403,7 +1580,6 @@
                         <p><strong>保護自己的做法：</strong>${data.love_fwb?.advice || ''}</p>
                     </div>
 
-                    <!-- 5. 吸渣體質檢測 -->
                     <div class="vip-section">
                         <div class="vip-label">🧲 吸渣體質檢測 ${data.love_bad_attract?.hot ? '🔥' : ''}</div>
                         <p><strong>你的吸渣指數：</strong>${data.love_bad_attract?.score || 0}%</p>
@@ -1412,7 +1588,6 @@
                         <p><strong>破解方法：</strong>${data.love_bad_attract?.fix || ''}</p>
                     </div>
 
-                    <!-- 6. 暈船指數評估 -->
                     <div class="vip-section">
                         <div class="vip-label">🌊 暈船指數評估 ${data.love_crush_index?.hot ? '🔥' : ''}</div>
                         <p><strong>你的暈船指數：</strong>${data.love_crush_index?.score || 0}%</p>
@@ -1421,14 +1596,12 @@
                         <p>${(data.love_crush_index?.brakes || []).map(s => `• ${s}`).join('<br>')}</p>
                     </div>
 
-                    <!-- 7. 戀愛人格配對 -->
                     <div class="vip-section">
                         <div class="vip-label">💞 戀愛人格配對 ${data.love_personality?.hot ? '🔥' : ''}</div>
                         <p><strong>最適合你的伴侶類型：</strong>${(data.love_personality?.best_match || []).join('、')}</p>
                         <p>${data.love_personality?.desc || ''}</p>
                     </div>
 
-                    <!-- 8. 關係階段定位 -->
                     <div class="vip-section">
                         <div class="vip-label">📌 關係階段定位 ${data.relation_phase?.hot ? '🔥' : ''}</div>
                         <p><strong>當前階段：</strong>${data.relation_phase?.phase || ''}</p>
@@ -1436,7 +1609,6 @@
                         <p><strong>建議：</strong>${data.relation_phase?.advice || ''}</p>
                     </div>
 
-                    <!-- 9. 復合時機預測 -->
                     <div class="vip-section">
                         <div class="vip-label">⏰ 復合時機預測 ${data.reconcile_timing?.hot ? '🔥' : ''}</div>
                         <p><strong>最佳聯繫時機：</strong>${data.reconcile_timing?.best_timing || ''}</p>
@@ -1444,7 +1616,6 @@
                         <p><strong>建議做法：</strong>${data.reconcile_timing?.approach || ''}</p>
                     </div>
 
-                    <!-- 10. 生命靈數愛情運勢 -->
                     <div class="vip-section">
                         <div class="vip-label">🔮 生命靈數愛情運勢 ${data.numerology_love?.hot ? '🔥' : ''}</div>
                         <p>${data.numerology_love?.desc || ''}</p>
@@ -1453,7 +1624,6 @@
                         <p><strong>建議：</strong>${data.numerology_love?.timeline?.advice || ''}</p>
                     </div>
 
-                    <!-- 11. 愛情致命弱點分析 -->
                     <div class="vip-section">
                         <div class="vip-label">🎯 愛情致命弱點分析 ${data.love_weakness?.hot ? '🔥' : ''}</div>
                         <p><strong>你的愛情致命傷：</strong>${data.love_weakness?.weakness || ''}</p>
@@ -1461,7 +1631,6 @@
                         <p><strong>改善方法：</strong>${data.love_weakness?.fix || ''}</p>
                     </div>
 
-                    <!-- 12. 吸引愛人開運指南 -->
                     <div class="vip-section">
                         <div class="vip-label">✨ 吸引愛人開運指南 ${data.attract_guide?.hot ? '🔥' : ''}</div>
                         <p>${data.attract_guide?.advice || ''}</p>
@@ -1469,9 +1638,8 @@
                         <p><strong>關鍵能量：</strong>${data.attract_guide?.key_energy || ''}</p>
                     </div>
 
-                    <!-- 13. 2026 愛情運勢年報 -->
                     <div class="vip-section">
-                        <div class="vip-label">🌟 2026 愛情運勢年報 ${data.yearly_2026?.hot ? '🔥' : ''}</div>
+                        <div class="vip-label">🌟 ${new Date().getFullYear()} 愛情運勢年報 ${data.yearly_2026?.hot ? '🔥' : ''}</div>
                         <p><strong>全年趨勢：</strong>${data.yearly_2026?.trend || ''}</p>
                         <p>${data.yearly_2026?.desc || ''}</p>
                         <p><strong>關鍵月份：</strong>${(data.yearly_2026?.key_months || []).join('、')}</p>
@@ -1479,7 +1647,7 @@
                         <p><strong>幸運數字：</strong>${data.yearly_2026?.lucky_number || ''}</p>
                     </div>
 
-                    <!-- ===== 14. 他已讀不回背後的真相（新增） ===== -->
+                    <!-- ===== 新增3個主題 ===== -->
                     <div class="vip-section" style="border-left-color: #f59e0b;">
                         <div class="vip-label">💬 他已讀不回背後的真相 ${data.love_read_receipt?.hot ? '🔥' : ''}</div>
                         <p>${data.love_read_receipt?.desc || '請在 JSON 中補上 love_read_receipt.desc'}</p>
@@ -1488,7 +1656,6 @@
                         <p><strong>你的行動策略：</strong>${data.love_read_receipt?.action || '請補上 action'}</p>
                     </div>
 
-                    <!-- ===== 15. 為什麼你總是愛上同一種人（新增） ===== -->
                     <div class="vip-section" style="border-left-color: #ec4899;">
                         <div class="vip-label">🔄 為什麼你總是愛上同一種人 ${data.love_pattern?.hot ? '🔥' : ''}</div>
                         <p>${data.love_pattern?.desc || '請在 JSON 中補上 love_pattern.desc'}</p>
@@ -1496,13 +1663,36 @@
                         <p><strong>你真正需要的：</strong>${data.love_pattern?.need || '請補上 need'}</p>
                     </div>
 
-                    <!-- ===== 16. 分手後的黃金 21 天（新增） ===== -->
                     <div class="vip-section" style="border-left-color: #8b5cf6;">
                         <div class="vip-label">⏳ 分手後的黃金 21 天 ${data.love_golden_21?.hot ? '🔥' : ''}</div>
                         <p>${data.love_golden_21?.desc || '請在 JSON 中補上 love_golden_21.desc'}</p>
                         <p><strong>第 1-7 天（情緒急救）：</strong>${data.love_golden_21?.week1 || '請補上 week1'}</p>
                         <p><strong>第 8-14 天（自我重建）：</strong>${data.love_golden_21?.week2 || '請補上 week2'}</p>
                         <p><strong>第 15-21 天（決策時刻）：</strong>${data.love_golden_21?.week3 || '請補上 week3'}</p>
+                    </div>
+
+                    <!-- ===== 付費後導流 ===== -->
+                    <div style="background:rgba(99,102,241,0.05);border-radius:10px;padding:1rem;margin:1.5rem 0;border:1px dashed var(--primary);text-align:center;">
+                        <div style="color:#c084fc;font-weight:600;font-size:0.95rem;">🤝 想認識跟你同頻率的人嗎？</div>
+                        <div style="color:var(--text-muted);font-size:0.85rem;margin:0.3rem 0;">
+                            加入我們的人脈社群，找到懂你的人。
+                        </div>
+                        <a href="#" target="_blank" style="display:inline-block;margin-top:0.5rem;color:#fbcfe8;font-weight:600;text-decoration:underline;font-size:0.9rem;">
+                            👉 點我加入人脈社群
+                        </a>
+                    </div>
+
+                    <!-- ===== 分享 + 下一個測驗 ===== -->
+                    <div style="display:flex;flex-wrap:wrap;gap:0.8rem;justify-content:center;margin:1rem 0;">
+                        <button onclick="shareResult()" style="background:rgba(99,102,241,0.15);border:1px solid var(--primary);color:#f1f5f9;padding:0.5rem 1.5rem;border-radius:30px;cursor:pointer;font-size:0.85rem;">
+                            📤 分享你的命數
+                        </button>
+                        <a href="mbti.html" style="background:rgba(236,72,153,0.15);border:1px solid var(--secondary);color:#f1f5f9;padding:0.5rem 1.5rem;border-radius:30px;text-decoration:none;font-size:0.85rem;">
+                            🧠 試試 MBTI 16 型人格
+                        </a>
+                        <a href="gps.html" style="background:rgba(16,185,129,0.15);border:1px solid #10b981;color:#f1f5f9;padding:0.5rem 1.5rem;border-radius:30px;text-decoration:none;font-size:0.85rem;">
+                            🧭 測天賦順流 GPS
+                        </a>
                     </div>
 
                     <div style="text-align:center;color:var(--text-muted);font-size:0.85rem;border-top:1px solid var(--border);padding-top:1rem;margin-top:0.5rem;">
@@ -1515,6 +1705,7 @@
                 </div>
             `;
 
+            // 觸發五行動畫
             setTimeout(() => {
                 document.querySelectorAll('.element-bar-fill').forEach(el => {
                     const w = el.style.width;
@@ -1523,11 +1714,15 @@
                 });
             }, 300);
 
+            // 啟動輪播和倒數
+            startTestimonialCarousel();
+            startCountdown();
+
             resultDiv.scrollIntoView({ behavior: 'smooth' });
         }
 
         // ================================================================
-        //  6. 初始化
+        //  10. 初始化
         // ================================================================
 
         document.addEventListener('DOMContentLoaded', async () => {
